@@ -27,9 +27,8 @@ namespace FilodendronGame
         static float viewAngle = MathHelper.PiOver4;
 
         // Set distance from the camera of the near and far clipping planes.
-        //static float nearClip = 5.0f;
         static float nearClip = 1.0f;
-        static float farClip = 2000.0f;
+        static float farClip = 1000.0f;
 
         public float rotationSpeed = 1f / 500f;
         float cameraPitch = 0;
