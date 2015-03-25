@@ -78,17 +78,17 @@ namespace FilodendronGame
                 cameraPitch -= (Mouse.GetState().Y - prevMouseState.Y) * rotationSpeed;
             }
 
-            Quaternion rotationQuat = Quaternion.CreateFromYawPitchRoll(((Game1)Game).modelManager.avatarYaw, cameraPitch, 0);
+            Quaternion rotationQuat = Quaternion.CreateFromYawPitchRoll(((Game1)Game).modelManager.avatar.avatarYaw, cameraPitch, 0);
             // Create a vector pointing the direction the camera is facing.
             
             Vector3 transformedReference =
                 Vector3.Transform(thirdPersonReference, rotationQuat);
 
             // Calculate the position the camera is looking from.
-            Vector3 cameraPosition = transformedReference + ((Game1)Game).modelManager.avatarPosition;
+            Vector3 cameraPosition = transformedReference + ((Game1)Game).modelManager.avatar.avatarPosition;
             
             // Set up the view matrix and projection matrix.
-            view = Matrix.CreateLookAt(cameraPosition, ((Game1)Game).modelManager.avatarPosition,
+            view = Matrix.CreateLookAt(cameraPosition, ((Game1)Game).modelManager.avatar.avatarPosition,
                 new Vector3(0.0f, 1.0f, 0.0f));
 
             Viewport viewport = Game.GraphicsDevice.Viewport;

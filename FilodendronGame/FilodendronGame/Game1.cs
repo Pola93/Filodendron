@@ -25,6 +25,11 @@ namespace FilodendronGame
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            // full screen mode settings
+            /*graphics.PreferredBackBufferWidth = 1366;    
+            graphics.PreferredBackBufferHeight = 768; 
+            graphics.IsFullScreen = true; */
+
         }
 
         protected override void Initialize()

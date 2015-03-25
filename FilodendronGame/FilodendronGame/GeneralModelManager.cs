@@ -17,25 +17,13 @@ namespace FilodendronGame
     /// </summary>
     public class GeneralModelManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
+        // Everything with comment "for boxes" will be deleted later
         Model box;
-        Model filodendron;
         Texture2D boxTexture;
-        Texture2D avatarTexture;
+        Texture2D avatarTexture; // ##########czy textury trzymac w modelmanager czy w klasach poszczegolnych modeli?
 
-        // Set the avatar position and rotation variables.
-        public Vector3 avatarPosition = new Vector3(0, 0, -50);
- 
-        // Set rates in world units per 1/60th second 
-        // (the default fixed-step interval).
-        public float rotationSpeed = 1f / 500f;
-        public float forwardSpeed = 200f / 60f;
-        public float backwardSpeed = -(100f / 60f);
-        public float sideSpeed = 150f / 60f;
-
-        public float avatarYaw;
-        public Matrix World = Matrix.Identity;
-
-        MouseState prevMouseState;
+        public Filodendron avatar;
+        public Matrix World = Matrix.Identity; // for boxes
 
         public GeneralModelManager(Game game)
             : base(game)
@@ -51,7 +39,6 @@ namespace FilodendronGame
         {
             // TODO: Add your initialization code here
             Mouse.SetPosition(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2);
-            prevMouseState = Mouse.GetState();
 
             base.Initialize();
         }
@@ -59,7 +46,7 @@ namespace FilodendronGame
         protected override void LoadContent()
         {
             box = Game.Content.Load<Model>(@"models/box");
-            filodendron = Game.Content.Load<Model>(@"models/spaceship");
+            avatar = new Filodendron(Game.Content.Load<Model>(@"models\spaceship"));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
             avatarTexture = Game.Content.Load<Texture2D>(@"textures/avatartexture");
 
@@ -73,87 +60,32 @@ namespace FilodendronGame
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-            UpdateAvatarPosition();
+            avatar.Update();
+            //if the side boundry of screen reached, set the mouse on the other side
+            if (Mouse.GetState().X >= Game.Window.ClientBounds.Width)
+            {
+                Mouse.SetPosition(1, Mouse.GetState().Y);// jak wstawia³em 0 to mi ekran przeskakiwa³ lol
+                avatar.prevMouseState = Mouse.GetState();
+            }
+            if (Mouse.GetState().X <= 0)
+            {
+                Mouse.SetPosition(Game.Window.ClientBounds.Width, Mouse.GetState().Y);
+                avatar.prevMouseState = Mouse.GetState();
+            }
 
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
-        { 
-            //Game.graphics.GraphicsDevice.Clear(Color.SteelBlue);
-                    
+        {                     
             DrawBoxes();
-            World = Matrix.CreateRotationY(avatarYaw) *
-                Matrix.CreateTranslation(avatarPosition);
-
-            DrawModel(filodendron, World, avatarTexture, ((Game1)Game).camera);
+            avatar.Draw(avatar.model, avatar.World, avatarTexture, ((Game1)Game).camera);
 
             base.Draw(gameTime);
         }
           
-         /// <summary>
-        /// Update the position and direction of the avatar.
-        /// </summary>
-        void UpdateAvatarPosition()
-        {
-            KeyboardState keyboardState = Keyboard.GetState();
-            GamePadState currentState = GamePad.GetState(PlayerIndex.One);
-
-            if (Mouse.GetState().X != prevMouseState.X)
-            {
-                avatarYaw -= (Mouse.GetState().X - prevMouseState.X) * rotationSpeed;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.W))
-            {
-                Matrix forwardMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(0, 0, forwardSpeed);
-                v = Vector3.Transform(v, forwardMovement);
-                avatarPosition.Z += v.Z;
-                avatarPosition.X += v.X;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.S))
-            {
-                Matrix backwardMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(0, 0, backwardSpeed);
-                v = Vector3.Transform(v, backwardMovement);
-                avatarPosition.Z += v.Z;
-                avatarPosition.X += v.X;
-            }
-            if (keyboardState.IsKeyDown(Keys.A))
-            {
-                Matrix sideMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(sideSpeed, 0, 0);
-                v = Vector3.Transform(v, sideMovement);
-                avatarPosition.Z += v.Z;
-                avatarPosition.X += v.X;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.D))
-            {
-                Matrix sideMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(-sideSpeed, 0, 0);
-                v = Vector3.Transform(v, sideMovement);
-                avatarPosition.Z += v.Z;
-                avatarPosition.X += v.X;
-            }
-            prevMouseState = Mouse.GetState();
-
-            //if the side boundry of screen reached, set the mouse on the other side
-            if (Mouse.GetState().X >= Game.Window.ClientBounds.Width)
-            {
-                Mouse.SetPosition(1, Mouse.GetState().Y);// jak wstawia³em 0 to mi ekran przeskakiwa³ lol
-                prevMouseState = Mouse.GetState();
-            }
-            if (Mouse.GetState().X <= 0)
-            {
-                Mouse.SetPosition(Game.Window.ClientBounds.Width, Mouse.GetState().Y);
-                prevMouseState = Mouse.GetState();
-            }
-        }
-         
-         void DrawBoxes()
+                
+        void DrawBoxes() // for boxes
         {
             for (int z = 0; z < 9; z++)
             {
@@ -174,7 +106,7 @@ namespace FilodendronGame
         /// </param>
         /// <param name="texture">Texture used for the drawn 3D model.
         /// </param>
-        void DrawModel(Model model, Matrix world, Texture2D texture, Camera camera)
+        void DrawModel(Model model, Matrix world, Texture2D texture, Camera camera) // for boxes
         {
             foreach (ModelMesh mesh in model.Meshes)
             {
