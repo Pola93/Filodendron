@@ -29,6 +29,8 @@ namespace FilodendronGame
         // (the default fixed-step interval).
         public float rotationSpeed = 1f / 500f;
         public float forwardSpeed = 200f / 60f;
+        public float backwardSpeed = -(100f / 60f);
+        public float sideSpeed = 150f / 60f;
 
         public float avatarYaw;
         public Matrix World = Matrix.Identity;
@@ -113,9 +115,26 @@ namespace FilodendronGame
 
             if (keyboardState.IsKeyDown(Keys.S))
             {
-                Matrix forwardMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(0, 0, -forwardSpeed);
-                v = Vector3.Transform(v, forwardMovement);
+                Matrix backwardMovement = Matrix.CreateRotationY(avatarYaw);
+                Vector3 v = new Vector3(0, 0, backwardSpeed);
+                v = Vector3.Transform(v, backwardMovement);
+                avatarPosition.Z += v.Z;
+                avatarPosition.X += v.X;
+            }
+            if (keyboardState.IsKeyDown(Keys.A))
+            {
+                Matrix sideMovement = Matrix.CreateRotationY(avatarYaw);
+                Vector3 v = new Vector3(sideSpeed, 0, 0);
+                v = Vector3.Transform(v, sideMovement);
+                avatarPosition.Z += v.Z;
+                avatarPosition.X += v.X;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.D))
+            {
+                Matrix sideMovement = Matrix.CreateRotationY(avatarYaw);
+                Vector3 v = new Vector3(-sideSpeed, 0, 0);
+                v = Vector3.Transform(v, sideMovement);
                 avatarPosition.Z += v.Z;
                 avatarPosition.X += v.X;
             }
