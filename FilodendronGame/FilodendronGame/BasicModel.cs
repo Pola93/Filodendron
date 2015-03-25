@@ -23,7 +23,7 @@ namespace FilodendronGame
 
         }
 
-        public void Draw(Model model, Matrix world, Texture2D texture, Camera camera)
+        /*public void Draw(Model model, Matrix world, Texture2D texture, Camera camera)
         {
             foreach (ModelMesh mesh in model.Meshes)
             {
@@ -32,6 +32,25 @@ namespace FilodendronGame
                     be.Projection = camera.proj;
                     be.View = camera.view;
                     be.World = world;
+                    be.Texture = texture;
+                    be.TextureEnabled = true;
+                }
+                mesh.Draw();
+            }
+        }*/
+        public void Draw(Model model, Matrix world, Texture2D texture, Camera camera)
+        {
+            Matrix[] transforms = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (BasicEffect be in mesh.Effects)
+                {
+                    be.EnableDefaultLighting();//
+                    be.Projection = camera.proj;
+                    be.View = camera.view;
+                    be.World = world * transforms[mesh.ParentBone.Index] /*mesh.ParentBone.Transform*/; //######pytanie czym to sie rozni i o co chodzi
                     be.Texture = texture;
                     be.TextureEnabled = true;
                 }
