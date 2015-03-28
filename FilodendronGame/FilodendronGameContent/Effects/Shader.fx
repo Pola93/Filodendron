@@ -31,8 +31,22 @@ VertexOut VertexShaderFunction(VertexIn input)
 }
 float4 PixelShaderFunction(VertexOut input) : COLOR0
 {
-	float4 output = tex2D(ColoredTextureSampler, input.textureCoordinates); 
-	return output;
+	/*float4 output = tex2D(ColoredTextureSampler, input.textureCoordinates);
+	return output;*/
+
+	//blure
+	float4 Color;  
+	/*Color = tex2D(ColoredTextureSampler, input.textureCoordinates.xy); 
+	Color += tex2D(ColoredTextureSampler, input.textureCoordinates.xy + (0.01));   
+	Color += tex2D(ColoredTextureSampler, input.textureCoordinates.xy - (0.01)); 
+	Color = Color / 3;
+	return Color;*/
+
+	//grey scale
+	Color = tex2D(ColoredTextureSampler, input.textureCoordinates.xy);  
+	return dot(Color, float3(0.3, 0.59, 0.11));
+
+
 }
 technique Textured
 {
