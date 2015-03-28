@@ -22,6 +22,8 @@ namespace FilodendronGame
         Texture2D boxTexture;
         Texture2D avatarTexture; // ##########czy textury trzymac w modelmanager czy w klasach poszczegolnych modeli?
 
+        Effect CustomShader;
+
         public Filodendron avatar;
         public Matrix World = Matrix.Identity; // for boxes
 
@@ -49,6 +51,7 @@ namespace FilodendronGame
             avatar = new Filodendron(Game.Content.Load<Model>(@"models\spaceship"));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
             avatarTexture = Game.Content.Load<Texture2D>(@"textures/avatartexture");
+            CustomShader = Game.Content.Load<Effect>(@"effects/shader");
 
             base.LoadContent();
         }
@@ -106,7 +109,7 @@ namespace FilodendronGame
         /// </param>
         /// <param name="texture">Texture used for the drawn 3D model.
         /// </param>
-        void DrawModel(Model model, Matrix world, Texture2D texture, Camera camera) // for boxes
+        /*void DrawModel(Model model, Matrix world, Texture2D texture, Camera camera) // for boxes
         {
             foreach (ModelMesh mesh in model.Meshes)
             {
@@ -117,6 +120,24 @@ namespace FilodendronGame
                     be.World = world;
                     be.Texture = texture;
                     be.TextureEnabled = true;
+                }
+                mesh.Draw();
+            }
+        }*/
+        void DrawModel(Model model, Matrix world, Texture2D texture, Camera camera) // for boxes
+        {
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = CustomShader;
+                    CustomShader.CurrentTechnique = CustomShader.Techniques["Textured"];
+                    CustomShader.Parameters["xWorldViewProjection"].SetValue(
+                        world * camera.view * camera.proj);
+                    CustomShader.Parameters["xColoredTexture"].SetValue(texture); 
+                    /*CustomShader.Parameters["World"].SetValue(world);
+                    CustomShader.Parameters["View"].SetValue(camera.view);
+                    CustomShader.Parameters["Projection"].SetValue(camera.proj);*/
                 }
                 mesh.Draw();
             }
