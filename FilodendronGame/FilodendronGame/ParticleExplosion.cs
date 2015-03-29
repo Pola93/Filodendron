@@ -166,7 +166,7 @@ namespace FilodendronGame
                 for (int i = endOfDeadParticlesIndex; i < endOfLiveParticlesIndex; ++i)  
                 {
                     particleEffect.Parameters["WorldViewProjection"].SetValue(
-                        Matrix.CreateRotationY(avatar.avatarYaw + MathHelper.Pi) * world * camera.view * camera.proj);     
+                        Matrix.CreateFromYawPitchRoll(avatar.avatarYaw + MathHelper.Pi, 0,0) * world * camera.view * camera.proj);     
                     particleEffect.Parameters["particleColor"].SetValue(vertexColorArray[i].ToVector4());
 
                     // Draw particles   
