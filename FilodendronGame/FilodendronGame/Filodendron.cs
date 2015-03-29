@@ -17,9 +17,10 @@ namespace FilodendronGame
         public float avatarYaw;
 
         public MouseState prevMouseState;
+        public Effect CustomShader;
 
-        public Filodendron(Model m)
-            : base(m)
+        public Filodendron(Model m, Matrix world)
+            : base(m, world)
         {
             
         }
@@ -79,6 +80,22 @@ namespace FilodendronGame
                 avatarPosition.X += v.X;
             }
             prevMouseState = Mouse.GetState();
+        }
+
+        public override void Draw(Model model, Matrix world, Texture2D texture, Camera camera)
+        {
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = CustomShader;
+                    CustomShader.CurrentTechnique = CustomShader.Techniques["Textured"];
+                    CustomShader.Parameters["xWorldViewProjection"].SetValue(
+                        world * camera.view * camera.proj);
+                    CustomShader.Parameters["xColoredTexture"].SetValue(texture);
+                }
+                mesh.Draw();
+            }
         }
     }
 }

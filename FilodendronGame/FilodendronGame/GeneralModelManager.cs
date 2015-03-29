@@ -18,14 +18,23 @@ namespace FilodendronGame
     public class GeneralModelManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
         // Everything with comment "for boxes" will be deleted later
-        Model box;
+        //Model box;
+        BasicModel box;
         Texture2D boxTexture;
         Texture2D avatarTexture; // ##########czy textury trzymac w modelmanager czy w klasach poszczegolnych modeli?
 
-        Effect CustomShader;
+        //Effect CustomShader;
 
         public Filodendron avatar;
         public Matrix World = Matrix.Identity; // for boxes
+
+        //for explosion
+        List<ParticleExplosion> explosions = new List<ParticleExplosion>(); 
+        ParticleExplosionSettings particleExplosionSettings = new ParticleExplosionSettings();
+        ParticleSettings particleSettings = new ParticleSettings();
+        Texture2D explosionTexture; 
+        Texture2D explosionColorsTexture; 
+        Effect explosionEffect;
 
         public GeneralModelManager(Game game)
             : base(game)
@@ -47,11 +56,22 @@ namespace FilodendronGame
 
         protected override void LoadContent()
         {
-            box = Game.Content.Load<Model>(@"models/box");
-            avatar = new Filodendron(Game.Content.Load<Model>(@"models\spaceship"));
+            //box = Game.Content.Load<Model>(@"models/box");
+            box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-150,0,270));
+
+            avatar = new Filodendron(Game.Content.Load<Model>(@"models\spaceship"), Matrix.Identity);
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
             avatarTexture = Game.Content.Load<Texture2D>(@"textures/avatartexture");
-            CustomShader = Game.Content.Load<Effect>(@"effects/shader");
+            avatar.CustomShader = Game.Content.Load<Effect>(@"effects/shader");
+
+            // Load explosion textures and effect  
+            explosionTexture = Game.Content.Load<Texture2D>(@"Textures\Particle"); 
+            explosionColorsTexture = Game.Content.Load<Texture2D>(@"Textures\ParticleColors");
+            explosionEffect = Game.Content.Load<Effect>(@"effects\particle");
+
+            // Set effect parameters that don't change per particle  
+            explosionEffect.CurrentTechnique = explosionEffect.Techniques["Technique1"];  
+            explosionEffect.Parameters["theTexture"].SetValue(explosionTexture);
 
             base.LoadContent();
         }
@@ -76,71 +96,72 @@ namespace FilodendronGame
                 avatar.prevMouseState = Mouse.GetState();
             }
 
+            // Collision checkout
+            if (box != null)
+            {
+                if (avatar.CollidesWith(box.model, box.World))
+                {
+                    // Collision! add an explosion. 
+                    explosions.Add(new ParticleExplosion(GraphicsDevice, avatar,
+                        box.World.Translation,
+                        ((Game1)Game).rnd.Next(
+                            particleExplosionSettings.minLife,
+                            particleExplosionSettings.maxLife),
+                        ((Game1)Game).rnd.Next(
+                            particleExplosionSettings.minRoundTime,
+                            particleExplosionSettings.maxRoundTime),
+                        ((Game1)Game).rnd.Next(
+                            particleExplosionSettings.minParticlesPerRound,    
+                            particleExplosionSettings.maxParticlesPerRound),   
+                        ((Game1)Game).rnd.Next(      
+                            particleExplosionSettings.minParticles,
+                            particleExplosionSettings.maxParticles),
+                            explosionColorsTexture, particleSettings, explosionEffect));
+                    // delete the box
+                    box = null;
+                }
+            }
+            // Update explosions
+            UpdateExplosions(gameTime);
+
             base.Update(gameTime);
         }
 
+        protected void UpdateExplosions(GameTime gameTime)
+        {  
+            // Loop through and update explosions  
+            for (int i = 0; i < explosions.Count; ++i)  
+            {
+                explosions[i].Update(gameTime);    
+                // If explosion is finished, remove it   
+                if (explosions[i].IsDead) 
+                {        
+                    explosions.RemoveAt(i);       
+                    --i;  
+                }  
+            } 
+        } 
+
         public override void Draw(GameTime gameTime)
         {                     
-            DrawBoxes();
+            //DrawBoxes();
             avatar.Draw(avatar.model, avatar.World, avatarTexture, ((Game1)Game).camera);
 
-            base.Draw(gameTime);
-        }
-          
+            // Loop through and draw each particle explosion
+            foreach (ParticleExplosion pe in explosions)
+            { 
+                pe.Draw(((Game1)Game).camera);
+            }
+
+            // for boxes
+            if (box != null)
+            {
+                box.Draw(box.model,
+                        box.World,
+                        boxTexture, ((Game1)Game).camera);  
+            }
                 
-        void DrawBoxes() // for boxes
-        {
-            for (int z = 0; z < 9; z++)
-            {
-                for (int x = 0; x < 9; x++)
-                {
-                    DrawModel(box,
-                        Matrix.CreateTranslation(x * 60, 0, z * 60),
-                        boxTexture, ((Game1)Game).camera);
-                }
-            }
-        } 
-         
-        /// <summary>
-        /// Draws the 3D specified model.
-        /// </summary>
-        /// <param name="model">The 3D model being drawn.</param>
-        /// <param name="world">Transformation matrix for world coords.
-        /// </param>
-        /// <param name="texture">Texture used for the drawn 3D model.
-        /// </param>
-        /*void DrawModel(Model model, Matrix world, Texture2D texture, Camera camera) // for boxes
-        {
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (BasicEffect be in mesh.Effects)
-                {
-                    be.Projection = camera.proj;
-                    be.View = camera.view;
-                    be.World = world;
-                    be.Texture = texture;
-                    be.TextureEnabled = true;
-                }
-                mesh.Draw();
-            }
-        }*/
-        void DrawModel(Model model, Matrix world, Texture2D texture, Camera camera) // for boxes
-        {
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    part.Effect = CustomShader;
-                    CustomShader.CurrentTechnique = CustomShader.Techniques["Textured"];
-                    CustomShader.Parameters["xWorldViewProjection"].SetValue(
-                        world * camera.view * camera.proj);
-                    CustomShader.Parameters["xColoredTexture"].SetValue(texture); 
-                    /*CustomShader.Parameters["World"].SetValue(world);
-                    CustomShader.Parameters["View"].SetValue(camera.view);
-                    CustomShader.Parameters["Projection"].SetValue(camera.proj);*/
-                }
-                mesh.Draw();
-            }
+            base.Draw(gameTime);
         }
     }
 }

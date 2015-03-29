@@ -18,6 +18,7 @@ namespace FilodendronGame
     {
         public GeneralModelManager modelManager { get; protected set; }
         public Camera camera { get; protected set; }
+        public Random rnd { get; protected set; }
 
         GraphicsDeviceManager graphics;
 
@@ -43,6 +44,8 @@ namespace FilodendronGame
             // Initialize Camera
             camera = new Camera(this);
             Components.Add(camera);
+
+            rnd = new Random();
 
             base.Initialize();
         }

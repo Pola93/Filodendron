@@ -21,7 +21,7 @@ namespace FilodendronGame
         public Matrix proj;
 
         // Set the direction the camera points without rotation.
-        Vector3 thirdPersonReference = new Vector3(0, 100, -100);
+        Vector3 thirdPersonReference = new Vector3(0, 200, -200);
 
         // Set field of view of the camera in radians (pi/4 is 45 degrees).
         static float viewAngle = MathHelper.PiOver4;
@@ -31,7 +31,7 @@ namespace FilodendronGame
         static float farClip = 1000.0f;
 
         public float rotationSpeed = 1f / 500f;
-        float cameraPitch = 0;
+        public float cameraPitch = 0;
 
         MouseState prevMouseState;
 

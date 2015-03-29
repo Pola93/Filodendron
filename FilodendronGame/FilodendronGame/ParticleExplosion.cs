@@ -10,6 +10,8 @@ namespace FilodendronGame
 {
     class ParticleExplosion
     {
+        Filodendron avatar;
+
         // Particle arrays and vertex buffer
         VertexPositionTexture[] verts; 
         Vector3[] vertexDirectionArray; 
@@ -51,10 +53,11 @@ namespace FilodendronGame
         }
  
         //Constructor
-        public ParticleExplosion(GraphicsDevice graphicsDevice, Vector3 position,
+        public ParticleExplosion(GraphicsDevice graphicsDevice, Filodendron avatar, Vector3 position,
             int lifeLeft, int roundTime, int numParticlesPerRound, int maxParticles,
             Texture2D particleColorsTexture, ParticleSettings particleSettings, Effect particleEffect)
         {
+            this.avatar = avatar;
             this.position = position; 
             this.lifeLeft = lifeLeft; 
             this.numParticlesPerRound = numParticlesPerRound;
@@ -161,8 +164,10 @@ namespace FilodendronGame
             if (endOfLiveParticlesIndex - endOfDeadParticlesIndex > 0) 
             {      
                 for (int i = endOfDeadParticlesIndex; i < endOfLiveParticlesIndex; ++i)  
-                {     
-                    particleEffect.Parameters["WorldViewProjection"].SetValue(camera.view * camera.proj);     
+                {
+                    particleEffect.Parameters["WorldViewProjection"].SetValue(/*Matrix.CreateRotationY(avatar.avatarYaw) 
+                        * Matrix.CreateRotationY(MathHelper.Pi)
+                        */ camera.view * camera.proj);     
                     particleEffect.Parameters["particleColor"].SetValue(vertexColorArray[i].ToVector4());
 
                     // Draw particles   
