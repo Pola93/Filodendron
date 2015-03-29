@@ -19,7 +19,7 @@ namespace FilodendronGame
         VertexBuffer particleVertexBuffer;
 
         // Position 
-        Vector3 position;
+        Matrix world;
 
         // Life
         int lifeLeft;
@@ -53,12 +53,12 @@ namespace FilodendronGame
         }
  
         //Constructor
-        public ParticleExplosion(GraphicsDevice graphicsDevice, Filodendron avatar, Vector3 position,
+        public ParticleExplosion(GraphicsDevice graphicsDevice, Filodendron avatar, Matrix world,
             int lifeLeft, int roundTime, int numParticlesPerRound, int maxParticles,
             Texture2D particleColorsTexture, ParticleSettings particleSettings, Effect particleEffect)
         {
             this.avatar = avatar;
-            this.position = position; 
+            this.world = world; 
             this.lifeLeft = lifeLeft; 
             this.numParticlesPerRound = numParticlesPerRound;
             this.maxParticles = maxParticles;
@@ -87,10 +87,10 @@ namespace FilodendronGame
                 float size = (float)rnd.NextDouble() * particleSettings.maxSize;
 
                 // Set position, direction and size of particle  
-                verts[i * 4] = new VertexPositionTexture(position, new Vector2(0, 0));  
-                verts[(i * 4) + 1] = new VertexPositionTexture(new Vector3(position.X, position.Y + size, position.Z), new Vector2(0, 1));  
-                verts[(i * 4) + 2] = new VertexPositionTexture(new Vector3(position.X + size, position.Y, position.Z), new Vector2(1, 0));  
-                verts[(i * 4) + 3] = new VertexPositionTexture(new Vector3(position.X + size, position.Y + size, position.Z), new Vector2(1, 1));
+                verts[i * 4] = new VertexPositionTexture(Vector3.Zero, new Vector2(0, 0));  
+                verts[(i * 4) + 1] = new VertexPositionTexture(new Vector3(0, size, 0), new Vector2(0, 1));  
+                verts[(i * 4) + 2] = new VertexPositionTexture(new Vector3(size, 0, 0), new Vector2(1, 0));  
+                verts[(i * 4) + 3] = new VertexPositionTexture(new Vector3(size, size, 0), new Vector2(1, 1));
 
                 // Create a random velocity/direction  
                 Vector3 direction = new Vector3((float)rnd.NextDouble() * 2 - 1, (float)rnd.NextDouble() * 2 - 1, (float)rnd.NextDouble() * 2 - 1); 
@@ -165,9 +165,8 @@ namespace FilodendronGame
             {      
                 for (int i = endOfDeadParticlesIndex; i < endOfLiveParticlesIndex; ++i)  
                 {
-                    particleEffect.Parameters["WorldViewProjection"].SetValue(/*Matrix.CreateRotationY(avatar.avatarYaw) 
-                        * Matrix.CreateRotationY(MathHelper.Pi)
-                        */ camera.view * camera.proj);     
+                    particleEffect.Parameters["WorldViewProjection"].SetValue(
+                        Matrix.CreateRotationY(avatar.avatarYaw + MathHelper.Pi) * world * camera.view * camera.proj);     
                     particleEffect.Parameters["particleColor"].SetValue(vertexColorArray[i].ToVector4());
 
                     // Draw particles   
