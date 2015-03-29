@@ -18,12 +18,9 @@ namespace FilodendronGame
     public class GeneralModelManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
         // Everything with comment "for boxes" will be deleted later
-        //Model box;
         BasicModel box;
         Texture2D boxTexture;
         Texture2D avatarTexture; // ##########czy textury trzymac w modelmanager czy w klasach poszczegolnych modeli?
-
-        //Effect CustomShader;
 
         public Filodendron avatar;
         public Matrix World = Matrix.Identity; // for boxes
@@ -56,7 +53,6 @@ namespace FilodendronGame
 
         protected override void LoadContent()
         {
-            //box = Game.Content.Load<Model>(@"models/box");
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20,0,185));
 
             avatar = new Filodendron(Game.Content.Load<Model>(@"models\spaceship"), Matrix.Identity);
