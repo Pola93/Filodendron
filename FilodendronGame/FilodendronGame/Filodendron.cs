@@ -19,6 +19,8 @@ namespace FilodendronGame
         public MouseState prevMouseState;
         public Effect CustomShader;
 
+        Vector3 viewVector; // for specular light
+
         public Filodendron(Model m, Matrix world)
             : base(m, world)
         {
@@ -84,14 +86,19 @@ namespace FilodendronGame
 
         public override void Draw(Model model, Matrix world, Texture2D texture, Camera camera)
         {
+            viewVector = Vector3.Transform(avatarPosition - camera.cameraPosition, Matrix.CreateRotationY(avatarYaw));
+            viewVector.Normalize();
             foreach (ModelMesh mesh in model.Meshes)
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = CustomShader;
-                    CustomShader.CurrentTechnique = CustomShader.Techniques["Diffuse"];
+                    CustomShader.CurrentTechnique = CustomShader.Techniques["Specular"];
                     CustomShader.Parameters["xWorldViewProjection"].SetValue(
                         world * mesh.ParentBone.Transform * camera.view * camera.proj);
+                    CustomShader.Parameters["ViewVector"].SetValue(viewVector);
+                    CustomShader.Parameters["World"].SetValue(world * mesh.ParentBone.Transform);
+
                     Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
                     CustomShader.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
                     //CustomShader.Parameters["xColoredTexture"].SetValue(texture);

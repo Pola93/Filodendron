@@ -19,6 +19,7 @@ namespace FilodendronGame
     {
         public Matrix view;
         public Matrix proj;
+        public Vector3 cameraPosition;
 
         // Set the direction the camera points without rotation.
         public Vector3 thirdPersonReference = new Vector3(0, 200, -200);
@@ -62,7 +63,7 @@ namespace FilodendronGame
         {
             // TODO: Add your update code here
 
-            UpdateCameraThirdPerson();
+            this.cameraPosition = UpdateCameraThirdPerson();
 
             base.Update(gameTime);
         }
@@ -70,7 +71,7 @@ namespace FilodendronGame
         /// <summary>
         /// Updates the camera when it's in the 3rd person state.
         /// </summary>
-        void UpdateCameraThirdPerson()
+        Vector3 UpdateCameraThirdPerson()
         {
             // Counting pitch angle to rotate
             if (Mouse.GetState().Y != prevMouseState.Y)
@@ -84,7 +85,7 @@ namespace FilodendronGame
                 Vector3.Transform(thirdPersonReference, rotationQuat);
 
             // Calculate the position the camera is looking from.
-            Vector3 cameraPosition = transformedReference + ((Game1)Game).modelManager.avatar.avatarPosition;
+            cameraPosition = transformedReference + ((Game1)Game).modelManager.avatar.avatarPosition;
             
             // Set up the view matrix and projection matrix.
             view = Matrix.CreateLookAt(cameraPosition, ((Game1)Game).modelManager.avatar.avatarPosition,
@@ -97,6 +98,8 @@ namespace FilodendronGame
                 nearClip, farClip);
 
             prevMouseState = Mouse.GetState();
+
+            return cameraPosition;
         }
     }
 }
