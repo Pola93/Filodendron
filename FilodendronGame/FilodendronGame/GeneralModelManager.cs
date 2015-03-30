@@ -54,11 +54,11 @@ namespace FilodendronGame
         protected override void LoadContent()
         {
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20,0,185));
-
-            avatar = new Filodendron(Game.Content.Load<Model>(@"models\spaceship"), Matrix.Identity);
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
+            
+            avatar = new Filodendron(Game.Content.Load<Model>(@"models\spaceship"), Matrix.Identity);
             avatarTexture = Game.Content.Load<Texture2D>(@"textures/avatartexture");
-            avatar.CustomShader = Game.Content.Load<Effect>(@"effects/shader");
+            avatar.CustomShader = Game.Content.Load<Effect>(@"effects/lightening");
 
             // Load explosion textures and effect  
             explosionTexture = Game.Content.Load<Texture2D>(@"Textures\Particle"); 

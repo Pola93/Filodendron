@@ -89,10 +89,12 @@ namespace FilodendronGame
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = CustomShader;
-                    CustomShader.CurrentTechnique = CustomShader.Techniques["Textured"];
+                    CustomShader.CurrentTechnique = CustomShader.Techniques["Diffuse"];
                     CustomShader.Parameters["xWorldViewProjection"].SetValue(
-                        world * camera.view * camera.proj);
-                    CustomShader.Parameters["xColoredTexture"].SetValue(texture);
+                        world * mesh.ParentBone.Transform * camera.view * camera.proj);
+                    Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
+                    CustomShader.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
+                    //CustomShader.Parameters["xColoredTexture"].SetValue(texture);
                 }
                 mesh.Draw();
             }
