@@ -98,10 +98,10 @@ namespace FilodendronGame
                         world * mesh.ParentBone.Transform * camera.view * camera.proj);
                     CustomShader.Parameters["ViewVector"].SetValue(viewVector);
                     CustomShader.Parameters["World"].SetValue(world * mesh.ParentBone.Transform);
+                    CustomShader.Parameters["ModelTexture"].SetValue(texture);
 
                     Matrix worldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(mesh.ParentBone.Transform * world));
                     CustomShader.Parameters["WorldInverseTranspose"].SetValue(worldInverseTransposeMatrix);
-                    //CustomShader.Parameters["xColoredTexture"].SetValue(texture);
                 }
                 mesh.Draw();
             }

@@ -14,14 +14,24 @@ float AmbientIntensity = 0.1;
 float4x4 World;
 float Shininess = 200; // Most metallic surfaces have a value between about 100 and 500
 float4 SpecularColor = float4(1, 1, 1, 1);
-float SpecularIntensity = 3;
+float SpecularIntensity = 1;
 float3 ViewVector = float3(0, 1, 0); //  indicates the direction that the camera or "eye" is looking in
+
+texture ModelTexture;
+sampler2D textureSampler = sampler_state {
+	Texture = (ModelTexture);
+	MinFilter = Linear;
+	MagFilter = Linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
 
 //************Specular***************
 struct VertexShaderSpecularInput // the same as struct for diffuse vertex shader input
 {
 	float4 Position : POSITION0;
 	float4 Normal : NORMAL0;
+	float2 TextureCoordinate : TEXCOORD0;
 };
 
 struct VertexShaderSpecularOutput
@@ -29,6 +39,7 @@ struct VertexShaderSpecularOutput
 	float4 Position : POSITION0;
 	float4 Color : COLOR0;
 	float3 Normal : TEXCOORD0;
+	float2 TextureCoordinate : TEXCOORD1;
 };
 
 //************Diffuse************
@@ -36,23 +47,27 @@ struct VertexShaderDiffuseInput
 {
 	float4 Position : POSITION0;
 	float4 Normal : NORMAL0;
+	float2 TextureCoordinate : TEXCOORD0;
 };
 
 struct VertexShaderDiffuseOutput
 {
 	float4 Position : POSITION0;
 	float4 Color : COLOR0;
+	float2 TextureCoordinate : TEXCOORD0;
 };
 
 //*************Ambient********************
 struct VertexShaderAmbientInput
 {
 	float4 Position : POSITION0;
+	float2 TextureCoordinate : TEXCOORD0;
 };
 
 struct VertexShaderAmbientOutput
 {
 	float4 Position : POSITION0;
+	float2 TextureCoordinate : TEXCOORD0;
 };
 
 //************Specular******************
@@ -67,6 +82,7 @@ VertexShaderSpecularOutput VertexShaderSpecularFunction(VertexShaderSpecularInpu
 	output.Color = saturate(DiffuseColor * DiffuseIntensity * lightIntensity);
 
 	output.Normal = normal;
+	output.TextureCoordinate = input.TextureCoordinate;
 
 	return output;
 }
@@ -81,7 +97,10 @@ float4 PixelShaderSpecularFunction(VertexShaderSpecularOutput input) : COLOR0
 	float dotProduct = dot(r, v);
 	float4 specular = SpecularIntensity * SpecularColor * max(pow(dotProduct, Shininess), 0) * length(input.Color);
 
-	return saturate(input.Color + AmbientColor * AmbientIntensity + specular);
+	float4 textureColor = tex2D(textureSampler, input.TextureCoordinate);
+	textureColor.a = 1; // set the alpha channel
+
+	return saturate(textureColor * (input.Color) + AmbientColor * AmbientIntensity + specular);
 }
 
 //*************Diffuse*******************
@@ -95,12 +114,17 @@ VertexShaderDiffuseOutput VertexShaderDiffuseFunction(VertexShaderDiffuseInput i
 	float lightIntensity = dot(normal, DiffuseLightDirection);
 	output.Color = saturate(DiffuseColor * DiffuseIntensity * lightIntensity);
 
+	output.TextureCoordinate = input.TextureCoordinate;
+
 	return output;
 }
 
 float4 PixelShaderDiffuseFunction(VertexShaderDiffuseOutput input) : COLOR0
 {
-	return saturate(input.Color + AmbientColor * AmbientIntensity);
+	float4 textureColor = tex2D(textureSampler, input.TextureCoordinate);
+	textureColor.a = 1; // set the alpha channel
+
+	return saturate(textureColor * (input.Color) + AmbientColor * AmbientIntensity);
 }
 
 //***************Ambient*******************************************
@@ -110,12 +134,17 @@ VertexShaderAmbientOutput VertexShaderAmbientFunction(VertexShaderAmbientInput i
 
 	output.Position = mul(input.Position, xWorldViewProjection);
 
+	output.TextureCoordinate = input.TextureCoordinate;
+
 	return output;
 }
 
 float4 PixelShaderAmbientFunction(VertexShaderAmbientOutput input) : COLOR0
 {
-	return AmbientColor * AmbientIntensity;
+	float4 textureColor = tex2D(textureSampler, input.TextureCoordinate);
+	textureColor.a = 1; // set the alpha channel
+
+	return textureColor + AmbientColor * AmbientIntensity;
 }
 
 //***************Techniques***************************************
