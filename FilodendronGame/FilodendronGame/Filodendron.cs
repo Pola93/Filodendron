@@ -27,7 +27,7 @@ namespace FilodendronGame
             
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             UpdateAvatarPosition();
             
@@ -84,10 +84,14 @@ namespace FilodendronGame
             prevMouseState = Mouse.GetState();
         }
 
-        public override void Draw(Model model, Matrix world, Texture2D texture, Camera camera)
+        public override void Draw(Model model, Matrix world, Texture2D texture, Camera camera, GameTime gameTime, GraphicsDeviceManager graphics)
         {
             viewVector = Vector3.Transform(avatarPosition - camera.cameraPosition, Matrix.CreateRotationY(avatarYaw));
             viewVector.Normalize();
+
+            graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
             foreach (ModelMesh mesh in model.Meshes)
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)

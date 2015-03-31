@@ -78,6 +78,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Filodendron.cs" />
     <Compile Include="GeneralModelManager.cs" />
+    <Compile Include="Ocean.cs" />
     <Compile Include="ParticleExplosion.cs" />
     <Compile Include="ParticleSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

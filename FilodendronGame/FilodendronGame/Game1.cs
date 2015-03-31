@@ -20,7 +20,8 @@ namespace FilodendronGame
         public Camera camera { get; protected set; }
         public Random rnd { get; protected set; }
 
-        GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
 
         public Game1()
         {
@@ -56,7 +57,7 @@ namespace FilodendronGame
         /// </summary>
         protected override void LoadContent()
         {
-
+            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         /// <summary>

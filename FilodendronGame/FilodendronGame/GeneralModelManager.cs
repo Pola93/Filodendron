@@ -33,6 +33,10 @@ namespace FilodendronGame
         Texture2D explosionColorsTexture; 
         Effect explosionEffect;
 
+        //for ocean
+        Ocean ocean;
+        
+        
         public GeneralModelManager(Game game)
             : base(game)
         {
@@ -69,6 +73,13 @@ namespace FilodendronGame
             explosionEffect.CurrentTechnique = explosionEffect.Techniques["Technique1"];  
             explosionEffect.Parameters["theTexture"].SetValue(explosionTexture);
 
+            //ocean
+            ocean = new Ocean(Game.Content.Load<Model>(@"models\ocean"), Matrix.Identity );
+            ocean.oceanEffect = Game.Content.Load<Effect>(@"effects\OceanShader");
+            ocean.diffuseOceanTexture = Game.Content.Load<Texture2D>(@"textures\water");
+            ocean.normalOceanTexture = Game.Content.Load<Texture2D>(@"textures\wavesbump");
+            ocean.SetupOceanShaderParameters();
+
             base.LoadContent();
         }
 
@@ -79,7 +90,8 @@ namespace FilodendronGame
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-            avatar.Update();
+            avatar.Update(gameTime);
+            ocean.Update(gameTime);
             //if the side boundry of screen reached, set the mouse on the other side
             if (Mouse.GetState().X >= Game.Window.ClientBounds.Width)
             {
@@ -139,9 +151,8 @@ namespace FilodendronGame
         } 
 
         public override void Draw(GameTime gameTime)
-        {                     
-            //DrawBoxes();
-            avatar.Draw(avatar.model, avatar.World, avatarTexture, ((Game1)Game).camera);
+        {
+            avatar.Draw(avatar.model, avatar.World, avatarTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
 
             // Loop through and draw each particle explosion
             foreach (ParticleExplosion pe in explosions)
@@ -154,8 +165,10 @@ namespace FilodendronGame
             {
                 box.Draw(box.model,
                         box.World,
-                        boxTexture, ((Game1)Game).camera);  
+                        boxTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);  
             }
+
+            ocean.Draw(ocean.model, ocean.World, ocean.diffuseOceanTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 
             base.Draw(gameTime);
         }
