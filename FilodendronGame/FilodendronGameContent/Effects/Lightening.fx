@@ -2,7 +2,7 @@ float4x4 xWorldViewProjection;
 
 //for Diffuse
 float4x4 WorldInverseTranspose;
-float3 DiffuseLightDirection = float3(0, 1, 0);
+float3 DiffuseLightDirection = normalize(float3(0, 1, 0));// normalize here to increase efficiency
 float4 DiffuseColor = float4(1, 1, 1, 1);
 float DiffuseIntensity = 0.5;
 
@@ -89,7 +89,8 @@ VertexShaderSpecularOutput VertexShaderSpecularFunction(VertexShaderSpecularInpu
 
 float4 PixelShaderSpecularFunction(VertexShaderSpecularOutput input) : COLOR0
 {
-	float3 light = normalize(DiffuseLightDirection); // inefficient to normalize here
+	//float3 light = normalize(DiffuseLightDirection); // normalized when declared up there, efficiency matter!
+	float3 light = DiffuseLightDirection;
 	float3 normal = normalize(input.Normal);
 	float3 r = normalize(2 * dot(light, normal) * normal - light); // reflection vector
 	float3 v = normalize(mul(normalize(ViewVector), World)); // view vector
