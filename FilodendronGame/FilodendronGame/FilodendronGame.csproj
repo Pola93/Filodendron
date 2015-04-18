@@ -74,10 +74,15 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\FilodendronRigidBody.cs" />
     <Compile Include="BasicModel.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Filodendron.cs" />
     <Compile Include="GeneralModelManager.cs" />
+    <Compile Include="Interfaces\Animation.cs" />
+    <Compile Include="Interfaces\Audio.cs" />
+    <Compile Include="Interfaces\Gravity.cs" />
+    <Compile Include="Interfaces\RigidBody.cs" />
     <Compile Include="Ocean.cs" />
     <Compile Include="ParticleExplosion.cs" />
     <Compile Include="ParticleSettings.cs" />

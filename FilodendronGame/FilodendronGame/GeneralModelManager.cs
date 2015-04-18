@@ -107,7 +107,7 @@ namespace FilodendronGame
             // Collision checkout
             if (box != null)
             {
-                if (avatar.CollidesWith(box.model, box.World))
+                if (avatar.rigidBody.CollidesWith(box.model, box.World))
                 {
                     // Collision! add an explosion. 
                     explosions.Add(new ParticleExplosion(GraphicsDevice, avatar,

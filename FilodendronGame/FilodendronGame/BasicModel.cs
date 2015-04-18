@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using FilodendronGame.Interfaces;
+using FilodendronGame.Abilities;
 
 namespace FilodendronGame
 {
@@ -11,6 +13,11 @@ namespace FilodendronGame
     {
         public Model model { get; protected set; }
         public Matrix World { get; protected set; }
+
+        public RigidBody rigidBody;
+        public Gravity gravity;
+        public Animation animation;
+        public Audio audio;
 
         public BasicModel(Model m, Matrix world)
         {
@@ -45,19 +52,5 @@ namespace FilodendronGame
                 mesh.Draw();
             }
         }
-        public bool CollidesWith(Model otherModel, Matrix otherWorld)
-        {  
-            // Loop through each ModelMesh in both objects and compare 
-            // all bounding spheres for collisions  
-            foreach (ModelMesh myModelMeshes in model.Meshes) 
-            {  
-                foreach (ModelMesh hisModelMeshes in otherModel.Meshes)    
-                {      
-                    if (myModelMeshes.BoundingSphere.Transform(World).Intersects(hisModelMeshes.BoundingSphere.Transform(otherWorld)))  
-                        return true;   
-                }
-            }  
-            return false; 
-        } 
     }
 }
