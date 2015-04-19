@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using SkinnedModel;
 
 
 namespace FilodendronGame
@@ -59,9 +60,18 @@ namespace FilodendronGame
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20,0,185));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
             
-            avatar = new Filodendron(Game.Content.Load<Model>(@"models\spaceship"), Matrix.Identity);
+            avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.Identity);
+            avatar.skinningData = avatar.model.Tag as SkinningData;
+            if (avatar.skinningData == null)
+                throw new InvalidOperationException
+                    ("This model does not contain a SkinningData tag.");
+
+            // Create an animation player, and start decoding an animation clip.
+            avatar.animationPlayer = new AnimationPlayer(avatar.skinningData);
+            avatar.clip = avatar.skinningData.AnimationClips["Take 001"];
             avatar.avatarTexture = Game.Content.Load<Texture2D>(@"textures/avatartexture");
             avatar.CustomShader = Game.Content.Load<Effect>(@"effects/lightening");
+            avatar.animationPlayer.StartClip(avatar.clip);
 
             // Load explosion textures and effect  
             explosionTexture = Game.Content.Load<Texture2D>(@"Textures\Particle"); 

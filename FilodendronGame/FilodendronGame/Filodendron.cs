@@ -6,11 +6,15 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using FilodendronGame.Interfaces;
 using FilodendronGame.Abilities;
+using SkinnedModel;
 
 namespace FilodendronGame
 {
     public class Filodendron : BasicModel
     {
+        public AnimationPlayer animationPlayer;
+        public SkinningData skinningData;
+        public AnimationClip clip;
         public Texture2D avatarTexture;
         public Vector3 avatarPosition = new Vector3(0, 0, -50);
         public float rotationSpeed = 1f / 500f;
@@ -32,6 +36,7 @@ namespace FilodendronGame
 
         public override void Update(GameTime gameTime)
         {
+            animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
             UpdateAvatarPosition();
             
             World = Matrix.CreateRotationY(avatarYaw) *
@@ -89,7 +94,7 @@ namespace FilodendronGame
 
         public override void Draw(Model model, Matrix world, Texture2D texture, Camera camera, GameTime gameTime, GraphicsDeviceManager graphics)
         {
-            viewVector = Vector3.Transform(avatarPosition - camera.cameraPosition, Matrix.CreateRotationY(avatarYaw));
+            /*viewVector = Vector3.Transform(avatarPosition - camera.cameraPosition, Matrix.CreateRotationY(avatarYaw));
             viewVector.Normalize();
 
             graphics.GraphicsDevice.BlendState = BlendState.Opaque;
@@ -112,7 +117,39 @@ namespace FilodendronGame
                 }
                 mesh.Draw();
             }
-            DrawBoundingBox(camera, graphics);
+            DrawBoundingBox(camera, graphics);*/
+
+            GraphicsDevice device = graphics.GraphicsDevice;
+
+            device.Clear(Color.CornflowerBlue);
+
+            Matrix[] bones = animationPlayer.GetSkinTransforms();
+
+            // Compute camera matrices.
+            Matrix view = camera.view;
+
+            Matrix projection = camera.proj;
+
+            // Render the skinned mesh.
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (SkinnedEffect effect in mesh.Effects)
+                {
+                    effect.SetBoneTransforms(bones);
+
+                    effect.View = view;
+                    effect.Projection = projection;
+
+                    effect.EnableDefaultLighting();
+
+                    effect.SpecularColor = new Vector3(0.25f);
+                    effect.SpecularPower = 16;
+                }
+
+                mesh.Draw();
+            }
+
+
         }
         public void DrawBoundingBox(Camera camera, GraphicsDeviceManager graphics)
         {
