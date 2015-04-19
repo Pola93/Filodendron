@@ -5,7 +5,11 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilodendronGame", "FilodendronGame\FilodendronGame\FilodendronGame.csproj", "{A7EC242D-790F-42D4-BB86-4ACCF22CCE3D}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "FilodendronGameContent", "FilodendronGame\FilodendronGameContent\FilodendronGameContent.contentproj", "{4A71A48F-0643-42F0-A767-D4F1C2695265}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilodendronGameContent", "FilodendronGame\FilodendronGameContent\FilodendronGameContent.contentproj", "{4A71A48F-0643-42F0-A767-D4F1C2695265}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinnedModel", "SkinnedModel\SkinnedModel.csproj", "{FF2A8799-59CB-4617-9256-26C37F88F5B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinnedModelPipeline", "SkinnedModelPipeline\SkinnedModelPipeline.csproj", "{7A91335D-E2E5-4D32-828A-272F36672CAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +23,14 @@ Global
 		{A7EC242D-790F-42D4-BB86-4ACCF22CCE3D}.Release|x86.Build.0 = Release|x86
 		{4A71A48F-0643-42F0-A767-D4F1C2695265}.Debug|x86.ActiveCfg = Debug|x86
 		{4A71A48F-0643-42F0-A767-D4F1C2695265}.Release|x86.ActiveCfg = Release|x86
+		{FF2A8799-59CB-4617-9256-26C37F88F5B9}.Debug|x86.ActiveCfg = Debug|x86
+		{FF2A8799-59CB-4617-9256-26C37F88F5B9}.Debug|x86.Build.0 = Debug|x86
+		{FF2A8799-59CB-4617-9256-26C37F88F5B9}.Release|x86.ActiveCfg = Release|x86
+		{FF2A8799-59CB-4617-9256-26C37F88F5B9}.Release|x86.Build.0 = Release|x86
+		{7A91335D-E2E5-4D32-828A-272F36672CAD}.Debug|x86.ActiveCfg = Debug|x86
+		{7A91335D-E2E5-4D32-828A-272F36672CAD}.Debug|x86.Build.0 = Debug|x86
+		{7A91335D-E2E5-4D32-828A-272F36672CAD}.Release|x86.ActiveCfg = Release|x86
+		{7A91335D-E2E5-4D32-828A-272F36672CAD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

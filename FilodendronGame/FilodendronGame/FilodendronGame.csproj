@@ -97,6 +97,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SkinnedModel\SkinnedModel.csproj">
+      <Project>{ff2a8799-59cb-4617-9256-26c37f88f5b9}</Project>
+      <Name>SkinnedModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FilodendronGameContent\FilodendronGameContent.contentproj">
       <Name>FilodendronGameContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
