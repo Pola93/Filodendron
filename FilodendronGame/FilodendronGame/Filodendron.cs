@@ -11,6 +11,7 @@ namespace FilodendronGame
 {
     public class Filodendron : BasicModel
     {
+        public Texture2D avatarTexture;
         public Vector3 avatarPosition = new Vector3(0, 0, -50);
         public float rotationSpeed = 1f / 500f;
         public float forwardSpeed = 200f / 60f;

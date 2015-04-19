@@ -20,7 +20,6 @@ namespace FilodendronGame
         // Everything with comment "for boxes" will be deleted later
         BasicModel box;
         Texture2D boxTexture;
-        Texture2D avatarTexture; // ##########czy textury trzymac w modelmanager czy w klasach poszczegolnych modeli?
 
         public Filodendron avatar;
         public Matrix World = Matrix.Identity; // for boxes
@@ -61,7 +60,7 @@ namespace FilodendronGame
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
             
             avatar = new Filodendron(Game.Content.Load<Model>(@"models\spaceship"), Matrix.Identity);
-            avatarTexture = Game.Content.Load<Texture2D>(@"textures/avatartexture");
+            avatar.avatarTexture = Game.Content.Load<Texture2D>(@"textures/avatartexture");
             avatar.CustomShader = Game.Content.Load<Effect>(@"effects/lightening");
 
             // Load explosion textures and effect  
@@ -152,7 +151,7 @@ namespace FilodendronGame
 
         public override void Draw(GameTime gameTime)
         {
-            avatar.Draw(avatar.model, avatar.World, avatarTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+            avatar.Draw(avatar.model, avatar.World, avatar.avatarTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
 
             // Loop through and draw each particle explosion
             foreach (ParticleExplosion pe in explosions)
