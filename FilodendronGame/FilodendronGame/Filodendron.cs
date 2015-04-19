@@ -36,8 +36,7 @@ namespace FilodendronGame
 
         public override void Update(GameTime gameTime)
         {
-            animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-            UpdateAvatarPosition();
+            UpdateAvatarPosition(gameTime);
             
             World = Matrix.CreateRotationY(avatarYaw) *
                 Matrix.CreateTranslation(avatarPosition); //potem przerzuc nizej do metody
@@ -45,7 +44,7 @@ namespace FilodendronGame
         /// <summary>
         /// Update the position and direction of the avatar.
         /// </summary>
-        void UpdateAvatarPosition()
+        void UpdateAvatarPosition(GameTime gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState currentState = GamePad.GetState(PlayerIndex.One);
@@ -62,6 +61,7 @@ namespace FilodendronGame
                 v = Vector3.Transform(v, forwardMovement);
                 avatarPosition.Z += v.Z;
                 avatarPosition.X += v.X;
+                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
             }
 
             if (keyboardState.IsKeyDown(Keys.S))
@@ -71,6 +71,7 @@ namespace FilodendronGame
                 v = Vector3.Transform(v, backwardMovement);
                 avatarPosition.Z += v.Z;
                 avatarPosition.X += v.X;
+                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
             }
             if (keyboardState.IsKeyDown(Keys.A))
             {
@@ -79,6 +80,7 @@ namespace FilodendronGame
                 v = Vector3.Transform(v, sideMovement);
                 avatarPosition.Z += v.Z;
                 avatarPosition.X += v.X;
+                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
             }
 
             if (keyboardState.IsKeyDown(Keys.D))
@@ -88,12 +90,20 @@ namespace FilodendronGame
                 v = Vector3.Transform(v, sideMovement);
                 avatarPosition.Z += v.Z;
                 avatarPosition.X += v.X;
+                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+            }
+            if (!keyboardState.IsKeyDown(Keys.W) && !keyboardState.IsKeyDown(Keys.A)
+                && !keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.S))
+            {
+                //Stop animation for player walking
+                animationPlayer.Update(new TimeSpan(0, 0, 0), true, Matrix.Identity);
             }
             prevMouseState = Mouse.GetState();
         }
 
         public override void Draw(Model model, Matrix world, Texture2D texture, Camera camera, GameTime gameTime, GraphicsDeviceManager graphics)
         {
+            //nie usuwać, jeszcze może się przydać!!!
             /*viewVector = Vector3.Transform(avatarPosition - camera.cameraPosition, Matrix.CreateRotationY(avatarYaw));
             viewVector.Normalize();
 
@@ -119,9 +129,8 @@ namespace FilodendronGame
             }
             DrawBoundingBox(camera, graphics);*/
 
-            GraphicsDevice device = graphics.GraphicsDevice;
-
-            device.Clear(Color.CornflowerBlue);
+            graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
             Matrix[] bones = animationPlayer.GetSkinTransforms();
 
@@ -137,6 +146,7 @@ namespace FilodendronGame
                 {
                     effect.SetBoneTransforms(bones);
 
+                    effect.World = world * mesh.ParentBone.Transform;
                     effect.View = view;
                     effect.Projection = projection;
 
@@ -148,7 +158,7 @@ namespace FilodendronGame
 
                 mesh.Draw();
             }
-
+            DrawBoundingBox(camera, graphics);
 
         }
         public void DrawBoundingBox(Camera camera, GraphicsDeviceManager graphics)
