@@ -62,9 +62,10 @@ namespace FilodendronGame
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-
-            this.cameraPosition = UpdateCameraThirdPerson();
-
+            if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing)
+            {
+                this.cameraPosition = UpdateCameraThirdPerson();
+            }    
             base.Update(gameTime);
         }
         
