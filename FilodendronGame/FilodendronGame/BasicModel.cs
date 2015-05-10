@@ -27,6 +27,10 @@ namespace FilodendronGame
 
         public virtual void Update(GameTime gameTime)
         {
+            if (animation != null) 
+            {
+                World=animation.UpdateAnimation(gameTime);
+            }
 
         }
 

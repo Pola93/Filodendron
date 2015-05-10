@@ -8,6 +8,6 @@ namespace FilodendronGame.Interfaces
 {
     public interface Animation
     {
-        void UpdateAnimation(GameTime gameTime);
+        Matrix UpdateAnimation(GameTime gameTime);
     }
 }

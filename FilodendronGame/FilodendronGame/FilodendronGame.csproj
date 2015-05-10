@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Abilities\FilodendronRigidBody.cs" />
     <Compile Include="BasicModel.cs" />
+    <Compile Include="BladeAnimation.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="cButton.cs" />
     <Compile Include="Filodendron.cs" />
