@@ -74,9 +74,10 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\BladeAnimation.cs" />
     <Compile Include="Abilities\FilodendronRigidBody.cs" />
+    <Compile Include="Abilities\PlatformAnimation.cs" />
     <Compile Include="BasicModel.cs" />
-    <Compile Include="BladeAnimation.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="cButton.cs" />
     <Compile Include="Filodendron.cs" />

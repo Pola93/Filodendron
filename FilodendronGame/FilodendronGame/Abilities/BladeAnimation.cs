@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FilodendronGame
+namespace FilodendronGame.Abilities
 {
     public class BladeAnimation : Animation
     {
@@ -36,7 +36,7 @@ namespace FilodendronGame
             }
         }
 
-        private void IsAnimationStatus()
+        public void IsAnimationStatus()
         {
             if (position.X >= startPosition)
             {
@@ -48,14 +48,14 @@ namespace FilodendronGame
             }
         }
 
-        private Matrix AnimationForward()
+        public Matrix AnimationForward()
         {
             position += new Vector3(1, 0, 0);
             rotation += 0.03f;
             return Matrix.CreateRotationZ(rotation) * Matrix.CreateTranslation(position);
         }
 
-        private Matrix AnimationBackward()
+        public Matrix AnimationBackward()
         {
             position -= new Vector3(1, 0, 0);
             rotation -= 0.03f;

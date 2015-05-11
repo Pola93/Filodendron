@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using SkinnedModel;
+using FilodendronGame.Abilities;
 
 
 namespace FilodendronGame
@@ -59,7 +60,8 @@ namespace FilodendronGame
         {
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20, 0, 185));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
-            box.animation = new BladeAnimation(new Vector3(20, 0, 185), 10, -100);
+           // box.animation = new BladeAnimation(new Vector3(20, 0, 185), 10, -100);
+            box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
 
             avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.Identity);
             avatar.skinningData = avatar.model.Tag as SkinningData;
@@ -104,7 +106,7 @@ namespace FilodendronGame
             {
                 // TODO: Add your update code here
                 avatar.Update(gameTime);
-                //box.Update(gameTime);
+                box.Update(gameTime);
                 ocean.Update(gameTime);
                 //if the side boundry of screen reached, set the mouse on the other side
                 if (Mouse.GetState().X >= Game.Window.ClientBounds.Width)

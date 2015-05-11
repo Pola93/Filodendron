@@ -9,5 +9,8 @@ namespace FilodendronGame.Interfaces
     public interface Animation
     {
         Matrix UpdateAnimation(GameTime gameTime);
+        void IsAnimationStatus();
+        Matrix AnimationForward();
+        Matrix AnimationBackward();
     }
 }
