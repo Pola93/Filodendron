@@ -22,7 +22,7 @@ namespace FilodendronGame
         public float backwardSpeed = -(100f / 60f);
         public float sideSpeed = 150f / 60f;
         public float avatarYaw;
-
+        public float rotation=0;
         public MouseState prevMouseState;
         public Effect CustomShader;
 
@@ -37,13 +37,13 @@ namespace FilodendronGame
         public override void Update(GameTime gameTime)
         {
             UpdateAvatarPosition(gameTime);
-            
             World = Matrix.CreateRotationY(avatarYaw) *
                 Matrix.CreateTranslation(avatarPosition); //potem przerzuc nizej do metody
         }
         /// <summary>
         /// Update the position and direction of the avatar.
         /// </summary>
+
         void UpdateAvatarPosition(GameTime gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
