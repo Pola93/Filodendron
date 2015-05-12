@@ -27,6 +27,7 @@ namespace FilodendronGame
         }
         bool down;
         public bool isClicked;
+
         public void update(MouseState mouse)
         {
             rectangle = new Rectangle((int)position.X,(int)position.Y,(int)size.X,(int)size.Y);

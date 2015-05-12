@@ -106,7 +106,7 @@ namespace FilodendronGame
             {
                 // TODO: Add your update code here
                 avatar.Update(gameTime);
-               // box.Update(gameTime);
+                //box.Update(gameTime);
                 ocean.Update(gameTime);
                 //if the side boundry of screen reached, set the mouse on the other side
                 if (Mouse.GetState().X >= Game.Window.ClientBounds.Width)

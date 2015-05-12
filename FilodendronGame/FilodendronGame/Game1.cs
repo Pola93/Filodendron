@@ -93,10 +93,10 @@ namespace FilodendronGame
             cBtnPlay.setPosition(new Vector2(350, 300));
             cBtnOptions = new cButton(Content.Load<Texture2D>(@"textures/optionsButton"), graphics.GraphicsDevice);
             cBtnOptions.setPosition(new Vector2(350, 370));
-            cBtnQuit = new cButton(Content.Load<Texture2D>(@"textures/optionsButton"), graphics.GraphicsDevice);
-            cBtnQuit.setPosition(new Vector2(350, 200));
+            cBtnQuit = new cButton(Content.Load<Texture2D>(@"textures/exitButton"), graphics.GraphicsDevice);
+            cBtnQuit.setPosition(new Vector2(350, 440));
             cBtnBack = new cButton(Content.Load<Texture2D>(@"textures/backButton"), graphics.GraphicsDevice);
-            cBtnBack.setPosition(new Vector2(100, 370));
+            cBtnBack.setPosition(new Vector2(100, 440));
             soundBackground = Content.Load<SoundEffect>("Audio\\Waves\\ZombiePlant");
             soundBackgroundInstance = soundBackground.CreateInstance();
            // soundHyperspaceActivation = Content.Load<SoundEffect>("Audio\\Waves\\hyperspace_activate");
@@ -132,7 +132,9 @@ namespace FilodendronGame
                     if (cBtnOptions.isClicked == true) currentGameState = GameState.Options;
                     cBtnOptions.update(mouse);
                     if (cBtnQuit.isClicked == true)
-                    this.Exit();
+                        this.Exit();
+                    cBtnQuit.update(mouse);
+                    
                     break;
                 case GameState.Playing:
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -201,7 +203,8 @@ namespace FilodendronGame
         }
         private void drawText()
         {
-            spriteBatch.DrawString(font, "Music volume is set at " + /*Settings.musicVolume*/ soundBackgroundInstance.Volume * 100 + "%", new Vector2(20, 45), Color.White);
+            spriteBatch.DrawString(font, "Ha³as muzyki ustawiony na " + /*Settings.musicVolume*/ (soundBackgroundInstance.Volume * 100).ToString("F0") + "%", new Vector2(100, 100), Color.Yellow);
+            spriteBatch.DrawString(font, "Aby zmniejszyæ naciœnij klawisz DOWN, aby zwiêkszyæ UP", new Vector2(100, 150), Color.Yellow);
         }
         
     }
