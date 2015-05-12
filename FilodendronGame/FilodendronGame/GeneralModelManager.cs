@@ -23,6 +23,8 @@ namespace FilodendronGame
         BasicModel box;
         Texture2D boxTexture;
 
+        BasicModel sektorMaszyn;
+
         public Filodendron avatar;
         public Matrix World = Matrix.Identity; // for boxes
 
@@ -63,7 +65,9 @@ namespace FilodendronGame
            // box.animation = new BladeAnimation(new Vector3(20, 0, 185), 10, -100);
             box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
 
-            avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.Identity);
+            sektorMaszyn = new BasicModel(Game.Content.Load<Model>(@"models\sektorMaszyn"), Matrix.Identity);
+
+            avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.CreateTranslation(0, 2000, 0));
             avatar.skinningData = avatar.model.Tag as SkinningData;
             if (avatar.skinningData == null)
                 throw new InvalidOperationException
@@ -173,6 +177,7 @@ namespace FilodendronGame
             if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing)
             {
                 avatar.Draw(avatar.model, avatar.World, avatar.avatarTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+                sektorMaszyn.Draw(sektorMaszyn.model, sektorMaszyn.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
 
                 // Loop through and draw each particle explosion
                 foreach (ParticleExplosion pe in explosions)

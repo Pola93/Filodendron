@@ -16,7 +16,7 @@ namespace FilodendronGame
         public SkinningData skinningData;
         public AnimationClip clip;
         public Texture2D avatarTexture;
-        public Vector3 avatarPosition = new Vector3(0, 0, -50);
+        public Vector3 avatarPosition /*= new Vector3(0, 1520, -50)*/;
         public float rotationSpeed = 1f / 500f;
         public float forwardSpeed = 200f / 60f;
         public float backwardSpeed = -(100f / 60f);
@@ -32,6 +32,7 @@ namespace FilodendronGame
             : base(m, world)
         {
             rigidBody = new FilodendronRigidBody(this);
+            avatarPosition = World.Translation;
         }
 
         public override void Update(GameTime gameTime)

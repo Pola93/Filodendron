@@ -50,8 +50,8 @@ namespace FilodendronGame
                     be.View = camera.view;
                     be.World = world * transforms[mesh.ParentBone.Index];
                     //be.World = world * mesh.ParentBone.Transform;  ######pytanie czym to sie rozni i o co chodzi
-                    be.Texture = texture;
-                    be.TextureEnabled = true;
+                    //be.Texture = texture;
+                    //be.TextureEnabled = true;
                 }
                 mesh.Draw();
             }
