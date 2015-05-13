@@ -86,6 +86,7 @@
     <Compile Include="Interfaces\Audio.cs" />
     <Compile Include="Interfaces\Gravity.cs" />
     <Compile Include="Interfaces\RigidBody.cs" />
+    <Compile Include="MachineSector.cs" />
     <Compile Include="Ocean.cs" />
     <Compile Include="ParticleExplosion.cs" />
     <Compile Include="ParticleSettings.cs" />

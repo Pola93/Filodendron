@@ -23,7 +23,7 @@ namespace FilodendronGame
         BasicModel box;
         Texture2D boxTexture;
         BasicModel wall;
-		BasicModel sektorMaszyn;
+		MachineSector sektorMaszyn;
         public static List<BasicModel> allModels = new List<BasicModel>();
 
         public Filodendron avatar;
@@ -65,12 +65,13 @@ namespace FilodendronGame
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
            // box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
 
-            sektorMaszyn = new BasicModel(Game.Content.Load<Model>(@"models\sektorMaszyn"), Matrix.Identity);
+            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\sektorMaszyn"), Matrix.Identity);
             wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20, 0, 265),3.0f);		
             allModels.Add(wall);
             allModels.Add(box);
             //box.animation = new BladeAnimation(new Vector3(20, 0, 185), 10, -100);
-            //box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
+            box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
+
             avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.CreateTranslation(0, 1200, 0));
             avatar.skinningData = avatar.model.Tag as SkinningData;
             if (avatar.skinningData == null)
@@ -114,11 +115,13 @@ namespace FilodendronGame
             {
                 // TODO: Add your update code here
                 avatar.Update(gameTime);
-                //box.Update(gameTime);
+                sektorMaszyn.Update(gameTime);
                 if (box != null)
                 {
                     box.Update(gameTime);
-                }                ocean.Update(gameTime);
+                }               
+                
+                ocean.Update(gameTime);
                 //if the side boundry of screen reached, set the mouse on the other side
                 if (Mouse.GetState().X >= Game.Window.ClientBounds.Width)
                 {
