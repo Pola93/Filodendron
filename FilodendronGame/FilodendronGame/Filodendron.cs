@@ -24,16 +24,22 @@ namespace FilodendronGame
         public float forwardSpeed = 200f / 60f;
         public float backwardSpeed = -(100f / 60f);
         public float sideSpeed = 150f / 60f;
+        // Falling speed (gravity)
         public float downSpeed = -1f / 2f;
+        // Jump speed
         public float jumpSpeed = 30f / 2f;
+        
         public float avatarYaw;
         public float rotation = 0;
         private float multiplier = 1f;
 
+        // Flag for jump key
         private bool spacePressed = false;
+        // Flag for gravity switch
         private bool gravityPressed = false;
-        public bool stopPosition { get; set; }
+        // Gravity flag
         public bool allowGravity = false;
+        public bool stopPosition { get; set; }
 
         Vector3 viewVector; // for specular light
 
@@ -65,12 +71,19 @@ namespace FilodendronGame
             {
                 avatarYaw -= (Mouse.GetState().X - prevMouseState.X) * rotationSpeed;
             }
+
+            // Switching gravity
             if (keyboardState.IsKeyDown(Keys.G))
             {
                 if (!gravityPressed)
                 {
                     allowGravity = !allowGravity;
                     gravityPressed = true;
+
+                    // Just in case (for now)
+                    if (!allowGravity) {
+                        downSpeed = 0;
+                    }
                 }
             }
             else
@@ -78,6 +91,7 @@ namespace FilodendronGame
                 gravityPressed = false;
             }
 
+            // Gravity itself
             if (allowGravity)
             {
                 Matrix downMovement = Matrix.CreateRotationZ(0);
@@ -88,9 +102,12 @@ namespace FilodendronGame
                 animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
             }
 
+            // Some kind of jump
+            // Loop prevented
             if (keyboardState.IsKeyDown(Keys.Space))
             {
-                if (!spacePressed)
+                // Disallow jumping while falling
+                if (!spacePressed && downSpeed == 0)
                 {
                     spacePressed = true;
                     Matrix jump = Matrix.CreateRotationZ(0);
