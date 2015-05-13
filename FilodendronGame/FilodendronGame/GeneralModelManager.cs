@@ -63,7 +63,7 @@ namespace FilodendronGame
         {
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20, 0, 185));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
-           // box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
+            // box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
 
             sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\sektorMaszyn"), Matrix.Identity);
             wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20, 0, 265),3.0f);		
@@ -72,7 +72,7 @@ namespace FilodendronGame
             //box.animation = new BladeAnimation(new Vector3(20, 0, 185), 10, -100);
             box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
 
-            avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.CreateTranslation(0, 1200, 0));
+            avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.CreateTranslation(2500, 2200, 3500));
             avatar.skinningData = avatar.model.Tag as SkinningData;
             if (avatar.skinningData == null)
                 throw new InvalidOperationException
@@ -113,7 +113,6 @@ namespace FilodendronGame
 
             if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing)
             {
-                // TODO: Add your update code here
                 avatar.Update(gameTime);
                 sektorMaszyn.Update(gameTime);
                 if (box != null)

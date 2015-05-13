@@ -17,18 +17,21 @@ namespace FilodendronGame
         public AnimationClip clip;
         public Texture2D avatarTexture;
         public Vector3 avatarPosition;
+        public MouseState prevMouseState;
+        public Effect CustomShader;
+
         public float rotationSpeed = 1f / 500f;
         public float forwardSpeed = 200f / 60f;
         public float backwardSpeed = -(100f / 60f);
         public float sideSpeed = 150f / 60f;
-        public float downSpeed = 0;
+        public float downSpeed = -1f / 2f;
         public float jumpSpeed = 30f / 2f;
         public float avatarYaw;
         public float rotation = 0;
-        private float multiplier = 10f;
+        private float multiplier = 1f;
+
         private bool spacePressed = false;
-        public MouseState prevMouseState;
-        public Effect CustomShader;
+        private bool gravityPressed = false;
         public bool stopPosition { get; set; }
         public bool allowGravity = false;
 
@@ -64,20 +67,28 @@ namespace FilodendronGame
             }
             if (keyboardState.IsKeyDown(Keys.G))
             {
-                allowGravity = !allowGravity;
+                if (!gravityPressed)
+                {
+                    allowGravity = !allowGravity;
+                    gravityPressed = true;
+                }
+            }
+            else
+            {
+                gravityPressed = false;
             }
 
             if (allowGravity)
             {
                 Matrix downMovement = Matrix.CreateRotationZ(0);
-                //downSpeed += gravity.UpdateSpeed(downSpeed);
+                downSpeed -= gravity.UpdateSpeed(gameTime);
                 Vector3 v = new Vector3(0, downSpeed * multiplier, 0);
                 v = Vector3.Transform(v, downMovement);
                 UpdatePosition(v);
                 animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
             }
 
-            if (keyboardState.IsKeyDown(Keys.Space) && downSpeed == 0)
+            if (keyboardState.IsKeyDown(Keys.Space))
             {
                 if (!spacePressed)
                 {
@@ -89,7 +100,9 @@ namespace FilodendronGame
                     animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
                 }
                 
-            } else {
+            }
+            else
+            {
                 spacePressed = false;
             }
 

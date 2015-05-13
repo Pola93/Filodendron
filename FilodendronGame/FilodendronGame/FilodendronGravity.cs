@@ -9,11 +9,11 @@ namespace FilodendronGame
 {
     public class FilodendronGravity : Gravity
     {
-        public float gravity = 1f / 200f;
+        public float gravity = 3f;
         
-        public float UpdateSpeed(float speed)
+        public float UpdateSpeed(GameTime time)
         {
-            return speed - gravity ;
+            return gravity * (float)time.ElapsedGameTime.TotalSeconds;
         }
     }
 }
