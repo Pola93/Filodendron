@@ -22,6 +22,9 @@ namespace FilodendronGame
         // Everything with comment "for boxes" will be deleted later
         BasicModel box;
         Texture2D boxTexture;
+        BasicModel wall;
+
+        public static List<BasicModel> allModels = new List<BasicModel>();
 
         public Filodendron avatar;
         public Matrix World = Matrix.Identity; // for boxes
@@ -60,8 +63,13 @@ namespace FilodendronGame
         {
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20, 0, 185));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
-           // box.animation = new BladeAnimation(new Vector3(20, 0, 185), 10, -100);
-            box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
+
+            wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20, 0, 265),3.0f);
+
+            allModels.Add(wall);
+            allModels.Add(box);
+            //box.animation = new BladeAnimation(new Vector3(20, 0, 185), 10, -100);
+            //box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
 
             avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.Identity);
             avatar.skinningData = avatar.model.Tag as SkinningData;
@@ -106,7 +114,10 @@ namespace FilodendronGame
             {
                 // TODO: Add your update code here
                 avatar.Update(gameTime);
-                box.Update(gameTime);
+                if (box != null)
+                {
+                    box.Update(gameTime);
+                }
                 ocean.Update(gameTime);
                 //if the side boundry of screen reached, set the mouse on the other side
                 if (Mouse.GetState().X >= Game.Window.ClientBounds.Width)
@@ -187,6 +198,9 @@ namespace FilodendronGame
                             box.World,
                             boxTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 }
+                wall.Draw(wall.model,
+                            wall.World,
+                            boxTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
 
                 ocean.Draw(ocean.model, ocean.World, ocean.diffuseOceanTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
 

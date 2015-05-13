@@ -25,13 +25,29 @@ namespace FilodendronGame
             this.World = world;
         }
 
+        public BasicModel(Model m, Matrix world, float scale)
+        {
+            this.model = m;
+            this.World = world;
+            World = Matrix.CreateScale(scale) * World;
+        }
+
         public virtual void Update(GameTime gameTime)
         {
             if (animation != null) 
             {
                 World=animation.UpdateAnimation(gameTime);
             }
+            if (rigidBody != null) 
+            {
+                rigidBody.UpdateRigidBody(gameTime);
+            }
 
+        }
+
+        public Matrix ScaleModel(float scale) 
+        {
+            return Matrix.CreateScale(scale) * World;
         }
 
         public virtual void Draw(Model model, Matrix world, Texture2D texture, Camera camera, GameTime gameTime, GraphicsDeviceManager graphics)

@@ -25,6 +25,7 @@ namespace FilodendronGame
         public float rotation=0;
         public MouseState prevMouseState;
         public Effect CustomShader;
+        public bool stopPosition { get; set; }
 
         Vector3 viewVector; // for specular light
 
@@ -36,6 +37,7 @@ namespace FilodendronGame
 
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
             UpdateAvatarPosition(gameTime);
             World = Matrix.CreateRotationY(avatarYaw) *
                 Matrix.CreateTranslation(avatarPosition); //potem przerzuc nizej do metody
