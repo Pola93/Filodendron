@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
-
 namespace FilodendronGame
 {
     /// <summary>
@@ -29,14 +28,27 @@ namespace FilodendronGame
             Options,
             Playing,
         };
+        public enum SoundState
+        {
+            Paused,
+            Playing,
+            Stopped,
+        }
         public GameState currentGameState = GameState.MainMenu;
         //Screen adjustment
         int screenWidth = 800, screenHeight = 600;
    
         cButton cBtnPlay;
         cButton cBtnOptions;
-        cButton cBtnExit;
+        cButton cBtnQuit;
+        cButton cBtnBack;
+        SoundEffect soundBackground;
+        SoundEffectInstance soundBackgroundInstance;
+        SoundEffect soundHyperspaceActivation;
+        SoundEffectInstance soundHyperspaceActivationInstance;
+        SpriteFont font;
         public Game1()
+
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -81,8 +93,16 @@ namespace FilodendronGame
             cBtnPlay.setPosition(new Vector2(350, 300));
             cBtnOptions = new cButton(Content.Load<Texture2D>(@"textures/optionsButton"), graphics.GraphicsDevice);
             cBtnOptions.setPosition(new Vector2(350, 370));
-            cBtnExit = new cButton(Content.Load<Texture2D>(@"textures/exitButton"), graphics.GraphicsDevice);
-            cBtnExit.setPosition(new Vector2(350, 440));
+            cBtnQuit = new cButton(Content.Load<Texture2D>(@"textures/exitButton"), graphics.GraphicsDevice);
+            cBtnQuit.setPosition(new Vector2(350, 440));
+            cBtnBack = new cButton(Content.Load<Texture2D>(@"textures/backButton"), graphics.GraphicsDevice);
+            cBtnBack.setPosition(new Vector2(100, 440));
+            soundBackground = Content.Load<SoundEffect>("Audio\\Waves\\ZombiePlant");
+            soundBackgroundInstance = soundBackground.CreateInstance();
+           // soundHyperspaceActivation = Content.Load<SoundEffect>("Audio\\Waves\\hyperspace_activate");
+            //soundHyperspaceActivationInstance = soundHyperspaceActivation.CreateInstance();
+            font = Content.Load<SpriteFont>(@"textures/myFont");
+            //Settings.musicVolume = 0.75f;
         }
         
         /// <summary>
@@ -98,23 +118,55 @@ namespace FilodendronGame
            //     this.Exit();
           //  }
 
-
+         
             MouseState mouse = Mouse.GetState();
             switch(currentGameState)
             {
                 case GameState.MainMenu:
-                    if (cBtnPlay.isClicked == true) currentGameState = GameState.Playing;
+                    
+                  //  soundBackgroundInstance.IsLooped = true;
+                    soundBackgroundInstance.Play();
+                    if (cBtnPlay.isClicked == true)
+                    currentGameState = GameState.Playing;
                     cBtnPlay.update(mouse);
                     if (cBtnOptions.isClicked == true) currentGameState = GameState.Options;
                     cBtnOptions.update(mouse);
-                    if (cBtnExit.isClicked == true)
-                    this.Exit();
+                    if (cBtnQuit.isClicked == true)
+                        this.Exit();
+                    cBtnQuit.update(mouse);
+                    
                     break;
                 case GameState.Playing:
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                         currentGameState = GameState.MainMenu;
                     break;
                 case GameState.Options:
+                    if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                        
+                
+                if (soundBackgroundInstance.Volume < 0.99f)
+                {
+                    soundBackgroundInstance.Volume += 0.01f;
+                } else
+                soundBackgroundInstance.Volume = 1.0f;
+                
+            }
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                
+                if (soundBackgroundInstance.Volume > 0.01f)
+                {
+                    soundBackgroundInstance.Volume -= 0.01f;
+                } else
+                    soundBackgroundInstance.Volume = 0.0f;
+                }
+            
+                  
+
+                    if (cBtnBack.isClicked == true) currentGameState = GameState.MainMenu;
+                    cBtnBack.update(mouse);
                     break;
             }
             base.Update(gameTime);
@@ -135,15 +187,25 @@ namespace FilodendronGame
                     spriteBatch.Draw(Content.Load<Texture2D>(@"textures/MainMenu"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
                     cBtnPlay.draw(spriteBatch);
                     cBtnOptions.draw(spriteBatch);
-                    cBtnExit.draw(spriteBatch);
+                    cBtnQuit.draw(spriteBatch);
                     break;
                 case GameState.Playing:
                     break;
                 case GameState.Options:
+                    spriteBatch.Draw(Content.Load<Texture2D>(@"textures/purebackground"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                    drawText();
+                    cBtnBack.draw(spriteBatch);
+                    
                     break;
             }
             spriteBatch.End();
             base.Draw(gameTime);
         }
+        private void drawText()
+        {
+            spriteBatch.DrawString(font, "Ha³as muzyki ustawiony na " + /*Settings.musicVolume*/ (soundBackgroundInstance.Volume * 100).ToString("F0") + "%", new Vector2(100, 100), Color.Yellow);
+            spriteBatch.DrawString(font, "Aby zmniejszyæ naciœnij klawisz DOWN, aby zwiêkszyæ UP", new Vector2(100, 150), Color.Yellow);
+        }
+        
     }
 }

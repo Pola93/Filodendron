@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Microsoft.Xna.Framework.Audio;
 namespace FilodendronGame
 {
     class cButton
@@ -14,6 +14,7 @@ namespace FilodendronGame
         Vector2 position;
         Rectangle rectangle;
         Color colour = new Color(255,255,255,255);
+        SoundEffect soundHyperspaceActivation;
 
         public Vector2 size;
 
@@ -26,6 +27,7 @@ namespace FilodendronGame
         }
         bool down;
         public bool isClicked;
+
         public void update(MouseState mouse)
         {
             rectangle = new Rectangle((int)position.X,(int)position.Y,(int)size.X,(int)size.Y);
@@ -36,7 +38,7 @@ namespace FilodendronGame
                 if (colour.A == 0) down = true;
                 if (down) colour.A += 3;
                 else colour.A -= 3;
-                if (mouse.LeftButton == ButtonState.Pressed) isClicked = true;            
+                if (mouse.LeftButton == ButtonState.Pressed) isClicked = true;
             }
             else if(colour.A <255)
             {
@@ -52,5 +54,6 @@ namespace FilodendronGame
         {
             spriteBatch.Draw(texture, rectangle, colour);
         }
+     
     }
 }

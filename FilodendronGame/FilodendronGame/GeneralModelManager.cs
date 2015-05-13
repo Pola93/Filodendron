@@ -23,7 +23,7 @@ namespace FilodendronGame
         BasicModel box;
         Texture2D boxTexture;
         BasicModel wall;
-
+		BasicModel sektorMaszyn;
         public static List<BasicModel> allModels = new List<BasicModel>();
 
         public Filodendron avatar;
@@ -63,15 +63,12 @@ namespace FilodendronGame
         {
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20, 0, 185));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
+           // box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
 
-            wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20, 0, 265),3.0f);
-
-            allModels.Add(wall);
+            sektorMaszyn = new BasicModel(Game.Content.Load<Model>(@"models\sektorMaszyn"), Matrix.Identity);            wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20, 0, 265),3.0f);			allModels.Add(wall);
             allModels.Add(box);
             //box.animation = new BladeAnimation(new Vector3(20, 0, 185), 10, -100);
             //box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
-
-            avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.Identity);
             avatar.skinningData = avatar.model.Tag as SkinningData;
             if (avatar.skinningData == null)
                 throw new InvalidOperationException
@@ -114,11 +111,11 @@ namespace FilodendronGame
             {
                 // TODO: Add your update code here
                 avatar.Update(gameTime);
+                //box.Update(gameTime);
                 if (box != null)
                 {
                     box.Update(gameTime);
-                }
-                ocean.Update(gameTime);
+                }                ocean.Update(gameTime);
                 //if the side boundry of screen reached, set the mouse on the other side
                 if (Mouse.GetState().X >= Game.Window.ClientBounds.Width)
                 {
@@ -184,6 +181,7 @@ namespace FilodendronGame
             if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing)
             {
                 avatar.Draw(avatar.model, avatar.World, avatar.avatarTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+                sektorMaszyn.Draw(sektorMaszyn.model, sektorMaszyn.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
 
                 // Loop through and draw each particle explosion
                 foreach (ParticleExplosion pe in explosions)

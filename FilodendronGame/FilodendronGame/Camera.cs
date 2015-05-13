@@ -29,7 +29,7 @@ namespace FilodendronGame
 
         // Set distance from the camera of the near and far clipping planes.
         static float nearClip = 1.0f;
-        static float farClip = 1000.0f;
+        static float farClip = 15000.0f;
 
         public float rotationSpeed = 1f / 500f;
         public float cameraPitch = 0;
