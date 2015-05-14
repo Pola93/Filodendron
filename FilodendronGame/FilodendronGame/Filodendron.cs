@@ -43,8 +43,7 @@ namespace FilodendronGame
 
         Vector3 viewVector; // for specular light
 
-        public Filodendron(Model m, Matrix world)
-            : base(m, world)
+        public Filodendron(Model m, Matrix world) : base(m, world)
         {
             rigidBody = new FilodendronRigidBody(this);
             avatarPosition = World.Translation;

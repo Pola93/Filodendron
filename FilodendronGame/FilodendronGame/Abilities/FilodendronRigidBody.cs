@@ -28,6 +28,14 @@ namespace FilodendronGame.Abilities
             }
         }
 
+
+        private float GetDistanceBetweenCenters(ModelMesh a, ModelMesh b)
+        {
+            return (float)Math.Sqrt(Math.Pow(a.BoundingSphere.Center.X - b.BoundingSphere.Center.X, 2) +
+                Math.Pow(a.BoundingSphere.Center.Y - b.BoundingSphere.Center.Y, 2) +
+                Math.Pow(a.BoundingSphere.Center.Z - b.BoundingSphere.Center.Z, 2));
+        }
+
         public bool CollidesWith(Model otherModel, Matrix otherWorld)
         {
             // Loop through each ModelMesh in both objects and compare 
@@ -38,7 +46,7 @@ namespace FilodendronGame.Abilities
                 {
                     if (myModelMeshes.BoundingSphere.Transform(filodendron.World).Intersects(hisModelMeshes.BoundingSphere.Transform(otherWorld)))
                     {
-                        distance = (hisModelMeshes.BoundingSphere.Radius + myModelMeshes.BoundingSphere.Radius) / 50f;
+                        distance = hisModelMeshes.BoundingSphere.Radius + myModelMeshes.BoundingSphere.Radius - GetDistanceBetweenCenters(myModelMeshes, hisModelMeshes);
                         filodendron.animationPlayer.Update(new TimeSpan(0, 0, 0), true, Matrix.Identity);
                         return true;
                     }
@@ -49,18 +57,14 @@ namespace FilodendronGame.Abilities
 
         public void StopPosition(BasicModel otherModel)
         {
-            if (filodendron.avatarPosition.X < 0) filodendron.avatarPosition.X -= distance;
-            if (filodendron.avatarPosition.X > 0) filodendron.avatarPosition.X += distance;
-            
+            if (filodendron.avatarPosition.X != 0) filodendron.avatarPosition.X += Math.Sign(filodendron.avatarPosition.X) * distance;
+            if (filodendron.avatarPosition.Z != 0) filodendron.avatarPosition.Z += Math.Sign(filodendron.avatarPosition.Z) * distance;
+
             // Position for vertical axis
-            if (filodendron.avatarPosition.Y < 0) filodendron.avatarPosition.Y -= distance;
-            if (filodendron.avatarPosition.Y > 0) filodendron.avatarPosition.Y += distance;
+            if (filodendron.avatarPosition.Y != 0) filodendron.avatarPosition.Y += Math.Sign(filodendron.avatarPosition.Y) * distance;
 
             // Stop falling
-            if (filodendron.avatarPosition.Y != 0) filodendron.downSpeed = 0;
-            
-            if (filodendron.avatarPosition.Z < 0) filodendron.avatarPosition.Z -= distance;
-            if (filodendron.avatarPosition.Z > 0) filodendron.avatarPosition.Z += distance; 
+            if (filodendron.avatarPosition.Y > 0) filodendron.downSpeed = 0;
 
             filodendron.avatarPosition= 
                 new Vector3(filodendron.avatarPosition.X + -(float)Math.Sin(distance),
