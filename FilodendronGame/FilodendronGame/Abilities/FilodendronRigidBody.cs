@@ -73,11 +73,21 @@ namespace FilodendronGame.Abilities
 
         public void StopPosition(BasicModel otherModel)
         {
-            if (filodendron.avatarPosition.X != 0) filodendron.avatarPosition.X += Math.Sign(filodendron.avatarPosition.X) * distance;
-            if (filodendron.avatarPosition.Z != 0) filodendron.avatarPosition.Z += Math.Sign(filodendron.avatarPosition.Z) * distance;
+            if (filodendron.avatarPosition.X != 0)
+            {
+                filodendron.avatarPosition.X += Math.Sign(filodendron.avatarPosition.X) * distance;
+            }
+
+            if (filodendron.avatarPosition.Z != 0)
+            {
+                filodendron.avatarPosition.Z += Math.Sign(filodendron.avatarPosition.Z) * distance;
+            }
 
             // Position for vertical axis
-            if (filodendron.avatarPosition.Y != 0) filodendron.avatarPosition.Y += Math.Sign(filodendron.avatarPosition.Y) * distance;
+            if (filodendron.avatarPosition.Y != 0)
+            {
+                filodendron.avatarPosition.Y += Math.Sign(filodendron.avatarPosition.Y) * distance;
+            }
 
             // Stop falling
             if (filodendron.avatarPosition.Y > 0) filodendron.downSpeed = 0;

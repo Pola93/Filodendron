@@ -21,20 +21,20 @@ namespace FilodendronGame
         public Effect CustomShader;
 
         public float rotationSpeed = 1f / 500f;
-        public float forwardSpeed = 200f / 60f;
-        public float backwardSpeed = -(100f / 60f);
+        public float forwardSpeed = 0;//200f / 60f;
+        //public float backwardSpeed = -(100f / 60f);
         public float sideSpeed = 150f / 60f;
         // Falling speed (gravity)
-        public float downSpeed = -1f / 2f;
+        public float downSpeed = 0; //-1f / 2f;
         // Jump speed
-        public float jumpSpeed = 30f / 2f;
+        //public float jumpSpeed = 30f / 2f;
         
         public float avatarYaw;
         public float rotation = 0;
         private float multiplier = 1f;
 
         // Flag for jump key
-        private bool spacePressed = false;
+        // private bool spacePressed = false;
         // Flag for gravity switch
         private bool gravityPressed = false;
         // Gravity flag
@@ -90,72 +90,21 @@ namespace FilodendronGame
                 gravityPressed = false;
             }
 
-            // Gravity itself
-            if (allowGravity)
-            {
-                Matrix downMovement = Matrix.CreateRotationZ(0);
-                downSpeed -= gravity.UpdateSpeed(gameTime);
-                Vector3 v = new Vector3(0, downSpeed * multiplier, 0);
-                v = Vector3.Transform(v, downMovement);
-                UpdatePosition(v);
-                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-            }
+            forwardSpeed = keyboardState.IsKeyDown(Keys.W) ? 200f / 60f :
+                ((keyboardState.IsKeyDown(Keys.S)) ? -(100f / 60f) : 0);
 
-            // Some kind of jump
-            // Loop prevented
-            if (keyboardState.IsKeyDown(Keys.Space))
-            {
-                // Disallow jumping while falling
-                if (!spacePressed && downSpeed == 0)
-                {
-                    spacePressed = true;
-                    Matrix jump = Matrix.CreateRotationZ(0);
-                    Vector3 v = new Vector3(0, jumpSpeed * multiplier, 0);
-                    v = Vector3.Transform(v, jump);
-                    UpdatePosition(v);
-                    animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-                }
-                
-            }
-            else
-            {
-                spacePressed = false;
-            }
+            sideSpeed = keyboardState.IsKeyDown(Keys.A) ? 150f / 60f :
+                ((keyboardState.IsKeyDown(Keys.D)) ? -(150f / 60f) : 0);
 
-            if (keyboardState.IsKeyDown(Keys.W))
-            {
-                Matrix forwardMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(0, 0, forwardSpeed * multiplier);
-                v = Vector3.Transform(v, forwardMovement);
-                UpdatePosition(v);
-                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-            }
+            downSpeed = allowGravity ? downSpeed - gravity.UpdateSpeed(gameTime) : 
+                ((keyboardState.IsKeyDown(Keys.Space) && downSpeed == 0) ? 30f / 2f : 0);
 
-            if (keyboardState.IsKeyDown(Keys.S))
-            {
-                Matrix backwardMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(0, 0, backwardSpeed * multiplier);
-                v = Vector3.Transform(v, backwardMovement);
-                UpdatePosition(v);
-                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-            }
-            if (keyboardState.IsKeyDown(Keys.A))
-            {
-                Matrix sideMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(sideSpeed * multiplier, 0, 0);
-                v = Vector3.Transform(v, sideMovement);
-                UpdatePosition(v);
-                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-            }
+            Matrix movement = Matrix.CreateRotationY(avatarYaw);
+            Vector3 moveVector = new Vector3(sideSpeed, downSpeed, forwardSpeed);
+            moveVector = Vector3.Transform(moveVector, movement);
+            UpdatePosition(moveVector);
+            animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
 
-            if (keyboardState.IsKeyDown(Keys.D))
-            {
-                Matrix sideMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(-sideSpeed * multiplier, 0, 0);
-                v = Vector3.Transform(v, sideMovement);
-                UpdatePosition(v);
-                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-            }
             if (!keyboardState.IsKeyDown(Keys.W) && !keyboardState.IsKeyDown(Keys.A)
                 && !keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.S))
             {
