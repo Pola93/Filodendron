@@ -44,8 +44,10 @@ namespace FilodendronGame
         cButton cBtnBack;
         SoundEffect soundBackground;
         SoundEffectInstance soundBackgroundInstance;
-        SoundEffect soundHyperspaceActivation;
-        SoundEffectInstance soundHyperspaceActivationInstance;
+        // Don't like warnings
+        // If you're not using variable right now - comment it
+        // SoundEffect soundHyperspaceActivation;
+        // SoundEffectInstance soundHyperspaceActivationInstance;
         SpriteFont font;
         public Game1()
 

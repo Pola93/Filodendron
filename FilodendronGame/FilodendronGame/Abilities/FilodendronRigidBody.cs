@@ -12,6 +12,8 @@ namespace FilodendronGame.Abilities
     {
         Filodendron filodendron;
         float distance;
+        // My suggestion
+        // Vector3 t;
 
         public FilodendronRigidBody(Filodendron f)
         {
@@ -28,6 +30,15 @@ namespace FilodendronGame.Abilities
             }
         }
 
+        /*
+         * Also my suggestion
+        private Vector3 GetDistanceBetweenCenters(ModelMesh a, ModelMesh b)
+        {
+            return new Vector3((float)Math.Pow(a.BoundingSphere.Center.X - b.BoundingSphere.Center.X, 2), 
+                (float)Math.Pow(a.BoundingSphere.Center.X - b.BoundingSphere.Center.X, 2), 
+                (float)Math.Pow(a.BoundingSphere.Center.X - b.BoundingSphere.Center.X, 2));
+        }
+         */
 
         private float GetDistanceBetweenCenters(ModelMesh a, ModelMesh b)
         {
@@ -46,6 +57,11 @@ namespace FilodendronGame.Abilities
                 {
                     if (myModelMeshes.BoundingSphere.Transform(filodendron.World).Intersects(hisModelMeshes.BoundingSphere.Transform(otherWorld)))
                     {
+                        // My suggestion
+                        // t = new Vector3(hisModelMeshes.BoundingSphere.Radius + myModelMeshes.BoundingSphere.Radius,
+                        //     hisModelMeshes.BoundingSphere.Radius + myModelMeshes.BoundingSphere.Radius,
+                        //     hisModelMeshes.BoundingSphere.Radius + myModelMeshes.BoundingSphere.Radius) - test(myModelMeshes, hisModelMeshes);
+                        // End suggestion
                         distance = hisModelMeshes.BoundingSphere.Radius + myModelMeshes.BoundingSphere.Radius - GetDistanceBetweenCenters(myModelMeshes, hisModelMeshes);
                         filodendron.animationPlayer.Update(new TimeSpan(0, 0, 0), true, Matrix.Identity);
                         return true;
@@ -66,9 +82,12 @@ namespace FilodendronGame.Abilities
             // Stop falling
             if (filodendron.avatarPosition.Y > 0) filodendron.downSpeed = 0;
 
-            filodendron.avatarPosition= 
-                new Vector3(filodendron.avatarPosition.X + -(float)Math.Sin(distance),
-                    filodendron.avatarPosition.Y, filodendron.avatarPosition.Z + -(float)Math.Cos(distance));
+            // My suggestion
+            // filodendron.avatarPosition = filodendron.avatarPosition + t;
+            // end suggestion
+            filodendron.avatarPosition = 
+                 new Vector3(filodendron.avatarPosition.X + -(float)Math.Sin(distance),
+                     filodendron.avatarPosition.Y, filodendron.avatarPosition.Z + -(float)Math.Cos(distance));
             //filodendron.avatarPosition = Vector3.Reflect(filodendron.avatarPosition, new Vector3(1, 0, 0));
         }
     }

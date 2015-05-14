@@ -41,7 +41,7 @@ namespace FilodendronGame
         public bool allowGravity = false;
         public bool stopPosition { get; set; }
 
-        Vector3 viewVector; // for specular light
+        //Vector3 viewVector; // for specular light
 
         public Filodendron(Model m, Matrix world) : base(m, world)
         {
