@@ -8,6 +8,6 @@ namespace FilodendronGame.Interfaces
 {
     public interface Gravity
     {
-        void UpdateGravity(GameTime gameTime);
+        float UpdateSpeed(GameTime time);
     }
 }

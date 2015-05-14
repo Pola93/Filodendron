@@ -17,23 +17,33 @@ namespace FilodendronGame
         public AnimationClip clip;
         public Texture2D avatarTexture;
         public Vector3 avatarPosition;
-        public float rotationSpeed = 1f / 500f;
-        public float forwardSpeed = 200f / 60f;
-        public float backwardSpeed = -(100f / 60f);
-        public float sideSpeed = 150f / 60f;
-        public float avatarYaw;
-        public float rotation=0;
         public MouseState prevMouseState;
         public Effect CustomShader;
+
+        public float rotationSpeed = 1f / 500f;
+        public float forwardSpeed;
+        public float sideSpeed;
+        public float verticalSpeed = 0;
+        
+        public float avatarYaw;
+        public float rotation = 0;
+        //private float multiplier = 1f;
+
+        // Flag for jump key
+        // private bool spacePressed = false;
+        // Flag for gravity switch
+        private bool gravityPressed = false;
+        // Gravity flag
+        public bool allowGravity = false;
         public bool stopPosition { get; set; }
 
-        Vector3 viewVector; // for specular light
+        //Vector3 viewVector; // for specular light
 
-        public Filodendron(Model m, Matrix world)
-            : base(m, world)
+        public Filodendron(Model m, Matrix world) : base(m, world)
         {
             rigidBody = new FilodendronRigidBody(this);
             avatarPosition = World.Translation;
+            gravity = new FilodendronGravity();
         }
 
         public override void Update(GameTime gameTime)
@@ -57,44 +67,40 @@ namespace FilodendronGame
                 avatarYaw -= (Mouse.GetState().X - prevMouseState.X) * rotationSpeed;
             }
 
-            if (keyboardState.IsKeyDown(Keys.W))
+            // Switching gravity
+            if (keyboardState.IsKeyDown(Keys.G))
             {
-                Matrix forwardMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(0, 0, forwardSpeed);
-                v = Vector3.Transform(v, forwardMovement);
-                avatarPosition.Z += v.Z;
-                avatarPosition.X += v.X;
-                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+                if (!gravityPressed)
+                {
+                    allowGravity = !allowGravity;
+                    gravityPressed = true;
+
+                    // Just in case (for now)
+                    if (!allowGravity) {
+                        verticalSpeed = 0;
+                    }
+                }
+            }
+            else
+            {
+                gravityPressed = false;
             }
 
-            if (keyboardState.IsKeyDown(Keys.S))
-            {
-                Matrix backwardMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(0, 0, backwardSpeed);
-                v = Vector3.Transform(v, backwardMovement);
-                avatarPosition.Z += v.Z;
-                avatarPosition.X += v.X;
-                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-            }
-            if (keyboardState.IsKeyDown(Keys.A))
-            {
-                Matrix sideMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(sideSpeed, 0, 0);
-                v = Vector3.Transform(v, sideMovement);
-                avatarPosition.Z += v.Z;
-                avatarPosition.X += v.X;
-                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-            }
+            forwardSpeed = keyboardState.IsKeyDown(Keys.W) ? 200f / 60f :
+                ((keyboardState.IsKeyDown(Keys.S)) ? -(100f / 60f) : 0);
 
-            if (keyboardState.IsKeyDown(Keys.D))
-            {
-                Matrix sideMovement = Matrix.CreateRotationY(avatarYaw);
-                Vector3 v = new Vector3(-sideSpeed, 0, 0);
-                v = Vector3.Transform(v, sideMovement);
-                avatarPosition.Z += v.Z;
-                avatarPosition.X += v.X;
-                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-            }
+            sideSpeed = keyboardState.IsKeyDown(Keys.A) ? 150f / 60f :
+                ((keyboardState.IsKeyDown(Keys.D)) ? -(150f / 60f) : 0);
+
+            verticalSpeed = allowGravity ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
+                ((keyboardState.IsKeyDown(Keys.Space) && verticalSpeed == 0) ? 30f / 2f : 0);
+
+            Matrix movement = Matrix.CreateRotationY(avatarYaw);
+            Vector3 moveVector = new Vector3(sideSpeed, verticalSpeed, forwardSpeed);
+            moveVector = Vector3.Transform(moveVector, movement);
+            UpdatePosition(moveVector);
+            animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+
             if (!keyboardState.IsKeyDown(Keys.W) && !keyboardState.IsKeyDown(Keys.A)
                 && !keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.S))
             {
@@ -102,6 +108,13 @@ namespace FilodendronGame
                 animationPlayer.Update(new TimeSpan(0, 0, 0), true, Matrix.Identity);
             }
             prevMouseState = Mouse.GetState();
+        }
+
+        public void UpdatePosition(Vector3 v)
+        {
+            avatarPosition.X += v.X;
+            avatarPosition.Y += v.Y;
+            avatarPosition.Z += v.Z;
         }
 
         public override void Draw(Model model, Matrix world, Texture2D texture, Camera camera, GameTime gameTime, GraphicsDeviceManager graphics)
