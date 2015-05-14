@@ -21,17 +21,13 @@ namespace FilodendronGame
         public Effect CustomShader;
 
         public float rotationSpeed = 1f / 500f;
-        public float forwardSpeed = 0;//200f / 60f;
-        //public float backwardSpeed = -(100f / 60f);
-        public float sideSpeed = 150f / 60f;
-        // Falling speed (gravity)
-        public float downSpeed = 0; //-1f / 2f;
-        // Jump speed
-        //public float jumpSpeed = 30f / 2f;
+        public float forwardSpeed;
+        public float sideSpeed;
+        public float verticalSpeed = 0;
         
         public float avatarYaw;
         public float rotation = 0;
-        private float multiplier = 1f;
+        //private float multiplier = 1f;
 
         // Flag for jump key
         // private bool spacePressed = false;
@@ -81,7 +77,7 @@ namespace FilodendronGame
 
                     // Just in case (for now)
                     if (!allowGravity) {
-                        downSpeed = 0;
+                        verticalSpeed = 0;
                     }
                 }
             }
@@ -96,11 +92,11 @@ namespace FilodendronGame
             sideSpeed = keyboardState.IsKeyDown(Keys.A) ? 150f / 60f :
                 ((keyboardState.IsKeyDown(Keys.D)) ? -(150f / 60f) : 0);
 
-            downSpeed = allowGravity ? downSpeed - gravity.UpdateSpeed(gameTime) : 
-                ((keyboardState.IsKeyDown(Keys.Space) && downSpeed == 0) ? 30f / 2f : 0);
+            verticalSpeed = allowGravity ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
+                ((keyboardState.IsKeyDown(Keys.Space) && verticalSpeed == 0) ? 30f / 2f : 0);
 
             Matrix movement = Matrix.CreateRotationY(avatarYaw);
-            Vector3 moveVector = new Vector3(sideSpeed, downSpeed, forwardSpeed);
+            Vector3 moveVector = new Vector3(sideSpeed, verticalSpeed, forwardSpeed);
             moveVector = Vector3.Transform(moveVector, movement);
             UpdatePosition(moveVector);
             animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);

@@ -90,7 +90,7 @@ namespace FilodendronGame.Abilities
             }
 
             // Stop falling
-            if (filodendron.avatarPosition.Y > 0) filodendron.downSpeed = 0;
+            if (filodendron.avatarPosition.Y > 0) filodendron.verticalSpeed = 0;
 
             // My suggestion
             // filodendron.avatarPosition = filodendron.avatarPosition + t;
