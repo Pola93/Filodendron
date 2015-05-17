@@ -27,7 +27,7 @@ namespace FilodendronGame
         
         public float avatarYaw;
         public float rotation = 0;
-        //private float multiplier = 1f;
+        private float multiplier = 5f;
 
         // Flag for jump key
         // private bool spacePressed = false;
@@ -86,14 +86,14 @@ namespace FilodendronGame
                 gravityPressed = false;
             }
 
-            forwardSpeed = keyboardState.IsKeyDown(Keys.W) ? 200f / 60f :
-                ((keyboardState.IsKeyDown(Keys.S)) ? -(100f / 60f) : 0);
+            forwardSpeed = keyboardState.IsKeyDown(Keys.W) ? 200f / 60f * multiplier :
+                ((keyboardState.IsKeyDown(Keys.S)) ? -(100f / 60f) * multiplier : 0);
 
-            sideSpeed = keyboardState.IsKeyDown(Keys.A) ? 150f / 60f :
-                ((keyboardState.IsKeyDown(Keys.D)) ? -(150f / 60f) : 0);
+            sideSpeed = keyboardState.IsKeyDown(Keys.A) ? 150f / 60f * multiplier :
+                ((keyboardState.IsKeyDown(Keys.D)) ? -(150f / 60f) * multiplier : 0);
 
-            verticalSpeed = allowGravity ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
-                ((keyboardState.IsKeyDown(Keys.Space) && verticalSpeed == 0) ? 30f / 2f : 0);
+            verticalSpeed = (allowGravity && !this.rigidBody.DetectCollision()) ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
+                ((keyboardState.IsKeyDown(Keys.Space) && verticalSpeed == 0) ? 10f / 2f : 0);
 
             Matrix movement = Matrix.CreateRotationY(avatarYaw);
             Vector3 moveVector = new Vector3(sideSpeed, verticalSpeed, forwardSpeed);
@@ -144,7 +144,7 @@ namespace FilodendronGame
                 mesh.Draw();
             }
             DrawBoundingBox(camera, graphics);*/
-
+           
             graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 

@@ -32,6 +32,7 @@ namespace FilodendronGame
         public override void Draw(Model model, Matrix world, Texture2D texture, Camera camera, GameTime gameTime, GraphicsDeviceManager graphics)
         {
             base.Draw(model, world, texture, camera, gameTime, graphics);
+            //CreateBoundingBox(camera, graphics);
         }
     }
 }

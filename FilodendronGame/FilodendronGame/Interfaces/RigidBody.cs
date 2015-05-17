@@ -11,5 +11,6 @@ namespace FilodendronGame.Interfaces
     {
         void UpdateRigidBody(GameTime gameTime);
         bool CollidesWith(Model otherModel, Matrix otherWorld);
+        bool DetectCollision();
     }
 }
