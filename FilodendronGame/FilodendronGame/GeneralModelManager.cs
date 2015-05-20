@@ -65,10 +65,10 @@ namespace FilodendronGame
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
             box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
 
-            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokój01-02"), Matrix.Identity);
+            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj01-02"), Matrix.Identity);
             sektorMaszyn.boundingBox = true;
 
-            wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity, 1.0f);//Matrix.CreateTranslation(20, 0, 265), 33.0f);
+            wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);//Matrix.CreateTranslation(20, 0, 265), 33.0f);
             wall.boundingBox = true;
 
             allModels.Add(wall);

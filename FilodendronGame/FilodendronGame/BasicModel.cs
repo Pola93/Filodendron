@@ -23,6 +23,8 @@ namespace FilodendronGame
         public Animation animation;
         public Audio audio;
 
+        public List<String> names;
+
         public BasicModel(Model m, Matrix world)
         {
             this.model = m;
@@ -123,15 +125,16 @@ namespace FilodendronGame
 
         public void CreateBoundingBox(Camera camera, GraphicsDeviceManager manager)
         {
-            //short[] bBoxIndices = {
-            //    0, 1, 1, 2, 2, 3, 3, 0, // Front edges
-            //    4, 5, 5, 6, 6, 7, 7, 4, // Back edges
-            //    0, 4, 1, 5, 2, 6, 3, 7 // Side edges connecting front and back
-            //};
+            short[] bBoxIndices = {
+                0, 1, 1, 2, 2, 3, 3, 0, // Front edges
+                4, 5, 5, 6, 6, 7, 7, 4, // Back edges
+                0, 4, 1, 5, 2, 6, 3, 7 // Side edges connecting front and back
+            };
 
             if (boundingBoxes == null)
             {
                 boundingBoxes = new List<BoundingBox>();
+                names = new List<string>();
 
                 Matrix[] transforms = new Matrix[model.Bones.Count];
                 model.CopyAbsoluteBoneTransformsTo(transforms);
@@ -142,10 +145,11 @@ namespace FilodendronGame
                     {
                         Matrix meshTransform = transforms[mesh.ParentBone.Index];
                         boundingBoxes.Add(BuildBoundingBox(mesh, meshTransform));
+                        names.Add(mesh.Name);
                     }
                 }
             }
-            
+
             //foreach (BoundingBox box in boundingBoxes)
             //{
             //    Vector3[] corners = box.GetCorners();

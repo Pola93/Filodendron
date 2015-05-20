@@ -23,7 +23,7 @@ namespace FilodendronGame.Abilities
             foreach(BasicModel otherModel in GeneralModelManager.allModels)
             {
                 //if (CollidesWith(otherModel.model, otherModel.World))
-                if (ColWith(otherModel))
+                if (CollidesWith(otherModel))
                 {
                     //StopPosition(otherModel);
                 }
@@ -34,9 +34,8 @@ namespace FilodendronGame.Abilities
         {
             foreach (BasicModel otherModel in GeneralModelManager.allModels)
             {
-                if (ColWith(otherModel))
+                if (CollidesWith(otherModel))
                 {
-                    Debug.WriteLine("Intersects");
                     return true;
                 }
             }
@@ -50,19 +49,21 @@ namespace FilodendronGame.Abilities
                 Math.Pow(a.BoundingSphere.Center.Z - b.BoundingSphere.Center.Z, 2));
         }
 
-        public bool ColWith(BasicModel model)
+        public bool CollidesWith(BasicModel model)
         {
             if (model.boundingBoxes != null)
             {
                 foreach (ModelMesh a in filodendron.model.Meshes)
                 {
+                    int i = 0;
                     foreach (BoundingBox b in model.boundingBoxes)
                     {
-                        //if (a.BoundingSphere.Transform(filodendron.World).Intersects(b))
                         if(intersectsWith(b, a.BoundingSphere.Transform(filodendron.World)))
                         {
+                            Debug.WriteLine(model.names[i]);
                             return true;
                         }
+                        i++;
                     }
                 }
             }

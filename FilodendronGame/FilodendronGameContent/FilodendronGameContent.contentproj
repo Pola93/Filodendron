@@ -201,8 +201,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\pokój01-02.FBX">
-      <Name>pokój01-02</Name>
+    <Compile Include="Models\pokoj01-02.FBX">
+      <Name>pokoj01-02</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

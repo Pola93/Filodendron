@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using FilodendronGame.Interfaces;
 using FilodendronGame.Abilities;
 using SkinnedModel;
+using System.Diagnostics;
 
 namespace FilodendronGame
 {
@@ -93,7 +94,7 @@ namespace FilodendronGame
                 ((keyboardState.IsKeyDown(Keys.D)) ? -(150f / 60f) * multiplier : 0);
 
             verticalSpeed = (allowGravity && !this.rigidBody.DetectCollision()) ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
-                ((keyboardState.IsKeyDown(Keys.Space) && verticalSpeed == 0) ? 10f / 2f : 0);
+                ((keyboardState.IsKeyDown(Keys.Space) && (verticalSpeed > -0.0001f && verticalSpeed < 0.0001f)) ? 10f / 2f * multiplier : 0);
 
             Matrix movement = Matrix.CreateRotationY(avatarYaw);
             Vector3 moveVector = new Vector3(sideSpeed, verticalSpeed, forwardSpeed);
