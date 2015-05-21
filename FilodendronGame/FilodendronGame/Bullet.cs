@@ -11,9 +11,10 @@ namespace FilodendronGame
     public class Bullet : BasicModel
     {
         public bool visible = false;
-
         public Vector3 bulletSpeed;
         public Vector3 bulletPosition;
+
+        private Vector3 bulletShift = new Vector3(0, 45, 0);
 
         public Bullet(Model model, Matrix world) : base(model, world)
         {
@@ -34,17 +35,21 @@ namespace FilodendronGame
             bulletPosition.Y += bulletSpeed.Y;
             bulletPosition.Z += bulletSpeed.Z;
 
-            Debug.WriteLine(bulletPosition);
+            //Debug.WriteLine(bulletPosition);
         }
 
-        public void Shoot(Matrix world, Vector3 position)
+        public void Shoot(Filodendron filodendron)
         {
-            visible = true;
+            Matrix movement = Matrix.CreateRotationY(filodendron.avatarYaw + 0.8f);
+            World = filodendron.World * Matrix.CreateRotationY(filodendron.avatarYaw);
+
             bulletSpeed = new Vector3(-10, 0, 10);
-            bulletPosition = position;
-            Debug.WriteLine(position);
-            Debug.WriteLine(world);
-            this.World = world;
+            bulletSpeed = Vector3.Transform(bulletSpeed, movement);
+            bulletPosition = filodendron.avatarPosition + bulletShift;
+
+            visible = true;
+            Debug.WriteLine(filodendron.avatarPosition);
+            Debug.WriteLine(filodendron.avatarYaw);
         }
 
         public override void Draw(Model model, Matrix world, Texture2D texture, Camera camera, GameTime gameTime, GraphicsDeviceManager graphics)

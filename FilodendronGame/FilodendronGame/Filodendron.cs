@@ -112,7 +112,7 @@ namespace FilodendronGame
             sideSpeed = keyboardState.IsKeyDown(Keys.A) ? 150f / 60f * multiplier :
                 ((keyboardState.IsKeyDown(Keys.D)) ? -(150f / 60f) * multiplier : 0);
 
-            verticalSpeed = (allowGravity && !this.rigidBody.DetectCollision()) ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
+            verticalSpeed = (allowGravity && !rigidBody.DetectCollision()) ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
                 ((keyboardState.IsKeyDown(Keys.Space) && (verticalSpeed > -0.0001f && verticalSpeed < 0.0001f)) ? 10f / 2f * multiplier : 0);
 
             Matrix movement = Matrix.CreateRotationY(avatarYaw);
@@ -134,7 +134,7 @@ namespace FilodendronGame
 
         private void Shoot()
         {
-            bullet.Shoot(World * Matrix.CreateRotationY(avatarYaw), avatarPosition);
+            bullet.Shoot(this);
         }
 
         public void UpdatePosition(Vector3 move, Vector3 oldPosition)
