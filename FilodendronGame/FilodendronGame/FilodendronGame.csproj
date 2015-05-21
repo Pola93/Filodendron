@@ -78,6 +78,7 @@
     <Compile Include="Abilities\FilodendronRigidBody.cs" />
     <Compile Include="Abilities\PlatformAnimation.cs" />
     <Compile Include="BasicModel.cs" />
+    <Compile Include="Bullet.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="cButton.cs" />
     <Compile Include="Filodendron.cs" />

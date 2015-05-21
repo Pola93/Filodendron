@@ -78,6 +78,7 @@ namespace FilodendronGame
             avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.Identity);//Matrix.CreateTranslation(2500, 2200, 3500));
             avatar.skinningData = avatar.model.Tag as SkinningData;
             avatar.boundingBox = true;
+            avatar.bullet = new Bullet(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);
 
             if (avatar.skinningData == null)
                 throw new InvalidOperationException
@@ -119,6 +120,7 @@ namespace FilodendronGame
             if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing)
             {
                 avatar.Update(gameTime);
+                avatar.bullet.Update(gameTime);
                 sektorMaszyn.Update(gameTime);
                 if (box != null)
                 {
@@ -193,7 +195,7 @@ namespace FilodendronGame
             {
                 avatar.Draw(avatar.model, avatar.World, avatar.avatarTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 sektorMaszyn.Draw(sektorMaszyn.model, sektorMaszyn.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
-
+                avatar.bullet.Draw(avatar.bullet.model, avatar.bullet.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 // Loop through and draw each particle explosion
                 foreach (ParticleExplosion pe in explosions)
                 {

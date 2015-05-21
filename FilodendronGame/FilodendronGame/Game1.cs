@@ -114,61 +114,79 @@ namespace FilodendronGame
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            //  if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //  {
-            //     this.Exit();
-            //  }
+            //if (cBtnQuit.isClicked == true)
+            //{
+            //    this.Exit();
+            //}
 
 
             MouseState mouse = Mouse.GetState();
             switch (currentGameState)
             {
                 case GameState.MainMenu:
-
                     //  soundBackgroundInstance.IsLooped = true;
                     soundBackgroundInstance.Play();
+                    
                     if (cBtnPlay.isClicked == true)
+                    {
                         currentGameState = GameState.Playing;
+                    }
+                    
                     cBtnPlay.update(mouse);
-                    if (cBtnOptions.isClicked == true) currentGameState = GameState.Options;
+
+                    if (cBtnOptions.isClicked == true)
+                    {
+                        currentGameState = GameState.Options;
+                    }
+
                     cBtnOptions.update(mouse);
-                    if (cBtnQuit.isClicked == true)
-                        this.Exit();
+                    
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    {
+                       this.Exit();
+                    }
+                    
                     cBtnQuit.update(mouse);
 
                     break;
+
                 case GameState.Playing:
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    {
                         currentGameState = GameState.MainMenu;
+                    }
                     break;
+                
                 case GameState.Options:
                     if (Keyboard.GetState().IsKeyDown(Keys.Up))
                     {
-
-
                         if (soundBackgroundInstance.Volume < 0.99f)
                         {
                             soundBackgroundInstance.Volume += 0.01f;
                         }
                         else
+                        {
                             soundBackgroundInstance.Volume = 1.0f;
-
+                        }
                     }
 
                     if (Keyboard.GetState().IsKeyDown(Keys.Down))
                     {
-
                         if (soundBackgroundInstance.Volume > 0.01f)
                         {
                             soundBackgroundInstance.Volume -= 0.01f;
                         }
                         else
+                        {
                             soundBackgroundInstance.Volume = 0.0f;
+                        }
                     }
-
-
-
-                    if (cBtnBack.isClicked == true) currentGameState = GameState.MainMenu;
+                    
+                    if (cBtnBack.isClicked == true)
+                    {
+                        currentGameState = GameState.MainMenu;
+                    }
+                    
                     cBtnBack.update(mouse);
                     break;
             }
