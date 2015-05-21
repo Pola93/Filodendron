@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using FilodendronGame.Interfaces;
+using System.Diagnostics;
 
 namespace FilodendronGame.Abilities
 {
@@ -12,8 +13,6 @@ namespace FilodendronGame.Abilities
     {
         Filodendron filodendron;
         float distance;
-        // My suggestion
-        // Vector3 t;
 
         public FilodendronRigidBody(Filodendron f)
         {
@@ -23,28 +22,87 @@ namespace FilodendronGame.Abilities
         {
             foreach(BasicModel otherModel in GeneralModelManager.allModels)
             {
-                if (CollidesWith(otherModel.model, otherModel.World))
+                if (CollidesWith(otherModel))
                 {
-                    StopPosition(otherModel);
+                    // Do nothing here
                 }
             }
         }
 
-        /*
-         * Also my suggestion
-        private Vector3 GetDistanceBetweenCenters(ModelMesh a, ModelMesh b)
+        public bool DetectCollision()
         {
-            return new Vector3((float)Math.Pow(a.BoundingSphere.Center.X - b.BoundingSphere.Center.X, 2), 
-                (float)Math.Pow(a.BoundingSphere.Center.X - b.BoundingSphere.Center.X, 2), 
-                (float)Math.Pow(a.BoundingSphere.Center.X - b.BoundingSphere.Center.X, 2));
+            foreach (BasicModel otherModel in GeneralModelManager.allModels)
+            {
+                if (CollidesWith(otherModel))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
-         */
 
         private float GetDistanceBetweenCenters(ModelMesh a, ModelMesh b)
         {
             return (float)Math.Sqrt(Math.Pow(a.BoundingSphere.Center.X - b.BoundingSphere.Center.X, 2) +
                 Math.Pow(a.BoundingSphere.Center.Y - b.BoundingSphere.Center.Y, 2) +
                 Math.Pow(a.BoundingSphere.Center.Z - b.BoundingSphere.Center.Z, 2));
+        }
+
+        public bool CollidesWith(BasicModel model)
+        {
+            if (model.boundingBoxes != null)
+            {
+                foreach (ModelMesh a in filodendron.model.Meshes)
+                {
+                    foreach (BoundingBox b in model.boundingBoxes)
+                    {
+                        if(intersectsWith(b, a.BoundingSphere.Transform(filodendron.World)))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            
+            return false;
+        }
+
+        public static bool intersectsWith(BoundingBox boundingBox, BoundingSphere sphere)
+        {
+            float dmin = 0;
+
+            Vector3 center = sphere.Center;
+            Vector3 bmin = boundingBox.Min;
+            Vector3 bmax = boundingBox.Max;
+
+            if (center.X < bmin.X)
+            {
+                dmin += (float)Math.Pow(center.X - bmin.X, 2);
+            }
+            else if (center.X > bmax.X)
+            {
+                dmin += (float)Math.Pow(center.X - bmax.X, 2);
+            }
+
+            if (center.Y < bmin.Y)
+            {
+                dmin += (float)Math.Pow(center.Y - bmin.Y, 2);
+            }
+            else if (center.Y > bmax.Y)
+            {
+                dmin += (float)Math.Pow(center.Y - bmax.Y, 2);
+            }
+
+            if (center.Z < bmin.Z)
+            {
+                dmin += (float)Math.Pow(center.Z - bmin.Z, 2);
+            }
+            else if (center.Z > bmax.Z)
+            {
+                dmin += (float)Math.Pow(center.Z - bmax.Z, 2);
+            }
+
+            return dmin <= (float)Math.Pow(sphere.Radius, 2);
         }
 
         public bool CollidesWith(Model otherModel, Matrix otherWorld)

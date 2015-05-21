@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using FilodendronGame.Interfaces;
 using FilodendronGame.Abilities;
 using SkinnedModel;
+using System.Diagnostics;
 
 namespace FilodendronGame
 {
@@ -16,7 +17,12 @@ namespace FilodendronGame
         public SkinningData skinningData;
         public AnimationClip clip;
         public Texture2D avatarTexture;
+
+        public Vector3 avatarOldPosition;
         public Vector3 avatarPosition;
+        public Vector3 avatarSpeed;
+        public Bullet bullet;
+
         public MouseState prevMouseState;
         public Effect CustomShader;
 
@@ -27,12 +33,13 @@ namespace FilodendronGame
         
         public float avatarYaw;
         public float rotation = 0;
-        //private float multiplier = 1f;
+        private float multiplier = 5f;
 
         // Flag for jump key
         // private bool spacePressed = false;
         // Flag for gravity switch
         private bool gravityPressed = false;
+        private bool shootPressed = false;
         // Gravity flag
         public bool allowGravity = false;
         public bool stopPosition { get; set; }
@@ -50,8 +57,8 @@ namespace FilodendronGame
         {
             base.Update(gameTime);
             UpdateAvatarPosition(gameTime);
-            World = Matrix.CreateRotationY(avatarYaw) *
-                Matrix.CreateTranslation(avatarPosition); //potem przerzuc nizej do metody
+
+            World = Matrix.CreateRotationY(avatarYaw) * Matrix.CreateTranslation(avatarPosition); //potem przerzuc nizej do metody
         }
         /// <summary>
         /// Update the position and direction of the avatar.
@@ -65,6 +72,19 @@ namespace FilodendronGame
             if (Mouse.GetState().X != prevMouseState.X)
             {
                 avatarYaw -= (Mouse.GetState().X - prevMouseState.X) * rotationSpeed;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.E))
+            {
+                if (!shootPressed)
+                {
+                    shootPressed = true;
+                    Shoot();
+                }
+            }
+            else
+            {
+                shootPressed = false;
             }
 
             // Switching gravity
@@ -86,19 +106,21 @@ namespace FilodendronGame
                 gravityPressed = false;
             }
 
-            forwardSpeed = keyboardState.IsKeyDown(Keys.W) ? 200f / 60f :
-                ((keyboardState.IsKeyDown(Keys.S)) ? -(100f / 60f) : 0);
+            forwardSpeed = keyboardState.IsKeyDown(Keys.W) ? 200f / 60f * multiplier :
+                ((keyboardState.IsKeyDown(Keys.S)) ? -(100f / 60f) * multiplier : 0);
 
-            sideSpeed = keyboardState.IsKeyDown(Keys.A) ? 150f / 60f :
-                ((keyboardState.IsKeyDown(Keys.D)) ? -(150f / 60f) : 0);
+            sideSpeed = keyboardState.IsKeyDown(Keys.A) ? 150f / 60f * multiplier :
+                ((keyboardState.IsKeyDown(Keys.D)) ? -(150f / 60f) * multiplier : 0);
 
-            verticalSpeed = allowGravity ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
-                ((keyboardState.IsKeyDown(Keys.Space) && verticalSpeed == 0) ? 30f / 2f : 0);
+            verticalSpeed = (allowGravity && !this.rigidBody.DetectCollision()) ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
+                ((keyboardState.IsKeyDown(Keys.Space) && (verticalSpeed > -0.0001f && verticalSpeed < 0.0001f)) ? 10f / 2f * multiplier : 0);
 
             Matrix movement = Matrix.CreateRotationY(avatarYaw);
             Vector3 moveVector = new Vector3(sideSpeed, verticalSpeed, forwardSpeed);
+            Vector3 oldPosition = this.avatarPosition;
             moveVector = Vector3.Transform(moveVector, movement);
-            UpdatePosition(moveVector);
+            this.avatarSpeed = moveVector;
+            UpdatePosition(moveVector, oldPosition);
             animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
 
             if (!keyboardState.IsKeyDown(Keys.W) && !keyboardState.IsKeyDown(Keys.A)
@@ -110,11 +132,16 @@ namespace FilodendronGame
             prevMouseState = Mouse.GetState();
         }
 
-        public void UpdatePosition(Vector3 v)
+        private void Shoot()
         {
-            avatarPosition.X += v.X;
-            avatarPosition.Y += v.Y;
-            avatarPosition.Z += v.Z;
+            bullet.Shoot(World * Matrix.CreateRotationY(avatarYaw), avatarPosition);
+        }
+
+        public void UpdatePosition(Vector3 move, Vector3 oldPosition)
+        {
+            avatarPosition.X += move.X;
+            avatarPosition.Y += move.Y;
+            avatarPosition.Z += move.Z;
         }
 
         public override void Draw(Model model, Matrix world, Texture2D texture, Camera camera, GameTime gameTime, GraphicsDeviceManager graphics)
@@ -144,7 +171,7 @@ namespace FilodendronGame
                 mesh.Draw();
             }
             DrawBoundingBox(camera, graphics);*/
-
+           
             graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 

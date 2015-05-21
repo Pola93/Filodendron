@@ -37,7 +37,7 @@ namespace FilodendronGame
         public GameState currentGameState = GameState.MainMenu;
         //Screen adjustment
         int screenWidth = 800, screenHeight = 600;
-   
+
         cButton cBtnPlay;
         cButton cBtnOptions;
         cButton cBtnQuit;
@@ -50,14 +50,13 @@ namespace FilodendronGame
         // SoundEffectInstance soundHyperspaceActivationInstance;
         SpriteFont font;
         public Game1()
-
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             // full screen mode settings
-           // graphics.PreferredBackBufferWidth = 1366;    
-           // graphics.PreferredBackBufferHeight = 768; 
-           // graphics.IsFullScreen = true; 
+            // graphics.PreferredBackBufferWidth = 1366;    
+            // graphics.PreferredBackBufferHeight = 768; 
+            // graphics.IsFullScreen = true; 
 
         }
 
@@ -70,12 +69,12 @@ namespace FilodendronGame
             Components.Add(modelManager);
 
             // Initialize Camera
-             
-                camera = new Camera(this);
-                Components.Add(camera);
 
-                rnd = new Random();
-            
+            camera = new Camera(this);
+            Components.Add(camera);
+
+            rnd = new Random();
+
             base.Initialize();
         }
 
@@ -101,12 +100,12 @@ namespace FilodendronGame
             cBtnBack.setPosition(new Vector2(100, 440));
             soundBackground = Content.Load<SoundEffect>("Audio\\Waves\\ZombiePlant");
             soundBackgroundInstance = soundBackground.CreateInstance();
-           // soundHyperspaceActivation = Content.Load<SoundEffect>("Audio\\Waves\\hyperspace_activate");
+            // soundHyperspaceActivation = Content.Load<SoundEffect>("Audio\\Waves\\hyperspace_activate");
             //soundHyperspaceActivationInstance = soundHyperspaceActivation.CreateInstance();
             font = Content.Load<SpriteFont>(@"textures/myFont");
             //Settings.musicVolume = 0.75f;
         }
-        
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -115,59 +114,79 @@ namespace FilodendronGame
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-          //  if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-          //  {
-           //     this.Exit();
-          //  }
+            //if (cBtnQuit.isClicked == true)
+            //{
+            //    this.Exit();
+            //}
 
-         
+
             MouseState mouse = Mouse.GetState();
-            switch(currentGameState)
+            switch (currentGameState)
             {
                 case GameState.MainMenu:
-                    
-                  //  soundBackgroundInstance.IsLooped = true;
+                    //  soundBackgroundInstance.IsLooped = true;
                     soundBackgroundInstance.Play();
-                    if (cBtnPlay.isClicked == true)
-                    currentGameState = GameState.Playing;
-                    cBtnPlay.update(mouse);
-                    if (cBtnOptions.isClicked == true) currentGameState = GameState.Options;
-                    cBtnOptions.update(mouse);
-                    if (cBtnQuit.isClicked == true)
-                        this.Exit();
-                    cBtnQuit.update(mouse);
                     
+                    if (cBtnPlay.isClicked == true)
+                    {
+                        currentGameState = GameState.Playing;
+                    }
+                    
+                    cBtnPlay.update(mouse);
+
+                    if (cBtnOptions.isClicked == true)
+                    {
+                        currentGameState = GameState.Options;
+                    }
+
+                    cBtnOptions.update(mouse);
+                    
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    {
+                       this.Exit();
+                    }
+                    
+                    cBtnQuit.update(mouse);
+
                     break;
+
                 case GameState.Playing:
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    {
                         currentGameState = GameState.MainMenu;
+                    }
                     break;
+                
                 case GameState.Options:
                     if (Keyboard.GetState().IsKeyDown(Keys.Up))
-            {
-                        
-                
-                if (soundBackgroundInstance.Volume < 0.99f)
-                {
-                    soundBackgroundInstance.Volume += 0.01f;
-                } else
-                soundBackgroundInstance.Volume = 1.0f;
-                
-            }
+                    {
+                        if (soundBackgroundInstance.Volume < 0.99f)
+                        {
+                            soundBackgroundInstance.Volume += 0.01f;
+                        }
+                        else
+                        {
+                            soundBackgroundInstance.Volume = 1.0f;
+                        }
+                    }
 
                     if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                
-                if (soundBackgroundInstance.Volume > 0.01f)
-                {
-                    soundBackgroundInstance.Volume -= 0.01f;
-                } else
-                    soundBackgroundInstance.Volume = 0.0f;
-                }
-            
-                  
-
-                    if (cBtnBack.isClicked == true) currentGameState = GameState.MainMenu;
+                    {
+                        if (soundBackgroundInstance.Volume > 0.01f)
+                        {
+                            soundBackgroundInstance.Volume -= 0.01f;
+                        }
+                        else
+                        {
+                            soundBackgroundInstance.Volume = 0.0f;
+                        }
+                    }
+                    
+                    if (cBtnBack.isClicked == true)
+                    {
+                        currentGameState = GameState.MainMenu;
+                    }
+                    
                     cBtnBack.update(mouse);
                     break;
             }
@@ -197,7 +216,7 @@ namespace FilodendronGame
                     spriteBatch.Draw(Content.Load<Texture2D>(@"textures/purebackground"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
                     drawText();
                     cBtnBack.draw(spriteBatch);
-                    
+
                     break;
             }
             spriteBatch.End();
@@ -208,6 +227,6 @@ namespace FilodendronGame
             spriteBatch.DrawString(font, "Ha³as muzyki ustawiony na " + /*Settings.musicVolume*/ (soundBackgroundInstance.Volume * 100).ToString("F0") + "%", new Vector2(100, 100), Color.Yellow);
             spriteBatch.DrawString(font, "Aby zmniejszyæ naciœnij klawisz DOWN, aby zwiêkszyæ UP", new Vector2(100, 150), Color.Yellow);
         }
-        
+
     }
 }

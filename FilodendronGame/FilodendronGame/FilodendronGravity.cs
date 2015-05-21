@@ -9,7 +9,7 @@ namespace FilodendronGame
 {
     public class FilodendronGravity : Gravity
     {
-        public float gravity = 3f;
+        public float gravity = 9.8f;
         
         public float UpdateSpeed(GameTime time)
         {

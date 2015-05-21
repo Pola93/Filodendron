@@ -61,19 +61,25 @@ namespace FilodendronGame
 
         protected override void LoadContent()
         {
-            box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20, 0, 185));
+            box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);//Matrix.CreateTranslation(2000, 0, 185));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
-            // box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
-
-            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\sektorMaszyn"), Matrix.Identity);
-            wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(20, 0, 265),3.0f);		
-            allModels.Add(wall);
-            allModels.Add(box);
-            //box.animation = new BladeAnimation(new Vector3(20, 0, 185), 10, -100);
             box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
 
-            avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.CreateTranslation(2500, 2200, 3500));
+            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj01-02"), Matrix.Identity);
+            sektorMaszyn.boundingBox = true;
+
+            wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);//Matrix.CreateTranslation(20, 0, 265), 33.0f);
+            wall.boundingBox = true;
+
+            allModels.Add(wall);
+            allModels.Add(box);
+            allModels.Add(sektorMaszyn);
+
+            avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.Identity);//Matrix.CreateTranslation(2500, 2200, 3500));
             avatar.skinningData = avatar.model.Tag as SkinningData;
+            avatar.boundingBox = true;
+            avatar.bullet = new Bullet(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);
+
             if (avatar.skinningData == null)
                 throw new InvalidOperationException
                     ("This model does not contain a SkinningData tag.");
@@ -114,6 +120,7 @@ namespace FilodendronGame
             if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing)
             {
                 avatar.Update(gameTime);
+                avatar.bullet.Update(gameTime);
                 sektorMaszyn.Update(gameTime);
                 if (box != null)
                 {
@@ -157,6 +164,7 @@ namespace FilodendronGame
                         // delete the box
                         box = null;
                     }
+
                 }
                 // Update explosions
                 UpdateExplosions(gameTime);
@@ -187,7 +195,7 @@ namespace FilodendronGame
             {
                 avatar.Draw(avatar.model, avatar.World, avatar.avatarTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 sektorMaszyn.Draw(sektorMaszyn.model, sektorMaszyn.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
-
+                avatar.bullet.Draw(avatar.bullet.model, avatar.bullet.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 // Loop through and draw each particle explosion
                 foreach (ParticleExplosion pe in explosions)
                 {
@@ -204,7 +212,7 @@ namespace FilodendronGame
                 wall.Draw(wall.model,
                             wall.World,
                             boxTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
-
+                
                 ocean.Draw(ocean.model, ocean.World, ocean.diffuseOceanTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
 
                 base.Draw(gameTime);
