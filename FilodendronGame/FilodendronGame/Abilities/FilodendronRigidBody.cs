@@ -20,13 +20,14 @@ namespace FilodendronGame.Abilities
         }
         public void UpdateRigidBody(GameTime gameTime)
         {
-            foreach(BasicModel otherModel in GeneralModelManager.allModels)
-            {
-                if (CollidesWith(otherModel))
-                {
-                    // Do nothing here
-                }
-            }
+            //foreach(BasicModel otherModel in GeneralModelManager.allModels)
+            //{
+            //    if (CollidesWith(otherModel))
+            //    {
+            //        // Do nothing here
+            //    }
+            //}
+            CompletelyAwesomeCollisionDetection();
         }
 
         public bool DetectCollision()
@@ -48,10 +49,74 @@ namespace FilodendronGame.Abilities
                 Math.Pow(a.BoundingSphere.Center.Z - b.BoundingSphere.Center.Z, 2));
         }
 
+        public void CompletelyAwesomeCollisionDetection()
+        {
+            Vector3 newPosition = new Vector3(0, 0, 0);
+
+            foreach (BasicModel other in GeneralModelManager.allModels)
+            {
+                newPosition += MoveVector(other);
+            }
+
+            filodendron.avatarPosition.X = newPosition.X == 0 ? filodendron.avatarPosition.X : newPosition.X;
+            filodendron.avatarPosition.Y = newPosition.Y == 0 ? filodendron.avatarPosition.Y : newPosition.Y;
+            filodendron.avatarPosition.Z = newPosition.Z == 0 ? filodendron.avatarPosition.Z : newPosition.Z;
+            //Debug.WriteLine(moveVector);
+        }
+
+        public Vector3 MoveVector(BasicModel model)
+        {
+            Vector3 ret = new Vector3(0, 0, 0);
+
+            if (model.boundingBoxes != null)
+            {
+                foreach (ModelMesh a in filodendron.model.Meshes)
+                {
+                    foreach (BoundingBox b in model.boundingBoxes)
+                    {
+                        if (intersectsWith(b, a.BoundingSphere.Transform(filodendron.World)))
+                        {
+                            Vector3 temp = new Vector3(0, 0, 0);
+
+                            if (filodendron.avatarPosition.X > b.Min.X && filodendron.avatarPosition.X > b.Max.X)
+                            {
+                                temp.X = b.Max.X + a.BoundingSphere.Radius;
+                            }
+
+                            if (filodendron.avatarPosition.X < b.Min.X && filodendron.avatarPosition.X < b.Max.X)
+                            {
+                                temp.X = b.Min.X - a.BoundingSphere.Radius;
+                            }
+
+                            if (filodendron.avatarPosition.Y > b.Min.Y && filodendron.avatarPosition.Y > b.Max.Y)
+                            {
+                                temp.Y = b.Max.Y + a.BoundingSphere.Radius;
+                            }
+
+                            if (filodendron.avatarPosition.Y < b.Min.Y && filodendron.avatarPosition.Y < b.Max.Y)
+                            {
+                                temp.Y = b.Min.Y - a.BoundingSphere.Radius;
+                            }
+
+                            if (filodendron.avatarPosition.Z > b.Min.Z && filodendron.avatarPosition.Z > b.Max.Z)
+                            {
+                                temp.Z = b.Max.Z + a.BoundingSphere.Radius;
+                            }
+
+                            if (filodendron.avatarPosition.Z < b.Min.Z && filodendron.avatarPosition.Z < b.Max.Z)
+                            {
+                                temp.Z = b.Min.Z - a.BoundingSphere.Radius;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return ret;
+        }
+
         public bool CollidesWith(BasicModel model)
         {
-            Vector3 move;
-
             if (model.boundingBoxes != null)
             {
                 foreach (ModelMesh a in filodendron.model.Meshes)
