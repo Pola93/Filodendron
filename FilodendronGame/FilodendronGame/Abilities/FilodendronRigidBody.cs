@@ -50,6 +50,8 @@ namespace FilodendronGame.Abilities
 
         public bool CollidesWith(BasicModel model)
         {
+            Vector3 move;
+
             if (model.boundingBoxes != null)
             {
                 foreach (ModelMesh a in filodendron.model.Meshes)
@@ -63,6 +65,7 @@ namespace FilodendronGame.Abilities
                     }
                 }
             }
+            filodendron.allowGravity = true;
             
             return false;
         }
