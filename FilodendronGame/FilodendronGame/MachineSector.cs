@@ -23,7 +23,7 @@ namespace FilodendronGame
                 //System.Diagnostics.Debug.WriteLine(mesh.Name); //wazne odkrycie odwolanie po nazwie
                 if (mesh.Name.Equals("karton03"))
                 {
-                    mesh.ParentBone.Transform = Matrix.CreateTranslation(new Vector3(0,-50,0));
+                    //mesh.ParentBone.Transform = Matrix.CreateTranslation(new Vector3(0,-50,0));
                 }
             }
 

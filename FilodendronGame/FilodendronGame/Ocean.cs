@@ -76,7 +76,7 @@ namespace FilodendronGame
             worldOceanParameter.SetValue(
                 Matrix.CreateRotationY((float)MathHelper.ToRadians((int)270)) 
                 * Matrix.CreateRotationZ((float)MathHelper.ToRadians((int)90)) 
-                * Matrix.CreateScale(10.0f) * Matrix.CreateTranslation(0, -60, 0));
+                * Matrix.CreateScale(100.0f) * Matrix.CreateTranslation(0, -10, 0));
             ambientIntensityOceanParameter.SetValue(0.4f);
             ambientColorOceanParameter.SetValue(Color.White.ToVector4());
             diffuseColorOceanParameter.SetValue(Color.White.ToVector4());
