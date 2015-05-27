@@ -19,7 +19,6 @@ namespace FilodendronGame
         public List<BoundingBox> boundingBoxes;
 
         public RigidBody rigidBody;
-        public Gravity gravity;
         public Animation animation;
         public Audio audio;
 

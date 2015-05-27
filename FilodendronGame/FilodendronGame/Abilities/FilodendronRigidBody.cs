@@ -61,6 +61,11 @@ namespace FilodendronGame.Abilities
             filodendron.avatarPosition.X = newPosition.X == 0 ? filodendron.avatarPosition.X : newPosition.X;
             filodendron.avatarPosition.Y = newPosition.Y == 0 ? filodendron.avatarPosition.Y : newPosition.Y;
             filodendron.avatarPosition.Z = newPosition.Z == 0 ? filodendron.avatarPosition.Z : newPosition.Z;
+
+            if (newPosition.Y > 0)
+            {
+                filodendron.gravity.allowGravity = false;
+            }
             //Debug.WriteLine(moveVector);
         }
 
@@ -107,6 +112,7 @@ namespace FilodendronGame.Abilities
                             {
                                 temp.Z = b.Min.Z - a.BoundingSphere.Radius;
                             }
+                            ret += temp;
                         }
                     }
                 }
@@ -130,7 +136,7 @@ namespace FilodendronGame.Abilities
                     }
                 }
             }
-            filodendron.allowGravity = true;
+            filodendron.gravity.allowGravity = true;
             
             return false;
         }

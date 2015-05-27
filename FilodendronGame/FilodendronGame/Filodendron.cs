@@ -23,6 +23,8 @@ namespace FilodendronGame
         public Vector3 avatarSpeed;
         public Bullet bullet;
 
+        public FilodendronGravity gravity;
+
         public MouseState prevMouseState;
         public Effect CustomShader;
 
@@ -40,8 +42,6 @@ namespace FilodendronGame
         // Flag for gravity switch
         private bool gravityPressed = false;
         private bool shootPressed = false;
-        // Gravity flag
-        public bool allowGravity = false;
         public bool stopPosition { get; set; }
 
         //Vector3 viewVector; // for specular light
@@ -92,11 +92,11 @@ namespace FilodendronGame
             {
                 if (!gravityPressed)
                 {
-                    allowGravity = !allowGravity;
+                    gravity.allowGravity = !gravity.allowGravity;
                     gravityPressed = true;
 
                     // Just in case (for now)
-                    if (!allowGravity) {
+                    if (!gravity.allowGravity) {
                         verticalSpeed = 0;
                     }
                 }
@@ -112,8 +112,8 @@ namespace FilodendronGame
             sideSpeed = keyboardState.IsKeyDown(Keys.A) ? 150f / 60f * multiplier :
                 ((keyboardState.IsKeyDown(Keys.D)) ? -(150f / 60f) * multiplier : 0);
 
-            verticalSpeed = (allowGravity && !rigidBody.DetectCollision()) ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
-                ((keyboardState.IsKeyDown(Keys.Space) && (verticalSpeed > -0.0001f && verticalSpeed < 0.0001f)) ? 10f / 2f * multiplier : 0);
+            verticalSpeed = (gravity.allowGravity && !rigidBody.DetectCollision()) ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
+                ((keyboardState.IsKeyDown(Keys.Space) && (verticalSpeed > -0.0001f && verticalSpeed < 0.0001f)) ? 8f / 2f * multiplier : 0);
 
             Matrix movement = Matrix.CreateRotationY(avatarYaw);
             Vector3 moveVector = new Vector3(sideSpeed, verticalSpeed, forwardSpeed);
