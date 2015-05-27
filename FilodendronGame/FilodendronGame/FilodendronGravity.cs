@@ -7,13 +7,14 @@ using System.Text;
 
 namespace FilodendronGame
 {
-    public class FilodendronGravity : Gravity
+    public class FilodendronGravity
     {
         public float gravity = 9.8f;
+        public bool allowGravity = true;
         
         public float UpdateSpeed(GameTime time)
         {
-            return gravity * (float)time.ElapsedGameTime.TotalSeconds;
+            return (allowGravity) ? gravity * (float)time.ElapsedGameTime.TotalSeconds : 0;
         }
     }
 }
