@@ -164,6 +164,9 @@ namespace FilodendronGame
                                 explosionColorsTexture, particleSettings, explosionEffect));
                         // delete the box
                         box = null;
+                        ((Game1)Game).numberOfLifes--;
+                        ((Game1)Game).numberOfCoins++;
+
                     }
 
                 }
