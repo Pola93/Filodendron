@@ -70,7 +70,8 @@ namespace FilodendronGame.Abilities
             {
                 filodendron.gravity.allowGravity = true;
             }
-            //Debug.WriteLine(moveVector);
+
+            Debug.WriteLine(newPosition.Y);
         }
 
         public Vector3 MoveVector(BasicModel model)
@@ -99,12 +100,12 @@ namespace FilodendronGame.Abilities
 
                             if (filodendron.avatarPosition.Y > b.Min.Y && filodendron.avatarPosition.Y > b.Max.Y)
                             {
-                                temp.Y = b.Max.Y + a.BoundingSphere.Radius;
+                                temp.Y = b.Max.Y + a.BoundingSphere.Radius - 39.5f;
                             }
 
                             if (filodendron.avatarPosition.Y < b.Min.Y && filodendron.avatarPosition.Y < b.Max.Y)
                             {
-                                temp.Y = b.Min.Y - a.BoundingSphere.Radius;
+                                temp.Y = b.Min.Y - a.BoundingSphere.Radius + 39.5f;
                             }
 
                             if (filodendron.avatarPosition.Z > b.Min.Z && filodendron.avatarPosition.Z > b.Max.Z)
