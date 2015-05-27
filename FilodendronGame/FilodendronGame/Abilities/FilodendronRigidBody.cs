@@ -66,6 +66,10 @@ namespace FilodendronGame.Abilities
             {
                 filodendron.gravity.allowGravity = false;
             }
+            else
+            {
+                filodendron.gravity.allowGravity = true;
+            }
             //Debug.WriteLine(moveVector);
         }
 
