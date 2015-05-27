@@ -37,11 +37,13 @@ namespace FilodendronGame
         public GameState currentGameState = GameState.MainMenu;
         //Screen adjustment
         int screenWidth = 800, screenHeight = 600;
-
+        public int numberOfLifes = 3;
+        public int numberOfCoins = 0;
         cButton cBtnPlay;
         cButton cBtnOptions;
         cButton cBtnQuit;
         cButton cBtnBack;
+        cButton cBtnGameOver;
         SoundEffect soundBackground;
         SoundEffectInstance soundBackgroundInstance;
         // Don't like warnings
@@ -91,13 +93,16 @@ namespace FilodendronGame
             //graphics.IsFullScreen = true;
             graphics.ApplyChanges();
             cBtnPlay = new cButton(Content.Load<Texture2D>(@"textures/startButton"), graphics.GraphicsDevice);
-            cBtnPlay.setPosition(new Vector2(350, 300));
+            cBtnPlay.setPosition(new Vector2(screenWidth/2 - 100, 300));
             cBtnOptions = new cButton(Content.Load<Texture2D>(@"textures/optionsButton"), graphics.GraphicsDevice);
-            cBtnOptions.setPosition(new Vector2(350, 370));
+            cBtnOptions.setPosition(new Vector2(screenWidth / 2 - 100, 370));
             cBtnQuit = new cButton(Content.Load<Texture2D>(@"textures/exitButton"), graphics.GraphicsDevice);
-            cBtnQuit.setPosition(new Vector2(350, 440));
+            cBtnQuit.setPosition(new Vector2(screenWidth / 2 - 100, 440));
             cBtnBack = new cButton(Content.Load<Texture2D>(@"textures/backButton"), graphics.GraphicsDevice);
-            cBtnBack.setPosition(new Vector2(100, 440));
+            cBtnBack.setPosition(new Vector2(screenWidth/2 - 100, 440));
+            cBtnGameOver = new cButton(Content.Load<Texture2D>(@"textures/przegrana"), graphics.GraphicsDevice);
+            cBtnGameOver.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight / 2));
+
             soundBackground = Content.Load<SoundEffect>("Audio\\Waves\\ZombiePlant");
             soundBackgroundInstance = soundBackground.CreateInstance();
             // soundHyperspaceActivation = Content.Load<SoundEffect>("Audio\\Waves\\hyperspace_activate");
@@ -155,6 +160,20 @@ namespace FilodendronGame
                     {
                         currentGameState = GameState.MainMenu;
                     }
+                    if (Keyboard.GetState().IsKeyDown(Keys.Up)&& numberOfLifes <5)
+                    {
+                            numberOfLifes++;
+                    }
+                    if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                    {
+                        numberOfLifes = 0;
+
+                    }
+                    if(cBtnGameOver.isClicked == true)
+                    {
+                        this.Exit();
+                    }
+                    cBtnGameOver.update(mouse);
                     break;
                 
                 case GameState.Options:
@@ -199,8 +218,9 @@ namespace FilodendronGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+           
             graphics.GraphicsDevice.Clear(Color.SteelBlue);
-
+            base.Draw(gameTime);
             spriteBatch.Begin();
             switch (currentGameState)
             {
@@ -211,6 +231,18 @@ namespace FilodendronGame
                     cBtnQuit.draw(spriteBatch);
                     break;
                 case GameState.Playing:
+
+                    for (int i = 0; i <= numberOfLifes; i++)
+                    {
+                        spriteBatch.Draw(Content.Load<Texture2D>(@"textures/life_icon"), new Rectangle(screenWidth - 100*i,screenHeight- 80, 50, 50), Color.White);
+                    }
+                    if(numberOfLifes == 0)
+                    {
+                        cBtnGameOver.draw(spriteBatch);
+                    }
+                    //spriteBatch.DrawString(font, "number of lifes" + numberOfLifes, new Vector2(100, 150), Color.Yellow);
+                    spriteBatch.Draw(Content.Load<Texture2D>(@"textures/fanty"), new Rectangle(0, screenHeight - 100, 100, 80), Color.White);
+                    spriteBatch.DrawString(font, " " + numberOfCoins, new Vector2(120, screenHeight - 80), Color.Yellow);
                     break;
                 case GameState.Options:
                     spriteBatch.Draw(Content.Load<Texture2D>(@"textures/purebackground"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
@@ -220,13 +252,18 @@ namespace FilodendronGame
                     break;
             }
             spriteBatch.End();
-            base.Draw(gameTime);
+            
         }
         private void drawText()
         {
             spriteBatch.DrawString(font, "Ha³as muzyki ustawiony na " + /*Settings.musicVolume*/ (soundBackgroundInstance.Volume * 100).ToString("F0") + "%", new Vector2(100, 100), Color.Yellow);
-            spriteBatch.DrawString(font, "Aby zmniejszyæ naciœnij klawisz DOWN, aby zwiêkszyæ UP", new Vector2(100, 150), Color.Yellow);
+            spriteBatch.DrawString(font, "Aby zmniejszyæ naciœnij klawisz DOWN aby zwiêkszyæ UP", new Vector2(100, 150), Color.Yellow);
+            spriteBatch.DrawString(font, "aby zwiêkszyæ UP", new Vector2(100, 200), Color.Yellow);
         }
-
+        private void Die()
+        {
+            if (numberOfLifes > 0)
+                numberOfLifes--;
+        }
     }
 }

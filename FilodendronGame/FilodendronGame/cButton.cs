@@ -22,7 +22,7 @@ namespace FilodendronGame
             texture = newTexture;
             //ScreenWidth = 800 ScreenHeight = 600;
             //ImgWidht = 100 ImgHeight = 20;
-            size = new Vector2(graphics.Viewport.Width/8,graphics.Viewport.Height / 8);
+            size = new Vector2(graphics.Viewport.Width/4,graphics.Viewport.Height / 8);
         }
         bool down;
         public bool isClicked;
