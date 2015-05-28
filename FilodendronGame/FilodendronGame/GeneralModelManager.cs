@@ -65,7 +65,8 @@ namespace FilodendronGame
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
             box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
 
-            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj01-02"), Matrix.Identity);
+            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj1-09"), Matrix.Identity);
+            sektorMaszyn.texture = Game.Content.Load<Texture2D>(@"textures/texture");
             sektorMaszyn.boundingBox = true;
 
             wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);//Matrix.CreateTranslation(20, 0, 265), 33.0f);
@@ -197,7 +198,8 @@ namespace FilodendronGame
             if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing)
             {
                 avatar.Draw(avatar.model, avatar.World, avatar.avatarTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
-                sektorMaszyn.Draw(sektorMaszyn.model, sektorMaszyn.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+                ocean.Draw(ocean.model, ocean.World, ocean.diffuseOceanTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+                sektorMaszyn.Draw(sektorMaszyn.model, sektorMaszyn.World, sektorMaszyn.texture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 avatar.bullet.Draw(avatar.bullet.model, avatar.bullet.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 // Loop through and draw each particle explosion
                 foreach (ParticleExplosion pe in explosions)
@@ -215,8 +217,6 @@ namespace FilodendronGame
                 wall.Draw(wall.model,
                             wall.World,
                             boxTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
-                
-                ocean.Draw(ocean.model, ocean.World, ocean.diffuseOceanTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
 
                 base.Draw(gameTime);
             }

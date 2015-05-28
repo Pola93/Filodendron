@@ -106,7 +106,7 @@ namespace FilodendronGame
                 gravityPressed = false;
             }
 
-            forwardSpeed = keyboardState.IsKeyDown(Keys.W) ? 200f / 60f * multiplier :
+            forwardSpeed = keyboardState.IsKeyDown(Keys.W) ? 400f / 60f * multiplier :
                 ((keyboardState.IsKeyDown(Keys.S)) ? -(100f / 60f) * multiplier : 0);
 
             sideSpeed = keyboardState.IsKeyDown(Keys.A) ? 150f / 60f * multiplier :

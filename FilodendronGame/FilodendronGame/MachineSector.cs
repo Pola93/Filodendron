@@ -10,6 +10,7 @@ namespace FilodendronGame
 {
     class MachineSector : BasicModel
     {
+        public Texture2D texture;
 
         public MachineSector(Model m, Matrix world)
             : base(m, world)

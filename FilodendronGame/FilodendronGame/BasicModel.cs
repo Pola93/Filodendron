@@ -59,7 +59,7 @@ namespace FilodendronGame
         {
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
-            graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
             graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
             foreach (ModelMesh mesh in model.Meshes)
@@ -71,8 +71,8 @@ namespace FilodendronGame
                     be.View = camera.view;
                     be.World = world * transforms[mesh.ParentBone.Index];
                     //be.World = world * mesh.ParentBone.Transform;  ######pytanie czym to sie rozni i o co chodzi
-                    //be.Texture = texture;
-                    //be.TextureEnabled = true;
+                    be.Texture = texture;
+                    be.TextureEnabled = true;
                 }
                 mesh.Draw();
             }
