@@ -22,6 +22,7 @@ namespace FilodendronGame
         public Vector3 avatarPosition;
         public Vector3 avatarSpeed;
         public Bullet bullet;
+        public Follower slave;
 
         public FilodendronGravity gravity;
 

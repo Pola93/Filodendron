@@ -80,6 +80,9 @@ namespace FilodendronGame
             avatar.skinningData = avatar.model.Tag as SkinningData;
             avatar.boundingBox = true;
             avatar.bullet = new Bullet(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);
+            avatar.slave = new Follower(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);
+            avatar.slave.master = avatar;
+            avatar.slave.followerPosition = avatar.avatarPosition;
 
             if (avatar.skinningData == null)
                 throw new InvalidOperationException
@@ -92,6 +95,8 @@ namespace FilodendronGame
             avatar.CustomShader = Game.Content.Load<Effect>(@"effects/lightening");
             avatar.animationPlayer.StartClip(avatar.clip);
             avatar.avatarPosition = new Vector3(-4000, 40, 4000);
+            Vector3 slaveShift =  new Vector3(200, 3, 200);
+            avatar.slave.followerPosition = avatar.avatarPosition - slaveShift;
 
             // Load explosion textures and effect  
             explosionTexture = Game.Content.Load<Texture2D>(@"Textures\Particle");
@@ -123,6 +128,7 @@ namespace FilodendronGame
             {
                 avatar.Update(gameTime);
                 avatar.bullet.Update(gameTime);
+                avatar.slave.Update(gameTime);
                 sektorMaszyn.Update(gameTime);
                 if (box != null)
                 {
@@ -201,6 +207,8 @@ namespace FilodendronGame
                 ocean.Draw(ocean.model, ocean.World, ocean.diffuseOceanTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 sektorMaszyn.Draw(sektorMaszyn.model, sektorMaszyn.World, sektorMaszyn.texture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 avatar.bullet.Draw(avatar.bullet.model, avatar.bullet.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+                avatar.slave.Draw(avatar.slave.model, avatar.slave.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+                
                 // Loop through and draw each particle explosion
                 foreach (ParticleExplosion pe in explosions)
                 {
