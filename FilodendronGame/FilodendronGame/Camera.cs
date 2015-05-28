@@ -22,7 +22,7 @@ namespace FilodendronGame
         public Vector3 cameraPosition;
 
         // Set the direction the camera points without rotation.
-        public Vector3 thirdPersonReference = new Vector3(0, 200, -200);
+        public Vector3 thirdPersonReference = new Vector3(0, 400, -400);
 
         // Set field of view of the camera in radians (pi/4 is 45 degrees).
         static float viewAngle = MathHelper.PiOver4;
