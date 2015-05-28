@@ -264,6 +264,7 @@ namespace FilodendronGame
         {
             if (numberOfLifes > 0)
                 numberOfLifes--;
+            modelManager.avatar.avatarPosition = new Vector3(-4000, 40, 4000);
         }
     }
 }
