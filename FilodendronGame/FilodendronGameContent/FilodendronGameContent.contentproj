@@ -234,13 +234,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\pokoj1-08.FBX">
-      <Name>pokoj1-08</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Models\pokoj1-09.FBX">
       <Name>pokoj1-09</Name>
       <Importer>FbxImporter</Importer>
