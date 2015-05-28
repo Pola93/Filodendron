@@ -90,7 +90,7 @@ namespace FilodendronGame
             avatar.avatarTexture = Game.Content.Load<Texture2D>(@"textures/avatartexture");
             avatar.CustomShader = Game.Content.Load<Effect>(@"effects/lightening");
             avatar.animationPlayer.StartClip(avatar.clip);
-            avatar.avatarPosition.Y += 40;
+            avatar.avatarPosition = new Vector3(-4000, 40, 4000);
 
             // Load explosion textures and effect  
             explosionTexture = Game.Content.Load<Texture2D>(@"Textures\Particle");

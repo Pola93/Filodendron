@@ -113,7 +113,7 @@ namespace FilodendronGame
                 ((keyboardState.IsKeyDown(Keys.D)) ? -(150f / 60f) * multiplier : 0);
 
             verticalSpeed = (gravity.allowGravity && !rigidBody.DetectCollision()) ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
-                ((keyboardState.IsKeyDown(Keys.Space) && (verticalSpeed > -0.0001f && verticalSpeed < 0.0001f)) ? 40f / 2f * multiplier : 0);
+                ((keyboardState.IsKeyDown(Keys.Space) && (verticalSpeed > -0.0001f && verticalSpeed < 0.0001f)) ? 30f / 2f * multiplier : 0);
 
             Matrix movement = Matrix.CreateRotationY(avatarYaw);
             Vector3 moveVector = new Vector3(sideSpeed, verticalSpeed, forwardSpeed);
