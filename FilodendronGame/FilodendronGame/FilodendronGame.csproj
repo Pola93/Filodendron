@@ -83,6 +83,7 @@
     <Compile Include="cButton.cs" />
     <Compile Include="Filodendron.cs" />
     <Compile Include="FilodendronGravity.cs" />
+    <Compile Include="Follower.cs" />
     <Compile Include="GeneralModelManager.cs" />
     <Compile Include="Interfaces\Animation.cs" />
     <Compile Include="Interfaces\Audio.cs" />
