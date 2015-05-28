@@ -260,7 +260,7 @@ namespace FilodendronGame
             spriteBatch.DrawString(font, "Aby zmniejszyæ naciœnij klawisz DOWN aby zwiêkszyæ UP", new Vector2(100, 150), Color.Yellow);
             spriteBatch.DrawString(font, "aby zwiêkszyæ UP", new Vector2(100, 200), Color.Yellow);
         }
-        private void Die()
+        public void Die()
         {
             if (numberOfLifes > 0)
                 numberOfLifes--;
