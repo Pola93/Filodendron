@@ -203,49 +203,6 @@ namespace FilodendronGame
                 mesh.Draw();
             }
             DrawBoundingBox(camera, graphics);
-
-        }
-        public void DrawBoundingBox(Camera camera, GraphicsDeviceManager graphics)
-        {
-            short[] bBoxIndices = {
-                0, 1, 1, 2, 2, 3, 3, 0, // Front edges
-                4, 5, 5, 6, 6, 7, 7, 4, // Back edges
-                0, 4, 1, 5, 2, 6, 3, 7 // Side edges connecting front and back
-            };
-            List<BoundingBox> boundingBoxes = new List<BoundingBox>();
-            foreach (ModelMesh myModelMeshes in model.Meshes)
-            {
-                boundingBoxes.Add(BoundingBox.CreateFromSphere(myModelMeshes.BoundingSphere));
-            }
-
-            foreach (BoundingBox box in boundingBoxes)
-            {
-                Vector3[] corners = box.GetCorners();
-                VertexPositionColor[] primitiveList = new VertexPositionColor[corners.Length];
-
-                // Assign the 8 box vertices
-                for (int i = 0; i < corners.Length; i++)
-                {
-                    primitiveList[i] = new VertexPositionColor(corners[i], Color.White);
-                }
-
-                /* Set your own effect parameters here */
-                BasicEffect be = new BasicEffect(graphics.GraphicsDevice);
-
-                be.World = World;
-                be.View = camera.view;
-                be.Projection = camera.proj;
-                be.TextureEnabled = false;
-
-                // Draw the box with a LineList
-                foreach (EffectPass pass in be.CurrentTechnique.Passes)
-                {
-                    pass.Apply();
-                    graphics.GraphicsDevice.DrawUserIndexedPrimitives(
-                        PrimitiveType.LineList, primitiveList, 0, 8,
-                        bBoxIndices, 0, 12);
-                }
-            }
         }
     }
 }
