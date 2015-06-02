@@ -81,6 +81,7 @@
     <Compile Include="Bullet.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="cButton.cs" />
+    <Compile Include="CollectableItem.cs" />
     <Compile Include="Filodendron.cs" />
     <Compile Include="FilodendronGravity.cs" />
     <Compile Include="Follower.cs" />

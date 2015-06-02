@@ -25,6 +25,7 @@ namespace FilodendronGame
         BasicModel wall;
 		MachineSector sektorMaszyn;
         public static List<BasicModel> allModels = new List<BasicModel>();
+        List<CollectableItem> collectableItems = new List<CollectableItem>();
 
         public Filodendron avatar;
         public Matrix World = Matrix.Identity; // for boxes
@@ -61,15 +62,17 @@ namespace FilodendronGame
 
         protected override void LoadContent()
         {
+            this.setCollectableItems();
+
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);//Matrix.CreateTranslation(2000, 0, 185));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
             box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
 
-            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj1-09"), Matrix.Identity);
+            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj01-11"), Matrix.Identity);
             sektorMaszyn.texture = Game.Content.Load<Texture2D>(@"textures/texture");
             sektorMaszyn.boundingBox = true;
 
-            wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);//Matrix.CreateTranslation(20, 0, 265), 33.0f);
+            wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);
             wall.boundingBox = true;
 
             allModels.Add(wall);
@@ -149,6 +152,33 @@ namespace FilodendronGame
                 }
 
                 // Collision checkout
+                foreach (CollectableItem item in collectableItems)
+                {
+                    if (avatar.rigidBody.CollidesWith(item.model, item.World))
+                    {
+                        // Collision! add an explosion. 
+                        explosions.Add(new ParticleExplosion(GraphicsDevice, avatar,
+                            item.World,
+                            ((Game1)Game).rnd.Next(
+                                particleExplosionSettings.minLife,
+                                particleExplosionSettings.maxLife),
+                            ((Game1)Game).rnd.Next(
+                                particleExplosionSettings.minRoundTime,
+                                particleExplosionSettings.maxRoundTime),
+                            ((Game1)Game).rnd.Next(
+                                particleExplosionSettings.minParticlesPerRound,
+                                particleExplosionSettings.maxParticlesPerRound),
+                            ((Game1)Game).rnd.Next(
+                                particleExplosionSettings.minParticles,
+                                particleExplosionSettings.maxParticles),
+                                explosionColorsTexture, particleSettings, explosionEffect));
+                        // delete the box
+                        item.isCollected = true;
+                        ((Game1)Game).numberOfCoins++;
+                    }
+                }
+                collectableItems.RemoveAll(item => item.isCollected);
+                /////////////////////////////// ten box bedzie do wywalenia na koncu bo byl tylko do testów
                 if (box != null)
                 {
                     if (avatar.rigidBody.CollidesWith(box.model, box.World))
@@ -219,15 +249,45 @@ namespace FilodendronGame
                 if (box != null)
                 {
                     box.Draw(box.model,
-                            box.World,
-                            boxTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+                             box.World,
+                             boxTexture, 
+                             ((Game1)Game).camera, 
+                             gameTime, 
+                             ((Game1)Game).graphics);
                 }
                 wall.Draw(wall.model,
-                            wall.World,
-                            boxTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+                          wall.World,
+                          boxTexture, 
+                          ((Game1)Game).camera, 
+                          gameTime, 
+                          ((Game1)Game).graphics);
+
+                foreach (CollectableItem item in collectableItems)
+                {
+                    if (!item.isCollected)
+                    {
+                        item.Draw(item.model,
+                                  item.World,
+                                  boxTexture, 
+                                  ((Game1)Game).camera, gameTime, 
+                                  ((Game1)Game).graphics); 
+                    }
+                }
 
                 base.Draw(gameTime);
             }
+        }
+        private void setCollectableItems()
+        {
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-3000, 30, 5000)));
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-3000, 30, 5500)));
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-2000, 30, 5500)));
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-2000, 30, 5000)));
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-2000, 750, 4500)));//na bialej skrzyni
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(1000, 1550, 3600)));//na brazowej skrzyni
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(3500, 2000, 3750)));//na fioletowym podescie 1
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(5000, 2130, 3650)));//na fioletowym podescie 2
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(5000, 2130, -1550)));//na fioletowym podescie 3
         }
     }
 }
