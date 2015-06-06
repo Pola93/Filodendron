@@ -45,6 +45,13 @@ namespace FilodendronGame
         private bool shootPressed = false;
         public bool stopPosition { get; set; }
 
+        public bool isModelVisible = true;
+        public bool hasAvatarJustDied = false;
+        private double nextBlinkTime = 0;
+        private const int maxBlinksAmount = 5;
+        private float blinksDone = 0;
+        private int blinkToggleTime = 200;
+
         //Vector3 viewVector; // for specular light
 
         public Filodendron(Model m, Matrix world) : base(m, world)
@@ -59,6 +66,18 @@ namespace FilodendronGame
             base.Update(gameTime);
             UpdateAvatarPosition(gameTime);
             World = Matrix.CreateRotationY(avatarYaw) * Matrix.CreateTranslation(avatarPosition); //potem przerzuc nizej do metody
+
+            if (hasAvatarJustDied && gameTime.TotalGameTime.TotalMilliseconds >= nextBlinkTime)
+            {
+                isModelVisible = !isModelVisible;
+                this.blinksDone += 0.5f;
+                nextBlinkTime = gameTime.TotalGameTime.TotalMilliseconds + blinkToggleTime;
+                if (blinksDone >= maxBlinksAmount)
+                {
+                    hasAvatarJustDied = false;
+                    blinksDone = 0;
+                }
+            }
         }
         /// <summary>
         /// Update the position and direction of the avatar.
@@ -202,6 +221,14 @@ namespace FilodendronGame
                 mesh.Draw();
             }
             DrawBoundingBox(camera, graphics);
+        }
+
+        public void Die(Game Game)
+        {
+            if (((Game1)Game).numberOfLifes > 0)
+                ((Game1)Game).numberOfLifes--;
+            avatarPosition = new Vector3(-4000, 40, 4000);
+            this.hasAvatarJustDied = true;
         }
     }
 }

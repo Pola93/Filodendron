@@ -206,7 +206,7 @@ namespace FilodendronGame
                         // delete the box
                         box = null;
                         ((Game1)Game).numberOfCoins++;
-                        ((Game1)Game).Die();
+                        avatar.Die(Game);
                     }
 
                 }
@@ -215,7 +215,7 @@ namespace FilodendronGame
                     && avatar.avatarPosition.Y > -5 && avatar.avatarPosition.Y < 50 
                     && avatar.avatarPosition.Z > -254 && avatar.avatarPosition.Z < 2468)
                 {
-                    ((Game1)Game).Die();
+                    avatar.Die(Game);
                 }
                 // Update explosions
                 UpdateExplosions(gameTime);
@@ -241,10 +241,12 @@ namespace FilodendronGame
 
         public override void Draw(GameTime gameTime)
         {
-
             if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing)
             {
-                avatar.Draw(avatar.model, avatar.World, avatar.avatarTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+                if (avatar.isModelVisible)
+                {
+                    avatar.Draw(avatar.model, avatar.World, avatar.avatarTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);   
+                }
                 ocean.Draw(ocean.model, ocean.World, ocean.diffuseOceanTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 sektorMaszyn.Draw(sektorMaszyn.model, sektorMaszyn.World, sektorMaszyn.texture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 avatar.bullet.Draw(avatar.bullet.model, avatar.bullet.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
