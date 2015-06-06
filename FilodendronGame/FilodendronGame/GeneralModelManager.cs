@@ -141,8 +141,7 @@ namespace FilodendronGame
                 if (box != null)
                 {
                     box.Update(gameTime);
-                }               
-                
+                }
                 ocean.Update(gameTime);
                 //if the side boundry of screen reached, set the mouse on the other side
                 if (Mouse.GetState().X >= Game.Window.ClientBounds.Width)
@@ -210,6 +209,13 @@ namespace FilodendronGame
                         ((Game1)Game).Die();
                     }
 
+                }
+
+                if (avatar.avatarPosition.X > -6253 && avatar.avatarPosition.X < 5466 
+                    && avatar.avatarPosition.Y > -5 && avatar.avatarPosition.Y < 50 
+                    && avatar.avatarPosition.Z > -254 && avatar.avatarPosition.Z < 2468)
+                {
+                    ((Game1)Game).Die();
                 }
                 // Update explosions
                 UpdateExplosions(gameTime);
