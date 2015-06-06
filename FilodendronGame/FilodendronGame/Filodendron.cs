@@ -58,7 +58,6 @@ namespace FilodendronGame
         {
             base.Update(gameTime);
             UpdateAvatarPosition(gameTime);
-
             World = Matrix.CreateRotationY(avatarYaw) * Matrix.CreateTranslation(avatarPosition); //potem przerzuc nizej do metody
         }
         /// <summary>

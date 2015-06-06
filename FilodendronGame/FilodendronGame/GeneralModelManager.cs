@@ -133,6 +133,11 @@ namespace FilodendronGame
                 avatar.bullet.Update(gameTime);
                 avatar.slave.Update(gameTime);
                 sektorMaszyn.Update(gameTime);
+                foreach (CollectableItem item in collectableItems)
+                {
+                    item.Update(gameTime);
+                }
+
                 if (box != null)
                 {
                     box.Update(gameTime);
@@ -158,7 +163,7 @@ namespace FilodendronGame
                     {
                         // Collision! add an explosion. 
                         explosions.Add(new ParticleExplosion(GraphicsDevice, avatar,
-                            item.World,
+                            item.Position,
                             ((Game1)Game).rnd.Next(
                                 particleExplosionSettings.minLife,
                                 particleExplosionSettings.maxLife),
@@ -288,6 +293,11 @@ namespace FilodendronGame
             collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(3500, 2000, 3750)));//na fioletowym podescie 1
             collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(5000, 2130, 3650)));//na fioletowym podescie 2
             collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(5000, 2130, -1550)));//na fioletowym podescie 3
+
+            foreach (CollectableItem item in collectableItems)
+            {
+                item.animation = new CollectableItemsRotation(0.05f, item.World);
+            }
         }
     }
 }

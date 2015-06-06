@@ -9,6 +9,7 @@ namespace FilodendronGame.Abilities
 {
     public class BladeAnimation : Animation
     {
+        public Matrix World { get; set; }
         private float startPosition;
         public float rotation;
         private float stopPosition;

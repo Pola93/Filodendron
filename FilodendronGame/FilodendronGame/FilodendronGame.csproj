@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abilities\BladeAnimation.cs" />
+    <Compile Include="Abilities\CollectableItemsRotation.cs" />
     <Compile Include="Abilities\FilodendronRigidBody.cs" />
     <Compile Include="Abilities\PlatformAnimation.cs" />
     <Compile Include="BasicModel.cs" />

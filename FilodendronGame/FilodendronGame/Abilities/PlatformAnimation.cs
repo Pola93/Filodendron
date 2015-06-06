@@ -9,6 +9,7 @@ namespace FilodendronGame.Abilities
 {
     class PlatformAnimation : Animation
     {
+        public Matrix World { get; set; }
         private float startPosition;
         private float stopPosition;
         private bool animationStatus;
