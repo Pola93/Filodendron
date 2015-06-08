@@ -23,6 +23,11 @@ namespace FilodendronGame
         public Audio audio;
 
         public List<String> names;
+        
+        public float scale = 1; 
+        public Vector3 position;
+        public List<Vector3> boundingMax;
+        public List<Vector3> boundingMin;
 
         public BasicModel(Model m, Matrix world)
         {
@@ -30,18 +35,24 @@ namespace FilodendronGame
             this.World = world;
         }
 
-        public BasicModel(Model m, Matrix world, float scale)
+        public BasicModel(Model m, Vector3 world, float scale)
         {
             this.model = m;
-            this.World = world;
-            World = Matrix.CreateScale(scale) * World;
+            this.position = world;
+            World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(world);
+            this.scale = scale;
         }
 
         public virtual void Update(GameTime gameTime)
         {
             if (animation != null) 
             {
-                World = animation.UpdateAnimation(gameTime);
+                Matrix cos = animation.UpdateAnimation();
+                position = cos.Translation;
+                World = Matrix.CreateScale(scale) * cos;
+                //position = animation.UpdateAnimation();
+                //World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
+                if (boundingBoxes != null) translateBoundingBox(position);
             }
 
             if (rigidBody != null) 
@@ -116,7 +127,11 @@ namespace FilodendronGame
             // transform by mesh bone matrix
             meshMin = Vector3.Transform(meshMin, meshTransform);
             meshMax = Vector3.Transform(meshMax, meshTransform);
-
+            if (animation != null)
+            {
+                boundingMin.Add(meshMin);
+                boundingMax.Add(meshMax);
+            }
             // Create the bounding box
             BoundingBox box = new BoundingBox(meshMin, meshMax);
             //Debug.WriteLine(box);
@@ -134,6 +149,11 @@ namespace FilodendronGame
             if (boundingBoxes == null)
             {
                 boundingBoxes = new List<BoundingBox>();
+                if (animation != null)
+                {
+                    boundingMax = new List<Vector3>();
+                    boundingMin = new List<Vector3>();
+                }
                 names = new List<string>();
 
                 Matrix[] transforms = new Matrix[model.Bones.Count];
@@ -178,6 +198,17 @@ namespace FilodendronGame
             //            bBoxIndices, 0, 12);
             //    }
             //}
+        }
+
+        public void translateBoundingBox(Vector3 translation)
+        {
+            for (int i = 0; i < boundingBoxes.Count; i++)
+            {
+                BoundingBox box = boundingBoxes[i];
+                box.Max = boundingMax[i] * scale + translation;
+                box.Min = boundingMin[i] * scale + translation;
+                boundingBoxes[i] = box;
+            }
         }
 
         public void DrawBoundingBox(Camera camera, GraphicsDeviceManager graphics)

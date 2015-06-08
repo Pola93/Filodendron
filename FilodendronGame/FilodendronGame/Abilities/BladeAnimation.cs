@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FilodendronGame.Abilities
 {
-    public class BladeAnimation : Animation
+    public class BladeAnimation
     {
         public Matrix World { get; set; }
         private float startPosition;

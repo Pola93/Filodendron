@@ -66,14 +66,15 @@ namespace FilodendronGame
 
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);//Matrix.CreateTranslation(2000, 0, 185));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
-            box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100);
+            box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100,'Z');
 
             sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj01-11"), Matrix.Identity);
             sektorMaszyn.texture = Game.Content.Load<Texture2D>(@"textures/texture");
             sektorMaszyn.boundingBox = true;
 
-            wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);
+            wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), new Vector3(-1200, 30, 185), 6);//Matrix.CreateTranslation(20, 0, 265), 33.0f);
             wall.boundingBox = true;
+            wall.animation = new PlatformAnimation(new Vector3(-1200, 30, 2355), 300, 'Y');
 
             allModels.Add(wall);
             allModels.Add(box);
@@ -133,6 +134,7 @@ namespace FilodendronGame
                 avatar.bullet.Update(gameTime);
                 avatar.slave.Update(gameTime);
                 sektorMaszyn.Update(gameTime);
+                wall.Update(gameTime);
                 foreach (CollectableItem item in collectableItems)
                 {
                     item.Update(gameTime);

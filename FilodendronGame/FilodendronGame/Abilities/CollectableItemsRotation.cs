@@ -18,24 +18,9 @@ namespace FilodendronGame.Abilities
             this.World = world;
         }
 
-        public Matrix UpdateAnimation(GameTime gameTime)
+        public Matrix UpdateAnimation()
         {
             return Matrix.CreateRotationY(yawSpeed) * World;
-        }
-
-        public void IsAnimationStatus()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Matrix AnimationForward()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Matrix AnimationBackward()
-        {
-            throw new NotImplementedException();
         }
     }
 }
