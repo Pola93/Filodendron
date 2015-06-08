@@ -68,8 +68,8 @@ namespace FilodendronGame
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
             box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100,'Z');
 
-            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj01-11"), Matrix.Identity);
-            sektorMaszyn.texture = Game.Content.Load<Texture2D>(@"textures/texture");
+            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj01-23"), Matrix.Identity);
+            sektorMaszyn.texture = Game.Content.Load<Texture2D>(@"textures/texture01-12");
             sektorMaszyn.boundingBox = true;
 
             wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), new Vector3(-1200, 30, 185), 6);//Matrix.CreateTranslation(20, 0, 265), 33.0f);
@@ -218,6 +218,7 @@ namespace FilodendronGame
                     avatar.UpdatePosition(wall.animation.avatarPositionChange);
                 }
 
+                // woda zabija, chcesz zeby nie zabijala to zakomentuj ifa ponizej
                 if (avatar.avatarPosition.X > -6253 && avatar.avatarPosition.X < 5466 
                     && avatar.avatarPosition.Y > -5 && avatar.avatarPosition.Y < 50 
                     && avatar.avatarPosition.Z > -254 && avatar.avatarPosition.Z < 2468)
