@@ -10,6 +10,7 @@ namespace FilodendronGame.Abilities
     class CollectableItemsRotation : Animation
     {
         public Matrix World { get; set; }
+        public Vector3 avatarPositionChange { get; set; }
         public float yawSpeed;
         //public Matrix world;
         public CollectableItemsRotation(float yaw, Matrix world)

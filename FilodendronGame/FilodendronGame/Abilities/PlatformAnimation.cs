@@ -16,9 +16,11 @@ namespace FilodendronGame.Abilities
         private Vector3 position;
         private char direction;
         private float positionDirection;
+        public Vector3 avatarPositionChange { get; set; }
 
         public PlatformAnimation(Vector3 startPosition, float stopPosition, char direction)
         {
+            avatarPositionChange = Vector3.Zero;
             this.direction = direction;
             if (direction == 'X') this.startPosition = startPosition.X;
             if (direction == 'Y') this.startPosition = startPosition.Y;
@@ -125,32 +127,44 @@ namespace FilodendronGame.Abilities
 
         public Vector3 AnimationBackwardZ()
         {
-            return position += Vector3.Backward;
+            avatarPositionChange = Vector3.Backward;
+            return position += avatarPositionChange;
+            //return position += Vector3.Backward;
         }
 
         public Vector3 AnimationForwardZ()
         {
-            return position += Vector3.Forward;
+            avatarPositionChange = Vector3.Forward;
+            return position += avatarPositionChange;
+            //return position += Vector3.Forward;
         }
 
         public Vector3 AnimationDownY()
         {
-            return position += Vector3.Down;
+            avatarPositionChange = Vector3.Down;
+            return position += avatarPositionChange;
+            //return position += Vector3.Down;
         }
 
         public Vector3 AnimationUpY()
         {
-            return position += Vector3.Up;
+            avatarPositionChange = Vector3.Up;
+            return position += avatarPositionChange;
+            //return position += Vector3.Up;
         }
 
         public Vector3 AnimationRightX()
         {
-            return position += Vector3.Right;
+            avatarPositionChange = Vector3.Right;
+            return position += avatarPositionChange;
+            //return position += Vector3.Right;
         }
 
         public Vector3 AnimationLeftX()
         {
-            return position += Vector3.Left;
+            avatarPositionChange = Vector3.Left;
+            return position += avatarPositionChange;
+            //return position += Vector3.Left;
         }
     }
 }

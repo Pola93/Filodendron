@@ -9,6 +9,7 @@ namespace FilodendronGame.Interfaces
     public interface Animation
     {
         Matrix World { get; set; }
+        Vector3 avatarPositionChange { get; set; }
         Matrix UpdateAnimation();
         //Vector3 UpdateAnimation();
         /*Vector3 UpdateAnimationX();

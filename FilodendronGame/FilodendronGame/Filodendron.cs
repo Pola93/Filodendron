@@ -139,7 +139,7 @@ namespace FilodendronGame
             Vector3 oldPosition = this.avatarPosition;
             moveVector = Vector3.Transform(moveVector, movement);
             this.avatarSpeed = moveVector;
-            UpdatePosition(moveVector, oldPosition);
+            UpdatePosition(moveVector);
             animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
 
             if (!keyboardState.IsKeyDown(Keys.W) && !keyboardState.IsKeyDown(Keys.A)
@@ -156,7 +156,7 @@ namespace FilodendronGame
             bullet.Shoot(this);
         }
 
-        public void UpdatePosition(Vector3 move, Vector3 oldPosition)
+        public void UpdatePosition(Vector3 move)
         {
             avatarPosition.X += move.X;
             avatarPosition.Y += move.Y;

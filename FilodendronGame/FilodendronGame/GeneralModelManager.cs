@@ -213,6 +213,11 @@ namespace FilodendronGame
 
                 }
 
+                if (avatar.rigidBody.CollidesWith(wall.model, wall.World))
+                {
+                    avatar.UpdatePosition(wall.animation.avatarPositionChange);
+                }
+
                 if (avatar.avatarPosition.X > -6253 && avatar.avatarPosition.X < 5466 
                     && avatar.avatarPosition.Y > -5 && avatar.avatarPosition.Y < 50 
                     && avatar.avatarPosition.Z > -254 && avatar.avatarPosition.Z < 2468)
