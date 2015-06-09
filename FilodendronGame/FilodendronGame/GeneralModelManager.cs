@@ -22,10 +22,10 @@ namespace FilodendronGame
         // Everything with comment "for boxes" will be deleted later
         BasicModel box;
         Texture2D boxTexture;
-        BasicModel wall;
 		MachineSector sektorMaszyn;
         public static List<BasicModel> allModels = new List<BasicModel>();
         List<CollectableItem> collectableItems = new List<CollectableItem>();
+        List<BasicModel> platforms = new List<BasicModel>();
 
         public Filodendron avatar;
         public Matrix World = Matrix.Identity; // for boxes
@@ -63,20 +63,16 @@ namespace FilodendronGame
         protected override void LoadContent()
         {
             this.setCollectableItems();
+            this.setPlatforms();
 
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);//Matrix.CreateTranslation(2000, 0, 185));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
-            box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100,'Z');
+            box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100, 1,'Z');
 
             sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj01-23"), Matrix.Identity);
             sektorMaszyn.texture = Game.Content.Load<Texture2D>(@"textures/texture01-12");
             sektorMaszyn.boundingBox = true;
 
-            wall = new BasicModel(Game.Content.Load<Model>(@"models\box"), new Vector3(-1200, 30, 185), 6);//Matrix.CreateTranslation(20, 0, 265), 33.0f);
-            wall.boundingBox = true;
-            wall.animation = new PlatformAnimation(new Vector3(-1200, 30, 2355), 300, 'Y');
-
-            allModels.Add(wall);
             allModels.Add(box);
             allModels.Add(sektorMaszyn);
 
@@ -134,8 +130,12 @@ namespace FilodendronGame
                 avatar.bullet.Update(gameTime);
                 avatar.slave.Update(gameTime);
                 sektorMaszyn.Update(gameTime);
-                wall.Update(gameTime);
                 foreach (CollectableItem item in collectableItems)
+                {
+                    item.Update(gameTime);
+                }
+
+                foreach (BasicModel item in platforms)
                 {
                     item.Update(gameTime);
                 }
@@ -213,9 +213,12 @@ namespace FilodendronGame
 
                 }
 
-                if (avatar.rigidBody.CollidesWith(wall.model, wall.World))
+                foreach (BasicModel item in platforms)
                 {
-                    avatar.UpdatePosition(wall.animation.avatarPositionChange);
+                    if (avatar.rigidBody.CollidesWith(item.model, item.World))
+                    {
+                        avatar.UpdatePosition(item.animation.avatarPositionChange);
+                    }  
                 }
 
                 // woda zabija, chcesz zeby nie zabijala to zakomentuj ifa ponizej
@@ -276,12 +279,16 @@ namespace FilodendronGame
                              gameTime, 
                              ((Game1)Game).graphics);
                 }
-                wall.Draw(wall.model,
-                          wall.World,
-                          boxTexture, 
-                          ((Game1)Game).camera, 
-                          gameTime, 
-                          ((Game1)Game).graphics);
+
+                foreach (BasicModel item in platforms)
+                {
+                    item.Draw(item.model,
+                              item.World,
+                              boxTexture, 
+                              ((Game1)Game).camera, 
+                              gameTime, 
+                              ((Game1)Game).graphics);   
+                }
 
                 foreach (CollectableItem item in collectableItems)
                 {
@@ -298,6 +305,7 @@ namespace FilodendronGame
                 base.Draw(gameTime);
             }
         }
+
         private void setCollectableItems()
         {
             collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-3000, 30, 5000)));
@@ -314,6 +322,28 @@ namespace FilodendronGame
             {
                 item.animation = new CollectableItemsRotation(0.05f, item.World);
             }
+        }
+
+        private void setPlatforms()
+        {
+            addNewPlatform(new Vector3(-1200, 30, 2355), 6, 300, 5, 'Z');
+            addNewPlatform(new Vector3(-1800, 30, 5000), 3, 800, 2, 'Y');
+            addNewPlatform(new Vector3(4700, 2130, 3650), 5, -1400, 6, 'Z');
+
+            foreach (BasicModel item in platforms)
+            {
+                item.boundingBox = true;
+                allModels.Add(item);
+            }
+        }
+
+        private void addNewPlatform(Vector3 startPosition, float size, float distance, float speed, char direction)
+        {
+            BasicModel ToAdd;
+
+            ToAdd = new BasicModel(Game.Content.Load<Model>(@"models\box"), startPosition, size);
+            ToAdd.animation = new PlatformAnimation(startPosition, distance, speed, direction);
+            platforms.Add(ToAdd);
         }
     }
 }

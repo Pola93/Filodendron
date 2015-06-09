@@ -16,9 +16,10 @@ namespace FilodendronGame.Abilities
         private Vector3 position;
         private char direction;
         private float positionDirection;
+        private float speed;
         public Vector3 avatarPositionChange { get; set; }
 
-        public PlatformAnimation(Vector3 startPosition, float stopPosition, char direction)
+        public PlatformAnimation(Vector3 startPosition, float stopPosition, float speed, char direction)
         {
             avatarPositionChange = Vector3.Zero;
             this.direction = direction;
@@ -27,6 +28,7 @@ namespace FilodendronGame.Abilities
             if (direction == 'Z') this.startPosition = startPosition.Z;
             this.position = startPosition;
             this.stopPosition = stopPosition;
+            this.speed = speed;
         }
 
         public Matrix UpdateAnimation()
@@ -41,12 +43,10 @@ namespace FilodendronGame.Abilities
         {
             if (animationStatus)
             {
-                //return AnimationLeftX();
                 return Matrix.CreateTranslation(AnimationLeftX());
             }
             else
             {
-                //return AnimationRightX();
                 return Matrix.CreateTranslation(AnimationRightX());
             }
         }
@@ -55,12 +55,10 @@ namespace FilodendronGame.Abilities
         {
             if (animationStatus)
             {
-                //return AnimationDownY();
                 return Matrix.CreateTranslation(AnimationDownY());
             }
             else
             {
-                //return AnimationUpY();
                 return Matrix.CreateTranslation(AnimationUpY());
             }
         }
@@ -69,12 +67,10 @@ namespace FilodendronGame.Abilities
         {
             if (animationStatus)
             {
-                //return AnimationForwardZ();
                 return Matrix.CreateTranslation(AnimationForwardZ());
             }
             else
             {
-                //return AnimationBackwardZ();
                 return Matrix.CreateTranslation(AnimationBackwardZ());
             }
         }
@@ -113,58 +109,40 @@ namespace FilodendronGame.Abilities
             }
         }
 
-        /* public Matrix AnimationForward()
-         {
-             position += new Vector3(0, 0, 1);
-             return Matrix.CreateTranslation(position);
-         }
-
-         public Matrix AnimationBackward()
-         {
-             position -= new Vector3(0, 0, 1);
-             return Matrix.CreateTranslation(position);
-         }*/
-
         public Vector3 AnimationBackwardZ()
         {
-            avatarPositionChange = Vector3.Backward;
+            avatarPositionChange = Vector3.Multiply(Vector3.Backward, speed);
             return position += avatarPositionChange;
-            //return position += Vector3.Backward;
         }
 
         public Vector3 AnimationForwardZ()
         {
-            avatarPositionChange = Vector3.Forward;
+            avatarPositionChange = Vector3.Multiply(Vector3.Forward, speed);
             return position += avatarPositionChange;
-            //return position += Vector3.Forward;
         }
 
         public Vector3 AnimationDownY()
         {
-            avatarPositionChange = Vector3.Down;
+            avatarPositionChange = Vector3.Multiply(Vector3.Down, speed);
             return position += avatarPositionChange;
-            //return position += Vector3.Down;
         }
 
         public Vector3 AnimationUpY()
         {
-            avatarPositionChange = Vector3.Up;
+            avatarPositionChange = Vector3.Multiply(Vector3.Up, speed);
             return position += avatarPositionChange;
-            //return position += Vector3.Up;
         }
 
         public Vector3 AnimationRightX()
         {
-            avatarPositionChange = Vector3.Right;
+            avatarPositionChange = Vector3.Multiply(Vector3.Right, speed);
             return position += avatarPositionChange;
-            //return position += Vector3.Right;
         }
 
         public Vector3 AnimationLeftX()
         {
-            avatarPositionChange = Vector3.Left;
+            avatarPositionChange = Vector3.Multiply(Vector3.Left, speed);
             return position += avatarPositionChange;
-            //return position += Vector3.Left;
         }
     }
 }
