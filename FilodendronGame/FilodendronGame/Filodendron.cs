@@ -140,12 +140,12 @@ namespace FilodendronGame
             moveVector = Vector3.Transform(moveVector, movement);
             this.avatarSpeed = moveVector;
             UpdatePosition(moveVector);
-            animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-
-            if (!keyboardState.IsKeyDown(Keys.W) && !keyboardState.IsKeyDown(Keys.A)
-                && !keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.S))
+            if (forwardSpeed != 0 || sideSpeed != 0)
             {
-                //Stop animation for player walking
+                animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);  
+            }
+            else
+            {
                 animationPlayer.Update(new TimeSpan(0, 0, 0), true, Matrix.Identity);
             }
             prevMouseState = Mouse.GetState();
@@ -211,6 +211,7 @@ namespace FilodendronGame
                     effect.World = world * mesh.ParentBone.Transform;
                     effect.View = view;
                     effect.Projection = projection;
+                    effect.Texture = avatarTexture;
 
                     effect.EnableDefaultLighting();
 

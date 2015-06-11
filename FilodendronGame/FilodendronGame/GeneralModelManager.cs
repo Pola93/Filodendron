@@ -76,7 +76,7 @@ namespace FilodendronGame
             allModels.Add(box);
             allModels.Add(sektorMaszyn);
 
-            avatar = new Filodendron(Game.Content.Load<Model>(@"models\dude"), Matrix.Identity);//Matrix.CreateTranslation(2500, 2200, 3500));
+            avatar = new Filodendron(Game.Content.Load<Model>(@"models\test7_textures1"), Matrix.Identity);//Matrix.CreateTranslation(2500, 2200, 3500));
             avatar.skinningData = avatar.model.Tag as SkinningData;
             avatar.boundingBox = true;
             avatar.bullet = new Bullet(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);
@@ -91,7 +91,7 @@ namespace FilodendronGame
             // Create an animation player, and start decoding an animation clip.
             avatar.animationPlayer = new AnimationPlayer(avatar.skinningData);
             avatar.clip = avatar.skinningData.AnimationClips["Take 001"];
-            avatar.avatarTexture = Game.Content.Load<Texture2D>(@"textures/avatartexture");
+            avatar.avatarTexture = Game.Content.Load<Texture2D>(@"textures/texture_roslina");
             avatar.CustomShader = Game.Content.Load<Effect>(@"effects/lightening");
             avatar.animationPlayer.StartClip(avatar.clip);
             avatar.avatarPosition = new Vector3(-4000, 40, 4000);
