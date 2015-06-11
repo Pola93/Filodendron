@@ -14,7 +14,7 @@ namespace FilodendronGame
         Vector2 position;
         Rectangle rectangle;
         Color colour = new Color(255,255,255,255);
-
+        MouseState oldMouseState;
         public Vector2 size;
 
         public cButton(Texture2D newTexture, GraphicsDevice graphics)
@@ -29,6 +29,7 @@ namespace FilodendronGame
 
         public void update(MouseState mouse)
         {
+            
             rectangle = new Rectangle((int)position.X,(int)position.Y,(int)size.X,(int)size.Y);
             Rectangle mouseRectangle = new Rectangle(mouse.X, mouse.Y, 1, 1);
             if(mouseRectangle.Intersects(rectangle))
@@ -38,14 +39,16 @@ namespace FilodendronGame
                 if (down) colour.A += 3;
                 else colour.A -= 3;
 
-                if (mouse.LeftButton == ButtonState.Pressed) isClicked = true;
+                if (mouse.LeftButton == ButtonState.Pressed ) isClicked = true;
                 if (mouse.LeftButton == ButtonState.Released) isClicked = false;
+      
             }
             else if(colour.A < 255)
             {
                 colour.A += 3;
                 isClicked = false;
             }
+
         }
         public void setPosition(Vector2 newPosition)
         {
