@@ -27,6 +27,7 @@ namespace FilodendronGame
             MainMenu,
             Options,
             Playing,
+            Intro,
         };
         public enum SoundState
         {
@@ -39,11 +40,16 @@ namespace FilodendronGame
         int screenWidth = 800, screenHeight = 600;
         public int numberOfLifes = 3;
         public int numberOfCoins = 0;
+        private int s = 1;
+        private MouseState old;
         cButton cBtnPlay;
         cButton cBtnOptions;
         cButton cBtnQuit;
         cButton cBtnBack;
         cButton cBtnGameOver;
+        cButton cBtnnext;
+        cButton cBtnprev;
+        cButton cBtnskip;
         SoundEffect soundBackground;
         SoundEffectInstance soundBackgroundInstance;
         // Don't like warnings
@@ -102,6 +108,12 @@ namespace FilodendronGame
             cBtnBack.setPosition(new Vector2(screenWidth/2 - 100, 440));
             cBtnGameOver = new cButton(Content.Load<Texture2D>(@"textures/przegrana"), graphics.GraphicsDevice);
             cBtnGameOver.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight / 2));
+            cBtnnext = new cButton(Content.Load<Texture2D>(@"textures/next"), graphics.GraphicsDevice);
+            cBtnnext.setPosition(new Vector2(screenWidth - 300, screenHeight - 100));
+            cBtnprev = new cButton(Content.Load<Texture2D>(@"textures/prev"), graphics.GraphicsDevice);
+            cBtnprev.setPosition(new Vector2(screenWidth/2 - 300, screenHeight -100));
+            cBtnskip = new cButton(Content.Load<Texture2D>(@"textures/skip"), graphics.GraphicsDevice);
+            cBtnskip.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight-100));
 
             soundBackground = Content.Load<SoundEffect>("Audio\\Waves\\ZombiePlant");
             soundBackgroundInstance = soundBackground.CreateInstance();
@@ -123,9 +135,28 @@ namespace FilodendronGame
             //{
             //    this.Exit();
             //}
+       /*     int counter = 1;
+            int limit = 5;
+            float countDuration = 2f; //every  2s.
+            float currentTime = 0f;
 
-
+            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update
+            if (currentTime >= countDuration)
+            {
+                counter++;
+                currentTime -= countDuration; // "use up" the time
+                //any actions to perform
+            }
+            if (counter >= limit)
+            {
+                counter = 0;//Reset the counter;
+                s++;
+                   
+                //any actions to perform
+            }*/
+            
             MouseState mouse = Mouse.GetState();
+            old = mouse;
             switch (currentGameState)
             {
                 case GameState.MainMenu:
@@ -134,7 +165,7 @@ namespace FilodendronGame
                     
                     if (cBtnPlay.isClicked == true)
                     {
-                        currentGameState = GameState.Playing;
+                        currentGameState = GameState.Intro;
                     }
                     
                     cBtnPlay.update(mouse);
@@ -160,9 +191,11 @@ namespace FilodendronGame
                     {
                         currentGameState = GameState.MainMenu;
                     }
-                    if (Keyboard.GetState().IsKeyDown(Keys.Up)&& numberOfLifes <5)
+                   // if (Keyboard.GetState().IsKeyDown(Keys.Up)&& numberOfLifes <5)
+                    if(numberOfCoins == 5)
                     {
                             numberOfLifes++;
+                            numberOfCoins = 0;
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.Down))
                     {
@@ -208,6 +241,27 @@ namespace FilodendronGame
                     
                     cBtnBack.update(mouse);
                     break;
+                case GameState.Intro:
+                    if (cBtnskip.isClicked == true)
+                    {
+                        currentGameState = GameState.Playing;
+                    }
+                    cBtnskip.update(mouse);
+                    if(cBtnnext.isClicked == true && old.LeftButton == ButtonState.Released)
+                    {
+                        if(s < 3)
+                        s++;
+                    }
+                    cBtnnext.update(mouse);
+                    if (cBtnprev.isClicked == true && old.LeftButton == ButtonState.Released)
+                    {
+                        if (s > 1)
+                            s--;
+                    }
+                    cBtnprev.update(mouse);
+
+
+                    break;
             }
             base.Update(gameTime);
         }
@@ -224,6 +278,17 @@ namespace FilodendronGame
             spriteBatch.Begin();
             switch (currentGameState)
             {
+                case GameState.Intro:
+                    if(s == 1)
+                    spriteBatch.Draw(Content.Load<Texture2D>(@"textures/s1"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                    else if(s == 2)
+                        spriteBatch.Draw(Content.Load<Texture2D>(@"textures/s2"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                    else if (s==3)
+                        spriteBatch.Draw(Content.Load<Texture2D>(@"textures/s3"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                    cBtnprev.draw(spriteBatch);
+                    cBtnnext.draw(spriteBatch);
+                    cBtnskip.draw(spriteBatch);
+                    break;
                 case GameState.MainMenu:
                     spriteBatch.Draw(Content.Load<Texture2D>(@"textures/MainMenu"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
                     cBtnPlay.draw(spriteBatch);

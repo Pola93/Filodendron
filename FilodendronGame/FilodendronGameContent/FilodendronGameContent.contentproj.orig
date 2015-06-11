@@ -261,7 +261,8 @@
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
-<ItemGroup>
+  <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="Models\test7_textures1.FBX">
       <Name>test7_textures1</Name>
       <Importer>FbxImporter</Importer>
@@ -271,10 +272,8 @@
   <ItemGroup>
     <Compile Include="Textures\texture_roslina.png">
       <Name>texture_roslina</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-<Compile Include="Textures\next.png">
+=======
+    <Compile Include="Textures\next.png">
       <Name>next</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -301,6 +300,7 @@
     </Compile>
     <Compile Include="Textures\skip.png">
       <Name>skip</Name>
+>>>>>>> 17603326e02be19b2667577301c741d633df9d6d
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
