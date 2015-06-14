@@ -261,7 +261,7 @@
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
-<ItemGroup>
+  <ItemGroup>
     <Compile Include="Models\test7_textures1.FBX">
       <Name>test7_textures1</Name>
       <Importer>FbxImporter</Importer>
@@ -274,28 +274,42 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-<Compile Include="Textures\next.png">
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\filoden1f.png">
+      <Name>filoden1f</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\filoden2f.png">
+      <Name>filoden2f</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\filoden3f.png">
+      <Name>filoden3f</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\filoden4f.png">
+      <Name>filoden4f</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\filoden5f.png">
+      <Name>filoden5f</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\next.png">
       <Name>next</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\prev.png">
       <Name>prev</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Textures\s1.png">
-      <Name>s1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Textures\s2.png">
-      <Name>s2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Textures\s3.png">
-      <Name>s3</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
