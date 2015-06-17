@@ -18,6 +18,7 @@ namespace FilodendronGame.Abilities
         private float positionDirection;
         private float speed;
         public Vector3 avatarPositionChange { get; set; }
+        public Boolean isTrap { get; set; }
 
         public PlatformAnimation(Vector3 startPosition, float stopPosition, float speed, char direction)
         {
@@ -38,6 +39,8 @@ namespace FilodendronGame.Abilities
             if (direction == 'Y') return UpdateAnimationY();
             else return UpdateAnimationZ();
         }
+
+
 
         public Matrix UpdateAnimationX()
         {

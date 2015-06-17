@@ -12,6 +12,7 @@ namespace FilodendronGame.Abilities
         public Matrix World { get; set; }
         public Vector3 avatarPositionChange { get; set; }
         public float yawSpeed;
+        public bool isTrap { get; set; }
         //public Matrix world;
         public CollectableItemsRotation(float yaw, Matrix world)
         {
