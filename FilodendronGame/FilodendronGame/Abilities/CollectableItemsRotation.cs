@@ -37,5 +37,18 @@ namespace FilodendronGame.Abilities
                 throw new NotImplementedException();
             }
         }
+
+
+        public float currentTime
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

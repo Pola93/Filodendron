@@ -20,6 +20,7 @@ namespace FilodendronGame.Abilities
         private float speed;
         public Vector3 avatarPositionChange { get; set; }
         public Boolean isTrap { get; set; }
+        public float currentTime { get; set; }
 
         public PlatformAnimation(Vector3 startPosition, float stopPosition, float speed, char direction, BasicModel platform)
         {
@@ -32,6 +33,7 @@ namespace FilodendronGame.Abilities
             this.stopPosition = stopPosition;
             this.speed = speed;
             this.platform = platform;
+            this.currentTime = 0;
         }
 
         public Matrix UpdateAnimation()

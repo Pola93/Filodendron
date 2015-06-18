@@ -166,21 +166,7 @@ namespace FilodendronGame
                     if (avatar.rigidBody.CollidesWith(item.model, item.World))
                     {
                         // Collision! add an explosion. 
-                        explosions.Add(new ParticleExplosion(GraphicsDevice, avatar,
-                            item.Position,
-                            ((Game1)Game).rnd.Next(
-                                particleExplosionSettings.minLife,
-                                particleExplosionSettings.maxLife),
-                            ((Game1)Game).rnd.Next(
-                                particleExplosionSettings.minRoundTime,
-                                particleExplosionSettings.maxRoundTime),
-                            ((Game1)Game).rnd.Next(
-                                particleExplosionSettings.minParticlesPerRound,
-                                particleExplosionSettings.maxParticlesPerRound),
-                            ((Game1)Game).rnd.Next(
-                                particleExplosionSettings.minParticles,
-                                particleExplosionSettings.maxParticles),
-                                explosionColorsTexture, particleSettings, explosionEffect));
+                        addNewExplosion(item.Position);
                         // delete the box
                         item.isCollected = true;
                         ((Game1)Game).numberOfCoins++;
@@ -193,21 +179,7 @@ namespace FilodendronGame
                     if (avatar.rigidBody.CollidesWith(box.model, box.World))
                     {
                         // Collision! add an explosion. 
-                        explosions.Add(new ParticleExplosion(GraphicsDevice, avatar,
-                            box.World,
-                            ((Game1)Game).rnd.Next(
-                                particleExplosionSettings.minLife,
-                                particleExplosionSettings.maxLife),
-                            ((Game1)Game).rnd.Next(
-                                particleExplosionSettings.minRoundTime,
-                                particleExplosionSettings.maxRoundTime),
-                            ((Game1)Game).rnd.Next(
-                                particleExplosionSettings.minParticlesPerRound,
-                                particleExplosionSettings.maxParticlesPerRound),
-                            ((Game1)Game).rnd.Next(
-                                particleExplosionSettings.minParticles,
-                                particleExplosionSettings.maxParticles),
-                                explosionColorsTexture, particleSettings, explosionEffect));
+                        addNewExplosion(box.World);
                         // delete the box
                         box = null;
                         ((Game1)Game).numberOfCoins++;
@@ -216,12 +188,27 @@ namespace FilodendronGame
 
                 }
 
-                foreach (BasicModel item in platforms)
+                for (int i = 0; i < platforms.Count; i++)
                 {
-                    if (avatar.rigidBody.CollidesWith(item.model, item.World))
+                    if (avatar.rigidBody.CollidesWith(platforms[i].model, platforms[i].World))
                     {
-                        avatar.UpdatePosition(item.animation.avatarPositionChange);
-                    }  
+                        if (platforms[i].animation.isTrap)
+                        {
+                            platforms[i].animation.currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                            if (platforms[i].animation.currentTime >= 2)
+                            {
+                                addNewExplosion(platforms[i].World);
+                                platforms[i].boundingBoxes = null;
+                                platforms.RemoveAt(i);
+                                --i;
+                                platforms[i].animation.currentTime = 0;
+                            }
+                        }
+                        else
+                        {
+                            avatar.UpdatePosition(platforms[i].animation.avatarPositionChange);
+                        }
+                    }
                 }
 
                 // woda zabija, chcesz zeby nie zabijala to zakomentuj ifa ponizej
@@ -236,6 +223,25 @@ namespace FilodendronGame
 
                 base.Update(gameTime);
             }
+        }
+
+        protected void addNewExplosion(Matrix modelWorld)
+        {
+            explosions.Add(new ParticleExplosion(GraphicsDevice, avatar,
+                modelWorld,
+                ((Game1)Game).rnd.Next(
+                    particleExplosionSettings.minLife,
+                    particleExplosionSettings.maxLife),
+                ((Game1)Game).rnd.Next(
+                    particleExplosionSettings.minRoundTime,
+                    particleExplosionSettings.maxRoundTime),
+                ((Game1)Game).rnd.Next(
+                    particleExplosionSettings.minParticlesPerRound,
+                    particleExplosionSettings.maxParticlesPerRound),
+                ((Game1)Game).rnd.Next(
+                    particleExplosionSettings.minParticles,
+                    particleExplosionSettings.maxParticles),
+                    explosionColorsTexture, particleSettings, explosionEffect));
         }
 
         protected void UpdateExplosions(GameTime gameTime)
@@ -329,9 +335,10 @@ namespace FilodendronGame
 
         private void setPlatforms()
         {
-            addNewPlatform(new Vector3(-1200, 30, 2355), 6, 300, 5, 'Z');
-            addNewPlatform(new Vector3(-1800, 30, 5000), 3, 800, 2, 'Y');
-            addNewPlatform(new Vector3(4700, 2130, 3650), 5, -1400, 6, 'Z');
+            addNewPlatform(new Vector3(-1200, 30, 2355), 6, 300, 5, 'Z',false);
+            addNewPlatform(new Vector3(-1800, 30, 5000), 3, 800, 2, 'Y',false);
+            addNewPlatform(new Vector3(4700, 2130, 3650), 5, -1400, 6, 'Z',false);
+            addNewPlatform(new Vector3(-2000, 750, 4500), 5, 755, 6, 'Y', true);
 
             foreach (BasicModel item in platforms)
             {
@@ -340,12 +347,13 @@ namespace FilodendronGame
             }
         }
 
-        private void addNewPlatform(Vector3 startPosition, float size, float distance, float speed, char direction)
+        private void addNewPlatform(Vector3 startPosition, float size, float distance, float speed, char direction, bool trap)
         {
             BasicModel ToAdd;
 
             ToAdd = new BasicModel(Game.Content.Load<Model>(@"models\box"), startPosition, size);
             ToAdd.animation = new PlatformAnimation(startPosition, distance, speed, direction, ToAdd);
+            ToAdd.animation.isTrap = trap;
             platforms.Add(ToAdd);
         }
     }
