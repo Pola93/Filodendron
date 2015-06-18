@@ -69,7 +69,7 @@ namespace FilodendronGame
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
             box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100, 1,'Z', box);
 
-            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj01-23"), Matrix.Identity);
+            sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj1-24"), Matrix.Identity);
             sektorMaszyn.texture = Game.Content.Load<Texture2D>(@"textures/texture01-12");
             sektorMaszyn.boundingBox = true;
 
@@ -149,7 +149,7 @@ namespace FilodendronGame
                 }
                 ocean.Update(gameTime);
                 //if the side boundry of screen reached, set the mouse on the other side
-                if (Mouse.GetState().X >= Game.Window.ClientBounds.Width)
+                if (Mouse.GetState().X >= Game.Window.ClientBounds.Width -2)
                 {
                     Mouse.SetPosition(1, Mouse.GetState().Y);// jak wstawia³em 0 to mi ekran przeskakiwa³ lol
                     avatar.prevMouseState = Mouse.GetState();

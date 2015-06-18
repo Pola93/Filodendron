@@ -37,7 +37,7 @@ namespace FilodendronGame
         }
         public GameState currentGameState = GameState.MainMenu;
         //Screen adjustment
-        int screenWidth = 800, screenHeight = 600;
+        int screenWidth = 1366, screenHeight = 768;
         public int numberOfLifes = 1;
         public int numberOfCoins = 0;
         private int s = 1;
@@ -61,10 +61,6 @@ namespace FilodendronGame
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            // full screen mode settings
-            // graphics.PreferredBackBufferWidth = 1366;    
-            // graphics.PreferredBackBufferHeight = 768; 
-            // graphics.IsFullScreen = true; 
 
         }
 
@@ -99,21 +95,21 @@ namespace FilodendronGame
             //graphics.IsFullScreen = true;
             graphics.ApplyChanges();
             cBtnPlay = new cButton(Content.Load<Texture2D>(@"textures/startButton"), graphics.GraphicsDevice);
-            cBtnPlay.setPosition(new Vector2(screenWidth/2 - 50, 300));
+            cBtnPlay.setPosition(new Vector2(screenWidth/2 - 100, screenHeight /2 ));
             cBtnOptions = new cButton(Content.Load<Texture2D>(@"textures/optionsButton"), graphics.GraphicsDevice);
-            cBtnOptions.setPosition(new Vector2(screenWidth / 2 - 50, 370));
+            cBtnOptions.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight * 2 / 3));
             cBtnQuit = new cButton(Content.Load<Texture2D>(@"textures/exitButton"), graphics.GraphicsDevice);
-            cBtnQuit.setPosition(new Vector2(screenWidth / 2 - 50, 440));
+            cBtnQuit.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight * 5 / 6));
             cBtnBack = new cButton(Content.Load<Texture2D>(@"textures/backButton"), graphics.GraphicsDevice);
-            cBtnBack.setPosition(new Vector2(screenWidth/2 - 50, 440));
+            cBtnBack.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight * 5 / 6));
             cBtnGameOver = new cButton(Content.Load<Texture2D>(@"textures/przegrana"), graphics.GraphicsDevice);
-            cBtnGameOver.setPosition(new Vector2(screenWidth / 2 - 50, screenHeight / 2));
+            cBtnGameOver.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight / 2));
             cBtnnext = new cButton(Content.Load<Texture2D>(@"textures/next"), graphics.GraphicsDevice);
-            cBtnnext.setPosition(new Vector2(screenWidth - 75, screenHeight/2 - 100));
+            cBtnnext.setPosition(new Vector2(screenWidth - 175, screenHeight/2 - 100));
             cBtnprev = new cButton(Content.Load<Texture2D>(@"textures/prev"), graphics.GraphicsDevice);
-            cBtnprev.setPosition(new Vector2(screenWidth - 75, screenHeight/2 + 100));
+            cBtnprev.setPosition(new Vector2(screenWidth - 175, screenHeight/2 + 100));
             cBtnskip = new cButton(Content.Load<Texture2D>(@"textures/skip"), graphics.GraphicsDevice);
-            cBtnskip.setPosition(new Vector2(screenWidth - 75, screenHeight/2));
+            cBtnskip.setPosition(new Vector2(screenWidth - 175, screenHeight/2));
 
             soundBackground = Content.Load<SoundEffect>("Audio\\Waves\\ZombiePlant");
             soundBackgroundInstance = soundBackground.CreateInstance();
@@ -283,15 +279,15 @@ namespace FilodendronGame
             {
                 case GameState.Intro:
                     if(s == 1)
-                    spriteBatch.Draw(Content.Load<Texture2D>(@"textures/filoden1f"), new Rectangle(0, 0, 726, screenHeight), Color.White);
+                    spriteBatch.Draw(Content.Load<Texture2D>(@"textures/filoden1f"), new Rectangle(screenWidth/2-363, 0, 726, screenHeight), Color.White);
                     else if(s == 2)
-                        spriteBatch.Draw(Content.Load<Texture2D>(@"textures/filoden2f"), new Rectangle(0, 0, 726, screenHeight), Color.White);
+                        spriteBatch.Draw(Content.Load<Texture2D>(@"textures/filoden2f"), new Rectangle(screenWidth / 2 - 363, 0, 726, screenHeight), Color.White);
                     else if (s==3)
-                        spriteBatch.Draw(Content.Load<Texture2D>(@"textures/filoden3f"), new Rectangle(0, 0, 726, screenHeight), Color.White);
+                        spriteBatch.Draw(Content.Load<Texture2D>(@"textures/filoden3f"), new Rectangle(screenWidth / 2 - 363, 0, 726, screenHeight), Color.White);
                     else if (s == 4)
-                        spriteBatch.Draw(Content.Load<Texture2D>(@"textures/filoden4f"), new Rectangle(0, 0, 726, screenHeight), Color.White);
+                        spriteBatch.Draw(Content.Load<Texture2D>(@"textures/filoden4f"), new Rectangle(screenWidth / 2 - 363, 0, 726, screenHeight), Color.White);
                     else if (s == 5)
-                        spriteBatch.Draw(Content.Load<Texture2D>(@"textures/filoden5f"), new Rectangle(0, 0, 726, screenHeight), Color.White);
+                        spriteBatch.Draw(Content.Load<Texture2D>(@"textures/filoden5f"), new Rectangle(screenWidth / 2 - 363, 0, 726, screenHeight), Color.White);
                     cBtnprev.draw(spriteBatch);
                     cBtnnext.draw(spriteBatch);
                     cBtnskip.draw(spriteBatch);

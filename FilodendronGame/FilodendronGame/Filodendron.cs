@@ -221,7 +221,7 @@ namespace FilodendronGame
 
                 mesh.Draw();
             }
-            DrawBoundingBox(camera, graphics);
+            //DrawBoundingBox(camera, graphics);
         }
 
         public void Die(Game Game)
