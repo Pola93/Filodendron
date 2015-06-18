@@ -10,6 +10,7 @@ namespace FilodendronGame.Interfaces
     {
         Matrix World { get; set; }
         Vector3 avatarPositionChange { get; set; }
+        Boolean isTrap { get; set; }
         Matrix UpdateAnimation();
         //Vector3 UpdateAnimation();
         /*Vector3 UpdateAnimationX();
