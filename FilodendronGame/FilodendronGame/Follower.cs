@@ -14,6 +14,7 @@ namespace FilodendronGame
         public Vector3 followerSpeed;
         public Vector3 followerPosition;
         public Filodendron master;
+        private bool draw = true;
         private bool check = false;
 
         public Follower(Model model, Matrix world) : base(model, world)
@@ -88,7 +89,8 @@ namespace FilodendronGame
 
         public override void Draw(Model model, Matrix world, Texture2D texture, Camera camera, GameTime gameTime, GraphicsDeviceManager graphics)
         {
-            base.Draw(model, world, texture, camera, gameTime, graphics);
+            if (master.avatarPosition.Y < 500 && draw) base.Draw(model, world, texture, camera, gameTime, graphics);
+            else draw = false;
         }
     }
 }

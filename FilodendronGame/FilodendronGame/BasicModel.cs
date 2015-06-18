@@ -21,6 +21,7 @@ namespace FilodendronGame
         public RigidBody rigidBody;
         public Animation animation;
         public Audio audio;
+        public bool active = false;
 
         public List<String> names;
         
@@ -41,6 +42,11 @@ namespace FilodendronGame
             this.position = world;
             World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(world);
             this.scale = scale;
+        }
+
+        public virtual void activate()
+        {
+            this.active = true;
         }
 
         public virtual void Update(GameTime gameTime)

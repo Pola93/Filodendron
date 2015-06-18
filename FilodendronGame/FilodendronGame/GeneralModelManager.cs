@@ -25,7 +25,7 @@ namespace FilodendronGame
 		MachineSector sektorMaszyn;
         public static List<BasicModel> allModels = new List<BasicModel>();
         List<CollectableItem> collectableItems = new List<CollectableItem>();
-        List<BasicModel> platforms = new List<BasicModel>();
+        public static List<BasicModel> platforms = new List<BasicModel>();
 
         public Filodendron avatar;
         public Matrix World = Matrix.Identity; // for boxes
@@ -37,7 +37,6 @@ namespace FilodendronGame
         Texture2D explosionTexture;
         Texture2D explosionColorsTexture;
         Effect explosionEffect;
-        float currentTime;
 
         //for ocean
         Ocean ocean;
@@ -68,14 +67,11 @@ namespace FilodendronGame
 
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);//Matrix.CreateTranslation(2000, 0, 185));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
-            box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100, 1,'Z');
+            box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100, 1,'Z', box);
 
             sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj01-23"), Matrix.Identity);
             sektorMaszyn.texture = Game.Content.Load<Texture2D>(@"textures/texture01-12");
             sektorMaszyn.boundingBox = true;
-
-            allModels.Add(box);
-            allModels.Add(sektorMaszyn);
 
             avatar = new Filodendron(Game.Content.Load<Model>(@"models\test7_textures1"), Matrix.Identity);//Matrix.CreateTranslation(2500, 2200, 3500));
             avatar.skinningData = avatar.model.Tag as SkinningData;
@@ -84,6 +80,10 @@ namespace FilodendronGame
             avatar.slave = new Follower(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);
             avatar.slave.master = avatar;
             avatar.slave.followerPosition = avatar.avatarPosition;
+
+            allModels.Add(box);
+            allModels.Add(sektorMaszyn);
+            allModels.Add(avatar.bullet);
 
             if (avatar.skinningData == null)
                 throw new InvalidOperationException
@@ -98,7 +98,7 @@ namespace FilodendronGame
             avatar.avatarPosition = new Vector3(-4000, 40, 4000);
             Vector3 slaveShift =  new Vector3(200, 3, 200);
             avatar.slave.followerPosition = avatar.avatarPosition - slaveShift;
-
+            avatar.bullet.rb = new BulletRigidBody(avatar.bullet);
             // Load explosion textures and effect  
             explosionTexture = Game.Content.Load<Texture2D>(@"Textures\Particle");
             explosionColorsTexture = Game.Content.Load<Texture2D>(@"Textures\ParticleColors");
@@ -129,8 +129,10 @@ namespace FilodendronGame
             {
                 avatar.Update(gameTime);
                 avatar.bullet.Update(gameTime);
+                //avatar.bullet.rb.UpdateRigidBody(gameTime);
                 avatar.slave.Update(gameTime);
                 sektorMaszyn.Update(gameTime);
+                
                 foreach (CollectableItem item in collectableItems)
                 {
                     item.Update(gameTime);
@@ -164,7 +166,21 @@ namespace FilodendronGame
                     if (avatar.rigidBody.CollidesWith(item.model, item.World))
                     {
                         // Collision! add an explosion. 
-                        addNewExplosion(item.Position);
+                        explosions.Add(new ParticleExplosion(GraphicsDevice, avatar,
+                            item.Position,
+                            ((Game1)Game).rnd.Next(
+                                particleExplosionSettings.minLife,
+                                particleExplosionSettings.maxLife),
+                            ((Game1)Game).rnd.Next(
+                                particleExplosionSettings.minRoundTime,
+                                particleExplosionSettings.maxRoundTime),
+                            ((Game1)Game).rnd.Next(
+                                particleExplosionSettings.minParticlesPerRound,
+                                particleExplosionSettings.maxParticlesPerRound),
+                            ((Game1)Game).rnd.Next(
+                                particleExplosionSettings.minParticles,
+                                particleExplosionSettings.maxParticles),
+                                explosionColorsTexture, particleSettings, explosionEffect));
                         // delete the box
                         item.isCollected = true;
                         ((Game1)Game).numberOfCoins++;
@@ -177,7 +193,21 @@ namespace FilodendronGame
                     if (avatar.rigidBody.CollidesWith(box.model, box.World))
                     {
                         // Collision! add an explosion. 
-                        addNewExplosion(box.World);
+                        explosions.Add(new ParticleExplosion(GraphicsDevice, avatar,
+                            box.World,
+                            ((Game1)Game).rnd.Next(
+                                particleExplosionSettings.minLife,
+                                particleExplosionSettings.maxLife),
+                            ((Game1)Game).rnd.Next(
+                                particleExplosionSettings.minRoundTime,
+                                particleExplosionSettings.maxRoundTime),
+                            ((Game1)Game).rnd.Next(
+                                particleExplosionSettings.minParticlesPerRound,
+                                particleExplosionSettings.maxParticlesPerRound),
+                            ((Game1)Game).rnd.Next(
+                                particleExplosionSettings.minParticles,
+                                particleExplosionSettings.maxParticles),
+                                explosionColorsTexture, particleSettings, explosionEffect));
                         // delete the box
                         box = null;
                         ((Game1)Game).numberOfCoins++;
@@ -186,27 +216,12 @@ namespace FilodendronGame
 
                 }
 
-                for (int i=0; i<platforms.Count; i++)
+                foreach (BasicModel item in platforms)
                 {
-                    if (avatar.rigidBody.CollidesWith(platforms[i].model, platforms[i].World))
+                    if (avatar.rigidBody.CollidesWith(item.model, item.World))
                     {
-                        if (platforms[i].animation.isTrap)
-                        {
-                            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                            if (currentTime >= 2)
-                            {
-                                addNewExplosion(platforms[i].World);
-                                platforms[i].boundingBoxes = null;
-                                platforms.RemoveAt(i);
-                                --i;
-                                currentTime = 0;
-                            }
-                        }
-                        else
-                        {
-                            avatar.UpdatePosition(platforms[i].animation.avatarPositionChange);
-                        }
-                    }
+                        avatar.UpdatePosition(item.animation.avatarPositionChange);
+                    }  
                 }
 
                 // woda zabija, chcesz zeby nie zabijala to zakomentuj ifa ponizej
@@ -221,25 +236,6 @@ namespace FilodendronGame
 
                 base.Update(gameTime);
             }
-        }
-
-        protected void addNewExplosion(Matrix modelWorld)
-        {
-            explosions.Add(new ParticleExplosion(GraphicsDevice, avatar,
-                modelWorld,
-                ((Game1)Game).rnd.Next(
-                    particleExplosionSettings.minLife,
-                    particleExplosionSettings.maxLife),
-                ((Game1)Game).rnd.Next(
-                    particleExplosionSettings.minRoundTime,
-                    particleExplosionSettings.maxRoundTime),
-                ((Game1)Game).rnd.Next(
-                    particleExplosionSettings.minParticlesPerRound,
-                    particleExplosionSettings.maxParticlesPerRound),
-                ((Game1)Game).rnd.Next(
-                    particleExplosionSettings.minParticles,
-                    particleExplosionSettings.maxParticles),
-                    explosionColorsTexture, particleSettings, explosionEffect));
         }
 
         protected void UpdateExplosions(GameTime gameTime)
@@ -333,10 +329,9 @@ namespace FilodendronGame
 
         private void setPlatforms()
         {
-            addNewPlatform(new Vector3(-1200, 30, 2355), 6, 300, 5, 'Z',false);
-            addNewPlatform(new Vector3(-1800, 30, 5000), 3, 800, 2, 'Y',false);
-            addNewPlatform(new Vector3(4700, 2130, 3650), 5, -1400, 6, 'Z',false);
-            addNewPlatform(new Vector3(-2000, 750, 4500), 5, 755, 6, 'Y', true);
+            addNewPlatform(new Vector3(-1200, 30, 2355), 6, 300, 5, 'Z');
+            addNewPlatform(new Vector3(-1800, 30, 5000), 3, 800, 2, 'Y');
+            addNewPlatform(new Vector3(4700, 2130, 3650), 5, -1400, 6, 'Z');
 
             foreach (BasicModel item in platforms)
             {
@@ -345,13 +340,12 @@ namespace FilodendronGame
             }
         }
 
-        private void addNewPlatform(Vector3 startPosition, float size, float distance, float speed, char direction, bool trap)
+        private void addNewPlatform(Vector3 startPosition, float size, float distance, float speed, char direction)
         {
             BasicModel ToAdd;
 
             ToAdd = new BasicModel(Game.Content.Load<Model>(@"models\box"), startPosition, size);
-            ToAdd.animation = new PlatformAnimation(startPosition, distance, speed, direction);
-            ToAdd.animation.isTrap = trap;
+            ToAdd.animation = new PlatformAnimation(startPosition, distance, speed, direction, ToAdd);
             platforms.Add(ToAdd);
         }
     }

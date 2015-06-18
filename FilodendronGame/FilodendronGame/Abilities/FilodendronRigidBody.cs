@@ -70,8 +70,6 @@ namespace FilodendronGame.Abilities
             {
                 filodendron.gravity.allowGravity = true;
             }
-
-            //Debug.WriteLine(newPosition.Y);
         }
 
         public Vector3 MoveVector(BasicModel model)

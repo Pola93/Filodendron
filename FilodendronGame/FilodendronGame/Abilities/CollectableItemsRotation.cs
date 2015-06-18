@@ -24,5 +24,18 @@ namespace FilodendronGame.Abilities
         {
             return Matrix.CreateRotationY(yawSpeed) * World;
         }
+
+
+        public bool active
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

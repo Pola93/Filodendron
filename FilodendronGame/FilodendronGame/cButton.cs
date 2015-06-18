@@ -14,7 +14,7 @@ namespace FilodendronGame
         Vector2 position;
         Rectangle rectangle;
         Color colour = new Color(255,255,255,255);
-        MouseState oldMouseState;
+        //MouseState oldMouseState;
         public Vector2 size;
 
         public cButton(Texture2D newTexture, GraphicsDevice graphics)
