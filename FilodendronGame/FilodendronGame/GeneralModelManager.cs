@@ -129,7 +129,7 @@ namespace FilodendronGame
             {
                 avatar.Update(gameTime);
                 avatar.bullet.Update(gameTime);
-                avatar.bullet.rb.UpdateRigidBody(gameTime);
+                //avatar.bullet.rb.UpdateRigidBody(gameTime);
                 avatar.slave.Update(gameTime);
                 sektorMaszyn.Update(gameTime);
                 
