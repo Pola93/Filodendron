@@ -25,7 +25,7 @@ namespace FilodendronGame
 		MachineSector sektorMaszyn;
         public static List<BasicModel> allModels = new List<BasicModel>();
         List<CollectableItem> collectableItems = new List<CollectableItem>();
-        List<BasicModel> platforms = new List<BasicModel>();
+        public static List<BasicModel> platforms = new List<BasicModel>();
 
         public Filodendron avatar;
         public Matrix World = Matrix.Identity; // for boxes
@@ -67,14 +67,11 @@ namespace FilodendronGame
 
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);//Matrix.CreateTranslation(2000, 0, 185));
             boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
-            box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100, 1,'Z');
+            box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100, 1,'Z', box);
 
             sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj01-23"), Matrix.Identity);
             sektorMaszyn.texture = Game.Content.Load<Texture2D>(@"textures/texture01-12");
             sektorMaszyn.boundingBox = true;
-
-            allModels.Add(box);
-            allModels.Add(sektorMaszyn);
 
             avatar = new Filodendron(Game.Content.Load<Model>(@"models\test7_textures1"), Matrix.Identity);//Matrix.CreateTranslation(2500, 2200, 3500));
             avatar.skinningData = avatar.model.Tag as SkinningData;
@@ -83,6 +80,10 @@ namespace FilodendronGame
             avatar.slave = new Follower(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);
             avatar.slave.master = avatar;
             avatar.slave.followerPosition = avatar.avatarPosition;
+
+            allModels.Add(box);
+            allModels.Add(sektorMaszyn);
+            allModels.Add(avatar.bullet);
 
             if (avatar.skinningData == null)
                 throw new InvalidOperationException
@@ -97,7 +98,7 @@ namespace FilodendronGame
             avatar.avatarPosition = new Vector3(-4000, 40, 4000);
             Vector3 slaveShift =  new Vector3(200, 3, 200);
             avatar.slave.followerPosition = avatar.avatarPosition - slaveShift;
-
+            avatar.bullet.rb = new BulletRigidBody(avatar.bullet);
             // Load explosion textures and effect  
             explosionTexture = Game.Content.Load<Texture2D>(@"Textures\Particle");
             explosionColorsTexture = Game.Content.Load<Texture2D>(@"Textures\ParticleColors");
@@ -128,8 +129,10 @@ namespace FilodendronGame
             {
                 avatar.Update(gameTime);
                 avatar.bullet.Update(gameTime);
+                avatar.bullet.rb.UpdateRigidBody(gameTime);
                 avatar.slave.Update(gameTime);
                 sektorMaszyn.Update(gameTime);
+                
                 foreach (CollectableItem item in collectableItems)
                 {
                     item.Update(gameTime);
@@ -342,7 +345,7 @@ namespace FilodendronGame
             BasicModel ToAdd;
 
             ToAdd = new BasicModel(Game.Content.Load<Model>(@"models\box"), startPosition, size);
-            ToAdd.animation = new PlatformAnimation(startPosition, distance, speed, direction);
+            ToAdd.animation = new PlatformAnimation(startPosition, distance, speed, direction, ToAdd);
             platforms.Add(ToAdd);
         }
     }

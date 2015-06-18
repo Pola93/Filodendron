@@ -13,13 +13,14 @@ namespace FilodendronGame.Abilities
         private float startPosition;
         private float stopPosition;
         private bool animationStatus;
+        private BasicModel platform;
         private Vector3 position;
         private char direction;
         private float positionDirection;
         private float speed;
         public Vector3 avatarPositionChange { get; set; }
 
-        public PlatformAnimation(Vector3 startPosition, float stopPosition, float speed, char direction)
+        public PlatformAnimation(Vector3 startPosition, float stopPosition, float speed, char direction, BasicModel platform)
         {
             avatarPositionChange = Vector3.Zero;
             this.direction = direction;
@@ -29,6 +30,7 @@ namespace FilodendronGame.Abilities
             this.position = startPosition;
             this.stopPosition = stopPosition;
             this.speed = speed;
+            this.platform = platform;
         }
 
         public Matrix UpdateAnimation()
@@ -112,37 +114,37 @@ namespace FilodendronGame.Abilities
         public Vector3 AnimationBackwardZ()
         {
             avatarPositionChange = Vector3.Multiply(Vector3.Backward, speed);
-            return position += avatarPositionChange;
+            return this.platform.active ? position += avatarPositionChange : position;
         }
 
         public Vector3 AnimationForwardZ()
         {
             avatarPositionChange = Vector3.Multiply(Vector3.Forward, speed);
-            return position += avatarPositionChange;
+            return this.platform.active ? position += avatarPositionChange : position;
         }
 
         public Vector3 AnimationDownY()
         {
             avatarPositionChange = Vector3.Multiply(Vector3.Down, speed);
-            return position += avatarPositionChange;
+            return this.platform.active ? position += avatarPositionChange : position;
         }
 
         public Vector3 AnimationUpY()
         {
             avatarPositionChange = Vector3.Multiply(Vector3.Up, speed);
-            return position += avatarPositionChange;
+            return this.platform.active ? position += avatarPositionChange : position;
         }
 
         public Vector3 AnimationRightX()
         {
             avatarPositionChange = Vector3.Multiply(Vector3.Right, speed);
-            return position += avatarPositionChange;
+            return this.platform.active ? position += avatarPositionChange : position;
         }
 
         public Vector3 AnimationLeftX()
         {
             avatarPositionChange = Vector3.Multiply(Vector3.Left, speed);
-            return position += avatarPositionChange;
+            return this.platform.active ? position += avatarPositionChange : position;
         }
     }
 }

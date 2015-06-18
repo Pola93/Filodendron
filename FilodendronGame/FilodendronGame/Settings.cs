@@ -7,6 +7,6 @@ namespace FilodendronGame
 {
     class Settings
     {
-        public static float musicVolume;
+        public static float musicVolume = 0;
     }
 }

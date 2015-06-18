@@ -23,5 +23,6 @@ namespace FilodendronGame.Interfaces
         Vector3 AnimationUpY();
         Vector3 AnimationRightX();
         Vector3 AnimationLeftX();*/
+
     }
 }

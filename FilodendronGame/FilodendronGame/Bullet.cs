@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FilodendronGame.Abilities;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace FilodendronGame
         public bool visible = false;
         public Vector3 bulletSpeed;
         public Vector3 bulletPosition;
+        public BulletRigidBody rb;
 
         private Vector3 bulletShift = new Vector3(0, 45, 0);
 
