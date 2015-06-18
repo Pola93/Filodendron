@@ -47,9 +47,11 @@ namespace FilodendronGame
         cButton cBtnQuit;
         cButton cBtnBack;
         cButton cBtnGameOver;
+        cButton cBtnWin;
         cButton cBtnnext;
         cButton cBtnprev;
         cButton cBtnskip;
+        public bool win = false;
         SoundEffect soundBackground;
         SoundEffectInstance soundBackgroundInstance;
         // Don't like warnings
@@ -104,6 +106,8 @@ namespace FilodendronGame
             cBtnBack.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight * 5 / 6));
             cBtnGameOver = new cButton(Content.Load<Texture2D>(@"textures/przegrana"), graphics.GraphicsDevice);
             cBtnGameOver.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight / 2));
+            cBtnWin = new cButton(Content.Load<Texture2D>(@"textures/wygrana"), graphics.GraphicsDevice);
+            cBtnWin.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight / 2));
             cBtnnext = new cButton(Content.Load<Texture2D>(@"textures/next"), graphics.GraphicsDevice);
             cBtnnext.setPosition(new Vector2(screenWidth - 175, screenHeight/2 - 100));
             cBtnprev = new cButton(Content.Load<Texture2D>(@"textures/prev"), graphics.GraphicsDevice);
@@ -203,6 +207,7 @@ namespace FilodendronGame
                         this.Exit();
                     }
                     cBtnGameOver.update(mouse);
+                    cBtnWin.update(mouse);
                     break;
                 
                 case GameState.Options:
@@ -307,6 +312,10 @@ namespace FilodendronGame
                     if(numberOfLifes == 0)
                     {
                         cBtnGameOver.draw(spriteBatch);
+                    }
+                    if (win)
+                    {
+                        cBtnWin.draw(spriteBatch);
                     }
                     //spriteBatch.DrawString(font, "number of lifes" + numberOfLifes, new Vector2(100, 150), Color.Yellow);
                     spriteBatch.Draw(Content.Load<Texture2D>(@"textures/fanty"), new Rectangle(0, screenHeight - 100, 100, 80), Color.White);

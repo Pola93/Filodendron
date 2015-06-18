@@ -118,37 +118,55 @@ namespace FilodendronGame.Abilities
 
         public Vector3 AnimationBackwardZ()
         {
-            avatarPositionChange = Vector3.Multiply(Vector3.Backward, speed);
+            if (this.platform.active)
+            {
+                avatarPositionChange = Vector3.Multiply(Vector3.Backward, speed);
+            }
             return this.platform.active ? position += avatarPositionChange : position;
         }
 
         public Vector3 AnimationForwardZ()
         {
-            avatarPositionChange = Vector3.Multiply(Vector3.Forward, speed);
+            if (this.platform.active)
+            {
+                avatarPositionChange = Vector3.Multiply(Vector3.Forward, speed);
+            }
             return this.platform.active ? position += avatarPositionChange : position;
         }
 
         public Vector3 AnimationDownY()
         {
-            avatarPositionChange = Vector3.Multiply(Vector3.Down, speed);
+            if (this.platform.active)
+            {
+                avatarPositionChange = Vector3.Multiply(Vector3.Down, speed);
+            }
             return this.platform.active ? position += avatarPositionChange : position;
         }
 
         public Vector3 AnimationUpY()
         {
-            avatarPositionChange = Vector3.Multiply(Vector3.Up, speed);
+            if (this.platform.active)
+            {
+                avatarPositionChange = Vector3.Multiply(Vector3.Up, speed);
+            }
             return this.platform.active ? position += avatarPositionChange : position;
         }
 
         public Vector3 AnimationRightX()
         {
-            avatarPositionChange = Vector3.Multiply(Vector3.Right, speed);
+            if (this.platform.active)
+            {
+                avatarPositionChange = Vector3.Multiply(Vector3.Right, speed);
+            }
             return this.platform.active ? position += avatarPositionChange : position;
         }
 
         public Vector3 AnimationLeftX()
         {
-            avatarPositionChange = Vector3.Multiply(Vector3.Left, speed);
+            if (this.platform.active)
+            {
+                avatarPositionChange = Vector3.Multiply(Vector3.Left, speed);
+            }
             return this.platform.active ? position += avatarPositionChange : position;
         }
     }

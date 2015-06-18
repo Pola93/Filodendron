@@ -46,11 +46,6 @@ namespace FilodendronGame.Abilities
                         if (intersectsWith(b, a.BoundingSphere.Transform(bullet.World)))
                         {
                             model.activate();
-                            Debug.WriteLine(a.BoundingSphere.Radius);
-                            Debug.WriteLine(a.BoundingSphere.Center);
-                            Debug.WriteLine(b.Min);
-                            Debug.WriteLine(b.Max);
-                            Debug.WriteLine("lol");
                         }
                     }
                 }

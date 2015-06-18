@@ -218,6 +218,16 @@ namespace FilodendronGame
                 {
                     avatar.Die(Game);
                 }
+
+                //dotknij drzwi => wygrana
+                System.Diagnostics.Debug.WriteLine(avatar.avatarPosition);
+                if (avatar.avatarPosition.X > -6138 && avatar.avatarPosition.X < -6135 
+                    && avatar.avatarPosition.Y > 15 && avatar.avatarPosition.Y < 50 
+                    && avatar.avatarPosition.Z > -3409 && avatar.avatarPosition.Z < -2171)
+                {
+                    System.Diagnostics.Debug.WriteLine("ibdfgukiedbgyueirg" + ((Game1)Game).win);
+                    ((Game1)Game).win = true;
+                }
                 // Update explosions
                 UpdateExplosions(gameTime);
 
@@ -335,10 +345,21 @@ namespace FilodendronGame
 
         private void setPlatforms()
         {
-            addNewPlatform(new Vector3(-1200, 30, 2355), 6, 300, 5, 'Z',false);
-            addNewPlatform(new Vector3(-1800, 30, 5000), 3, 800, 2, 'Y',false);
-            addNewPlatform(new Vector3(4700, 2130, 3650), 5, -1400, 6, 'Z',false);
-            addNewPlatform(new Vector3(-2000, 750, 4500), 5, 755, 6, 'Y', true);
+            //addNewPlatform(new Vector3(-1200, 30, 2355), 6, 300, 5, 'Z',false);
+            addNewPlatform(new Vector3(-1800, 30, 5000), 3, 800, 2, 'Y',false);//pod srebrnym boxem
+            addNewPlatform(new Vector3(4700, 2130, 800), 6, 3650, 6, 'Z',false);//z fioletowej polki
+            addNewPlatform(new Vector3(4700, 2200, -1400), 6, 2000, 6, 'Z', false);//z fioletowej polki (2)
+            addNewPlatform(new Vector3(-1400, 750, 3800), 6, 1600, 4, 'Y', false);//na srebrnym boxie
+            addNewPlatform(new Vector3(-1200, 1700, 3800), 6, 800, 6, 'X', false);//nad srebrnym boxem do brazowego boxa
+            addNewPlatform(new Vector3(2650, 1700, 3800), 6, 1701, 6, 'Y', true);//miedzy brazowym boxem a fioletowym
+
+
+            // most na drugi przeb pod sciana
+            addNewPlatform(new Vector3(4700, 30, 2300), 6, 2350, 6, 'Z', true);
+            addNewPlatform(new Vector3(4700, 30, 1800), 6, 1850, 6, 'Z', true);
+            addNewPlatform(new Vector3(4700, 30, 1300), 6, 1350, 6, 'Z', true);
+            addNewPlatform(new Vector3(4700, 30, 800), 6, 850, 6, 'Z', true);
+            addNewPlatform(new Vector3(4700, 30, 300), 6, 350, 6, 'Z', true);
 
             foreach (BasicModel item in platforms)
             {

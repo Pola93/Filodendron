@@ -132,7 +132,7 @@ namespace FilodendronGame
                 ((keyboardState.IsKeyDown(Keys.D)) ? -(150f / 60f) * multiplier : 0);
 
             verticalSpeed = (gravity.allowGravity && !rigidBody.DetectCollision()) ? verticalSpeed - gravity.UpdateSpeed(gameTime) : 
-                ((keyboardState.IsKeyDown(Keys.Space) && (verticalSpeed > -0.0001f && verticalSpeed < 0.0001f)) ? 30f / 2f * multiplier : 0);
+                ((keyboardState.IsKeyDown(Keys.Space) && (verticalSpeed > -0.0001f && verticalSpeed < 0.0001f)) ? 20f / 2f * multiplier : 0);
 
             Matrix movement = Matrix.CreateRotationY(avatarYaw);
             Vector3 moveVector = new Vector3(sideSpeed, verticalSpeed, forwardSpeed);
@@ -161,6 +161,34 @@ namespace FilodendronGame
             avatarPosition.X += move.X;
             avatarPosition.Y += move.Y;
             avatarPosition.Z += move.Z;
+
+            pressKeyToTeleportFilon();
+        }
+
+        private void pressKeyToTeleportFilon()
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.D1))
+	        {
+                avatarPosition = new Vector3(-4000, 40, 4000);//start
+	        }
+            if (keyboardState.IsKeyDown(Keys.D2))
+            {
+                avatarPosition = new Vector3(1000, 1550, 3600);//brazowa skrzynia
+            }
+            if (keyboardState.IsKeyDown(Keys.D3))
+            {
+                avatarPosition = new Vector3(5000, 2130, 3650);//fioletowa polka1
+            }
+            if (keyboardState.IsKeyDown(Keys.D4))
+            {
+                avatarPosition = new Vector3(5000, 2130, -1550);//fioletowa polka 2
+            }
+            if (keyboardState.IsKeyDown(Keys.D5))
+            {
+                avatarPosition = new Vector3(-5449, 20, -3058);//koniec
+            }
         }
 
         public override void Draw(Model model, Matrix world, Texture2D texture, Camera camera, GameTime gameTime, GraphicsDeviceManager graphics)
