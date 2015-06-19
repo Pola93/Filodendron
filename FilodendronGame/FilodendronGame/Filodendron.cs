@@ -154,6 +154,7 @@ namespace FilodendronGame
         private void Shoot()
         {
             bullet.Shoot(this);
+            bullet.hit = false;
         }
 
         public void UpdatePosition(Vector3 move)

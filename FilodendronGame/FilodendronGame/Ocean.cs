@@ -81,7 +81,7 @@ namespace FilodendronGame
             ambientIntensityOceanParameter.SetValue(0.4f);
             ambientColorOceanParameter.SetValue(Color.White.ToVector4());
             diffuseColorOceanParameter.SetValue(Color.White.ToVector4());
-            diffuseIntensityOceanParameter.SetValue(0.2f);
+            diffuseIntensityOceanParameter.SetValue(1f);
             specularColorOceanParameter.SetValue(Color.White.ToVector4());
             eyePosOceanParameter.SetValue(camera.cameraPosition);
             colorMapTextureOceanParameter.SetValue(diffuseOceanTexture);

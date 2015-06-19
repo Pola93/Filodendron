@@ -45,7 +45,15 @@ namespace FilodendronGame.Abilities
                     {
                         if (intersectsWith(b, a.BoundingSphere.Transform(bullet.World)))
                         {
-                            model.activate();
+                            bullet.hit = true;
+                            if (model.isActivated())
+                            {
+                                model.disactivate();
+                            }
+                            else
+	                        {
+                                model.activate();
+	                        }
                         }
                     }
                 }

@@ -44,9 +44,19 @@ namespace FilodendronGame
             this.scale = scale;
         }
 
-        public virtual void activate()
+        public void activate()
         {
             this.active = true;
+        }
+
+        public void disactivate()
+        {
+            this.active = false;
+        }
+
+        public bool isActivated()
+        {
+            return this.active;
         }
 
         public virtual void Update(GameTime gameTime)

@@ -276,13 +276,14 @@ namespace FilodendronGame
         protected override void Draw(GameTime gameTime)
         {
            
-            graphics.GraphicsDevice.Clear(Color.SteelBlue);
+            graphics.GraphicsDevice.Clear(Color.Green);
             base.Draw(gameTime);
             spriteBatch.Begin();
             
             switch (currentGameState)
             {
                 case GameState.Intro:
+                    spriteBatch.Draw(Content.Load<Texture2D>(@"textures/purebackground"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
                     if(s == 1)
                     spriteBatch.Draw(Content.Load<Texture2D>(@"textures/filoden1f"), new Rectangle(screenWidth/2-363, 0, 726, screenHeight), Color.White);
                     else if(s == 2)

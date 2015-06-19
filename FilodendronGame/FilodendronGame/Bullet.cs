@@ -15,6 +15,7 @@ namespace FilodendronGame
         public Vector3 bulletSpeed;
         public Vector3 bulletPosition;
         public BulletRigidBody rb;
+        public bool hit = false;
 
         private Vector3 bulletShift = new Vector3(0, 45, 0);
 
@@ -45,7 +46,7 @@ namespace FilodendronGame
             Matrix movement = Matrix.CreateRotationY(filodendron.avatarYaw + 0.8f);
             World = filodendron.World * Matrix.CreateRotationY(filodendron.avatarYaw);
 
-            bulletSpeed = new Vector3(-10, 0, 10);
+            bulletSpeed = new Vector3(-50, 0, 50);
             bulletSpeed = Vector3.Transform(bulletSpeed, movement);
             bulletPosition = filodendron.avatarPosition + bulletShift;
 

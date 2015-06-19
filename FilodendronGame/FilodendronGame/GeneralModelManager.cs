@@ -279,7 +279,11 @@ namespace FilodendronGame
                 }
                 ocean.Draw(ocean.model, ocean.World, ocean.diffuseOceanTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 sektorMaszyn.Draw(sektorMaszyn.model, sektorMaszyn.World, sektorMaszyn.texture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
-                avatar.bullet.Draw(avatar.bullet.model, avatar.bullet.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+                if (!avatar.bullet.hit)
+                {
+                    avatar.bullet.Draw(avatar.bullet.model, avatar.bullet.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);    
+                }
+                
                 avatar.slave.Draw(avatar.slave.model, avatar.slave.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 
                 // Loop through and draw each particle explosion
