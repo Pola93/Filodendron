@@ -75,7 +75,7 @@ namespace FilodendronGame
         Vector3 UpdateCameraThirdPerson()
         {
             // Counting pitch angle to rotate
-            if (Mouse.GetState().Y != prevMouseState.Y)
+            if (Mouse.GetState().Y != prevMouseState.Y && this.cameraPosition.Y > ((Game1)Game).modelManager.avatar.avatarPosition.Y)
             {
                 cameraPitch -= (Mouse.GetState().Y - prevMouseState.Y) * rotationSpeed;
             }
