@@ -20,8 +20,9 @@ namespace FilodendronGame
     public class GeneralModelManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
         // Everything with comment "for boxes" will be deleted later
-        BasicModel box;
-        Texture2D boxTexture;
+        Texture2D platformTexture;
+        Texture2D collectableItemTexture;
+        Texture2D bulletTexture;
 		MachineSector sektorMaszyn;
         public static List<BasicModel> allModels = new List<BasicModel>();
         List<CollectableItem> collectableItems = new List<CollectableItem>();
@@ -69,9 +70,9 @@ namespace FilodendronGame
             this.setPlatforms();
             this.setBlades();
 
-            box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);//Matrix.CreateTranslation(2000, 0, 185));
-            boxTexture = Game.Content.Load<Texture2D>(@"textures/tex1");
-            box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100, 1,'Z', box);
+            platformTexture = Game.Content.Load<Texture2D>(@"textures/tex1");
+            collectableItemTexture = Game.Content.Load<Texture2D>(@"textures/tex2");
+            bulletTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
 
             sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj1-24"), Matrix.Identity);
             sektorMaszyn.texture = Game.Content.Load<Texture2D>(@"textures/texture01-12");
@@ -85,7 +86,6 @@ namespace FilodendronGame
             avatar.slave.master = avatar;
             avatar.slave.followerPosition = avatar.avatarPosition;
 
-            allModels.Add(box);
             allModels.Add(sektorMaszyn);
             allModels.Add(avatar.bullet);
 
@@ -152,10 +152,6 @@ namespace FilodendronGame
                     item.Update(gameTime);
                 }
 
-                if (box != null)
-                {
-                    box.Update(gameTime);
-                }
                 ocean.Update(gameTime);
                 //if the side boundry of screen reached, set the mouse on the other side
                 if (Mouse.GetState().X >= Game.Window.ClientBounds.Width -2)
@@ -184,20 +180,6 @@ namespace FilodendronGame
                     }
                 }
                 collectableItems.RemoveAll(item => item.isCollected);
-                /////////////////////////////// ten box bedzie do wywalenia na koncu bo byl tylko do testów
-                if (box != null)
-                {
-                    if (avatar.rigidBody.CollidesWith(box.model, box.World))
-                    {
-                        // Collision! add an explosion. 
-                        addNewExplosion(box.World);
-                        // delete the box
-                        box = null;
-                        ((Game1)Game).numberOfCoins++;
-                        avatar.Die(Game);
-                    }
-
-                }
 
                 for (int i = 0; i < platforms.Count; i++)
                 {
@@ -320,10 +302,10 @@ namespace FilodendronGame
                 sektorMaszyn.Draw(sektorMaszyn.model, sektorMaszyn.World, sektorMaszyn.texture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 if (!avatar.bullet.hit)
                 {
-                    avatar.bullet.Draw(avatar.bullet.model, avatar.bullet.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);    
+                    avatar.bullet.Draw(avatar.bullet.model, avatar.bullet.World, bulletTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);    
                 }
-                
-                avatar.slave.Draw(avatar.slave.model, avatar.slave.World, null, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+
+                avatar.slave.Draw(avatar.slave.model, avatar.slave.World, bulletTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 
                 // Loop through and draw each particle explosion
                 foreach (ParticleExplosion pe in explosions)
@@ -331,22 +313,11 @@ namespace FilodendronGame
                     pe.Draw(((Game1)Game).camera);
                 }
 
-                // for boxes
-                if (box != null)
-                {
-                    box.Draw(box.model,
-                             box.World,
-                             boxTexture, 
-                             ((Game1)Game).camera, 
-                             gameTime, 
-                             ((Game1)Game).graphics);
-                }
-
                 foreach (BasicModel item in platforms)
                 {
                     item.Draw(item.model,
                               item.World,
-                              boxTexture, 
+                              platformTexture, 
                               ((Game1)Game).camera, 
                               gameTime, 
                               ((Game1)Game).graphics);   
@@ -358,7 +329,7 @@ namespace FilodendronGame
                     {
                         item.Draw(item.model,
                                   item.World,
-                                  boxTexture, 
+                                  collectableItemTexture, 
                                   ((Game1)Game).camera, gameTime, 
                                   ((Game1)Game).graphics); 
                     }
@@ -368,7 +339,7 @@ namespace FilodendronGame
                 {
                     blade.Draw(blade.model,
                               blade.World,
-                              boxTexture,
+                              platformTexture,
                               ((Game1)Game).camera,
                               gameTime,
                               ((Game1)Game).graphics);

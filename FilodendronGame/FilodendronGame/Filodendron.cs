@@ -145,7 +145,7 @@ namespace FilodendronGame
             UpdatePosition(moveVector);
             if (verticalSpeed<=heightOfDeath)
             {
-                this.avatarFell= true;
+                this.avatarFell = true;
             }
             if (forwardSpeed != 0 || sideSpeed != 0)
             {

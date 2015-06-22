@@ -40,7 +40,7 @@ namespace FilodendronGame
         public GameState currentGameState = GameState.MainMenu;
         //Screen adjustment
         static  int screenWidth = 1366, screenHeight = 768;
-        public int numberOfLifes = 1;
+        public int numberOfLifes = 4;
         public int numberOfCoins = 0;
         private int s = 1;
         private MouseState old;
@@ -108,7 +108,7 @@ namespace FilodendronGame
             cBtnQuit = new cButton(Content.Load<Texture2D>(@"textures/exitButton"), graphics.GraphicsDevice);
             cBtnQuit.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight * 5 / 6));
             cBtnBack = new cButton(Content.Load<Texture2D>(@"textures/backButton"), graphics.GraphicsDevice);
-            cBtnBack.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight * 5 / 6));
+            cBtnBack.setPosition(new Vector2(screenWidth / 5, screenHeight * 5 / 6));
             cBtnGameOver = new cButton(Content.Load<Texture2D>(@"textures/przegrana"), graphics.GraphicsDevice);
             cBtnGameOver.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight / 2));
             cBtnWin = new cButton(Content.Load<Texture2D>(@"textures/wygrana"), graphics.GraphicsDevice);
@@ -136,12 +136,7 @@ namespace FilodendronGame
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {
-            // Allows the game to exit
-            //if (cBtnQuit.isClicked == true)
-            //{
-            //    this.Exit();
-            //}
+        {            
        /*     int counter = 1;
             int limit = 5;
             float countDuration = 2f; //every  2s.
@@ -181,6 +176,11 @@ namespace FilodendronGame
                     {
                         currentGameState = GameState.Intro;
                     }
+
+                    if (cBtnQuit.isClicked == true)
+                    {
+                        this.Exit();
+                    }
                     
                     cBtnPlay.update(mouse);
 
@@ -190,11 +190,6 @@ namespace FilodendronGame
                     }
 
                     cBtnOptions.update(mouse);
-                    
-                    if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                    {
-                       this.Exit();
-                    }
                     
                     cBtnQuit.update(mouse);
 
@@ -314,6 +309,7 @@ namespace FilodendronGame
                     cBtnEnter.draw(spriteBatch);
                     break;
                 case GameState.Intro:
+                    this.IsMouseVisible = true;
                     spriteBatch.Draw(Content.Load<Texture2D>(@"textures/purebackground"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
                     if(s == 1)
                     spriteBatch.Draw(Content.Load<Texture2D>(@"textures/filoden1f"), new Rectangle(screenWidth/2-363, 0, 726, screenHeight), Color.White);
@@ -330,6 +326,7 @@ namespace FilodendronGame
                     cBtnskip.draw(spriteBatch);
                     break;
                 case GameState.MainMenu:
+                    this.IsMouseVisible = true;
                     spriteBatch.Draw(Content.Load<Texture2D>(@"textures/MainMenu"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
                     cBtnPlay.draw(spriteBatch);
                     cBtnOptions.draw(spriteBatch);
@@ -354,6 +351,7 @@ namespace FilodendronGame
                     spriteBatch.DrawString(font, " " + numberOfCoins, new Vector2(120, screenHeight - 80), Color.Yellow);
                     break;
                 case GameState.Options:
+                    this.IsMouseVisible = true;
                     spriteBatch.Draw(Content.Load<Texture2D>(@"textures/purebackground"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
                     drawText();
                     cBtnBack.draw(spriteBatch);
@@ -369,12 +367,7 @@ namespace FilodendronGame
             spriteBatch.DrawString(font, "Aby zmniejszyæ naciœnij klawisz DOWN", new Vector2(100, 150), Color.Yellow);
             spriteBatch.DrawString(font, "aby zwiêkszyæ UP", new Vector2(100, 200), Color.Yellow);
         }
-        public void Die()
-        {
-            if (numberOfLifes > 0)
-                numberOfLifes--;
-            modelManager.avatar.avatarPosition = new Vector3(-4000, 40, 4000);
-        }
+
         public bool checkActivity(KeyboardState keyboardState)
         {
             // Check to see if the input states are different from last frame
