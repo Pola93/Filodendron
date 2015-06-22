@@ -32,7 +32,6 @@ namespace FilodendronGame
         // Set distance from the camera of the near and far clipping planes.
         static float nearClip = 1.0f;
         static float farClip = 15000.0f;
-
         public float rotationSpeed = 1f / 500f;
         public float cameraPitch = 0;
 
@@ -97,10 +96,15 @@ namespace FilodendronGame
                 UpdateCameraCurve(gameTime);
             }
             // TODO: Add your update code here
+
             if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing)
             {
-                
+            
                 this.cameraPosition = UpdateCameraThirdPerson();
+            }
+            if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.AvatarRoll)
+            {
+                UpdateIdleCurve(gameTime);
             }
            
             base.Update(gameTime);
@@ -122,6 +126,24 @@ namespace FilodendronGame
 
             time += gameTime.ElapsedGameTime.TotalMilliseconds;
         }
+        void UpdateIdleCurve(GameTime gameTime)
+        {
+            // Calculate the camera's current position.
+            Vector3 cameraPosition =
+                ((Game1)Game).modelManager.avatar.avatarPosition;
+            Vector3 cameraLookat =
+                ((Game1)Game).modelManager.avatar.avatarPosition;
+
+            // Set up the view matrix and projection matrix.
+            view = Matrix.CreateLookAt(cameraPosition, cameraLookat,
+                new Vector3(0.0f, 1.0f, 0.0f));
+
+            proj = Matrix.CreatePerspectiveFieldOfView(FOV, aspectRatio,
+                nearClip, farClip);
+
+            time += gameTime.ElapsedGameTime.TotalMilliseconds;
+        }
+        
         
         /// <summary>
         /// Updates the camera when it's in the 3rd person state.

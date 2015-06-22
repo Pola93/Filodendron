@@ -29,6 +29,7 @@ namespace FilodendronGame
             Playing,
             Intro,
             CameraRoll,
+            AvatarRoll,
         };
         public enum SoundState
         {
@@ -55,6 +56,9 @@ namespace FilodendronGame
         public bool win = false;
         SoundEffect soundBackground;
         SoundEffectInstance soundBackgroundInstance;
+        static private int TimeOutLimit = 20000; // 20 seconds
+        // Amount of time that has passed.
+        private double timeoutCount = 0;
         // Don't like warnings
         // If you're not using variable right now - comment it
         // SoundEffect soundHyperspaceActivation;
@@ -154,7 +158,7 @@ namespace FilodendronGame
                    
                 //any actions to perform
             }*/
-            
+             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
             old = mouse;
             switch (currentGameState)
@@ -272,6 +276,20 @@ namespace FilodendronGame
 
                     break;
             }
+
+            if (checkActivity(keyboardState) == false)
+            {
+                timeoutCount += gameTime.ElapsedGameTime.Milliseconds;
+            }
+            else
+                timeoutCount = 0;
+
+
+            // Timeout if idle long enough
+            if (timeoutCount > TimeOutLimit)
+            {
+                currentGameState = GameState.CameraRoll;
+            }
             base.Update(gameTime);
         }
         
@@ -349,6 +367,17 @@ namespace FilodendronGame
             if (numberOfLifes > 0)
                 numberOfLifes--;
             modelManager.avatar.avatarPosition = new Vector3(-4000, 40, 4000);
+        }
+        public bool checkActivity(KeyboardState keyboardState)
+        {
+            // Check to see if the input states are different from last frame
+            bool keybidle = keyboardState.GetPressedKeys().Length == 0;
+            if (keybidle)
+            {
+                // no activity;
+                return false;
+            }
+            return true;
         }
     }
 }
