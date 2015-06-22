@@ -341,15 +341,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\tex1.png">
-      <Name>tex1</Name>
+    <Compile Include="Textures\platformTex.png">
+      <Name>platformTex</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\tex2.png">
-      <Name>tex2</Name>
+    <Compile Include="Textures\collTex.png">
+      <Name>collTex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\bulletTex.png">
+      <Name>bulletTex</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

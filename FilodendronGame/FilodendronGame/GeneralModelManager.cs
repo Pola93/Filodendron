@@ -23,6 +23,7 @@ namespace FilodendronGame
         Texture2D platformTexture;
         Texture2D collectableItemTexture;
         Texture2D bulletTexture;
+        Texture2D boxTexture;
 		MachineSector sektorMaszyn;
         public static List<BasicModel> allModels = new List<BasicModel>();
         List<CollectableItem> collectableItems = new List<CollectableItem>();
@@ -70,9 +71,10 @@ namespace FilodendronGame
             this.setPlatforms();
             this.setBlades();
 
-            platformTexture = Game.Content.Load<Texture2D>(@"textures/tex1");
-            collectableItemTexture = Game.Content.Load<Texture2D>(@"textures/tex2");
-            bulletTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
+            platformTexture = Game.Content.Load<Texture2D>(@"textures/platformTex");
+            collectableItemTexture = Game.Content.Load<Texture2D>(@"textures/collTex");
+            bulletTexture = Game.Content.Load<Texture2D>(@"textures/bulletTex");
+            boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
 
             sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj1-24"), Matrix.Identity);
             sektorMaszyn.texture = Game.Content.Load<Texture2D>(@"textures/texture01-12");
@@ -305,7 +307,7 @@ namespace FilodendronGame
                     avatar.bullet.Draw(avatar.bullet.model, avatar.bullet.World, bulletTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);    
                 }
 
-                avatar.slave.Draw(avatar.slave.model, avatar.slave.World, bulletTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
+                avatar.slave.Draw(avatar.slave.model, avatar.slave.World, boxTexture, ((Game1)Game).camera, gameTime, ((Game1)Game).graphics);
                 
                 // Loop through and draw each particle explosion
                 foreach (ParticleExplosion pe in explosions)
@@ -414,9 +416,9 @@ namespace FilodendronGame
         private void setPlatforms()
         {
             //addNewPlatform(new Vector3(-1200, 30, 2355), 6, 300, 5, 'Z',false);
-            addNewPlatform(new Vector3(-1800, 30, 5000), 3, 800, 2, 'Y',false);//pod srebrnym boxem
+            addNewPlatform(new Vector3(-1800, 30, 5000), 5, 800, 2, 'Y',false);//pod srebrnym boxem
             addNewPlatform(new Vector3(4700, 2130, 800), 6, 3650, 6, 'Z',false);//z fioletowej polki
-            addNewPlatform(new Vector3(4700, 2200, -1400), 6, 2000, 6, 'Z', false);//z fioletowej polki (2)
+            addNewPlatform(new Vector3(4700, 2300, -1400), 6, 2000, 6, 'Z', false);//z fioletowej polki (2)
             addNewPlatform(new Vector3(-1400, 750, 3800), 6, 1600, 4, 'Y', false);//na srebrnym boxie
             addNewPlatform(new Vector3(-1200, 1700, 3800), 6, 800, 6, 'X', false);//nad srebrnym boxem do brazowego boxa
             addNewPlatform(new Vector3(2650, 1700, 3800), 6, 1701, 6, 'Y', true);//miedzy brazowym boxem a fioletowym
