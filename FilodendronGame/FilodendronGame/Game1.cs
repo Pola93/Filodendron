@@ -53,6 +53,7 @@ namespace FilodendronGame
         cButton cBtnnext;
         cButton cBtnprev;
         cButton cBtnskip;
+        cButton cBtnEnter;
         public bool win = false;
         SoundEffect soundBackground;
         SoundEffectInstance soundBackgroundInstance;
@@ -118,6 +119,8 @@ namespace FilodendronGame
             cBtnprev.setPosition(new Vector2(screenWidth - 175, screenHeight/2 + 100));
             cBtnskip = new cButton(Content.Load<Texture2D>(@"textures/skip"), graphics.GraphicsDevice);
             cBtnskip.setPosition(new Vector2(screenWidth - 175, screenHeight/2));
+            cBtnEnter = new cButton(Content.Load<Texture2D>(@"textures/enter"), graphics.GraphicsDevice);
+            cBtnEnter.setPosition(new Vector2(screenWidth / 2 - 100, screenHeight * 5 / 6));
 
             soundBackground = Content.Load<SoundEffect>("Audio\\Waves\\ZombiePlant");
             soundBackgroundInstance = soundBackground.CreateInstance();
@@ -164,10 +167,11 @@ namespace FilodendronGame
             switch (currentGameState)
             {
                 case GameState.CameraRoll:
-                    if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                    if (cBtnEnter.isClicked == true || Keyboard.GetState().IsKeyDown(Keys.Enter))
                     {
                         currentGameState = GameState.Playing;
                     }
+                    cBtnEnter.update(mouse);
                     break;
                    
                 case GameState.MainMenu:
@@ -306,6 +310,9 @@ namespace FilodendronGame
             
             switch (currentGameState)
             {
+                case GameState.CameraRoll:
+                    cBtnEnter.draw(spriteBatch);
+                    break;
                 case GameState.Intro:
                     spriteBatch.Draw(Content.Load<Texture2D>(@"textures/purebackground"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
                     if(s == 1)
