@@ -20,6 +20,7 @@ namespace FilodendronGame
 
         public Vector3 avatarOldPosition;
         public Vector3 avatarPosition;
+        public Vector3 avatarResp = new Vector3(-4000, 40, 4000);
         public Vector3 avatarSpeed;
         public Bullet bullet;
         public Follower slave;
@@ -257,7 +258,7 @@ namespace FilodendronGame
         {
             if (((Game1)Game).numberOfLifes > 0)
                 ((Game1)Game).numberOfLifes--;
-            avatarPosition = new Vector3(-4000, 40, 4000);
+            avatarPosition = avatarResp;
             this.hasAvatarJustDied = true;
         }
     }

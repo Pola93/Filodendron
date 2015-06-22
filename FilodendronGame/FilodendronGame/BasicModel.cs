@@ -34,6 +34,7 @@ namespace FilodendronGame
         {
             this.model = m;
             this.World = world;
+            this.position = world.Translation;
         }
 
         public BasicModel(Model m, Vector3 world, float scale)

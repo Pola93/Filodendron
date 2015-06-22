@@ -174,6 +174,8 @@ namespace FilodendronGame
                     {
                         // Collision! add an explosion. 
                         addNewExplosion(item.Position);
+                        //change avatarRespawn
+                        avatar.avatarResp = item.position;
                         // delete the box
                         item.isCollected = true;
                         ((Game1)Game).numberOfCoins++;
