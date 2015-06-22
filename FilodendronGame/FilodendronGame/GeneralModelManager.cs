@@ -228,6 +228,12 @@ namespace FilodendronGame
                     }
                 }
 
+                if (avatar.avatarFell == true)
+                {
+                    avatar.avatarFell = false;
+                    avatar.Die(Game);
+                }
+
                 // woda zabija, chcesz zeby nie zabijala to zakomentuj ifa ponizej
                 if (avatar.avatarPosition.X > -6253 && avatar.avatarPosition.X < 5466 
                     && avatar.avatarPosition.Y > -5 && avatar.avatarPosition.Y < 50 
