@@ -70,7 +70,7 @@ namespace FilodendronGame
             this.setBlades();
 
             box = new BasicModel(Game.Content.Load<Model>(@"models\box"), Matrix.Identity);//Matrix.CreateTranslation(2000, 0, 185));
-            boxTexture = Game.Content.Load<Texture2D>(@"textures/boxtexture");
+            boxTexture = Game.Content.Load<Texture2D>(@"textures/tex1");
             box.animation = new PlatformAnimation(new Vector3(20, 0, 185), 100, 1,'Z', box);
 
             sektorMaszyn = new MachineSector(Game.Content.Load<Model>(@"models\pokoj1-24"), Matrix.Identity);
