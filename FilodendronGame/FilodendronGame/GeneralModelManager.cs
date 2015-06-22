@@ -39,6 +39,8 @@ namespace FilodendronGame
         Texture2D explosionColorsTexture;
         Effect explosionEffect;
 
+        private BasicModel explodedPlatform;
+
         //for ocean
         Ocean ocean;
 
@@ -206,11 +208,12 @@ namespace FilodendronGame
                             platforms[i].animation.currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                             if (platforms[i].animation.currentTime >= 2)
                             {
+                                platforms[i].animation.currentTime = 0;
+                                explodedPlatform = platforms[i];
                                 addNewExplosion(platforms[i].World);
                                 platforms[i].boundingBoxes = null;
                                 platforms.RemoveAt(i);
                                 --i;
-                                platforms[i].animation.currentTime = 0;
                             }
                         }
                         else
@@ -219,6 +222,7 @@ namespace FilodendronGame
                         }
                     }
                 }
+                restoreExplodedPlatform(gameTime);
 
                 foreach (BasicModel blade in blades)
                 {
@@ -273,6 +277,20 @@ namespace FilodendronGame
                     particleExplosionSettings.minParticles,
                     particleExplosionSettings.maxParticles),
                     explosionColorsTexture, particleSettings, explosionEffect));
+        }
+
+        protected void restoreExplodedPlatform(GameTime gameTime)
+        {
+            if (explodedPlatform != null)
+            {
+                explodedPlatform.animation.currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (explodedPlatform.animation.currentTime >= 5)
+                {
+                    explodedPlatform.animation.currentTime = 0;
+                    platforms.Add(explodedPlatform);
+                    explodedPlatform = null;
+                }
+            }
         }
 
         protected void UpdateExplosions(GameTime gameTime)
@@ -380,11 +398,19 @@ namespace FilodendronGame
 
         private void setBlades() 
         {
-            addNewBlade(new Vector3(4000, 800, -1000), 5, -1700, 2, 'Z');
-            addNewBlade(new Vector3(3500, 800, -1000), 5, -1700, 2, 'Z');
-            addNewBlade(new Vector3(3000, 800, -1000), 5, -1700, 2, 'Z');
-            addNewBlade(new Vector3(2500, 800, -1000), 5, -1700, 2, 'Z');
-            addNewBlade(new Vector3(2000, 800, -1000), 5, -1700, 2, 'Z');
+            addNewBlade(new Vector3(4000, 800, -900), 5, -1500, 2, 'Z');
+            addNewBlade(new Vector3(3500, 800, -900), 5, -1500, 4, 'Z');
+            addNewBlade(new Vector3(3000, 800, -900), 5, -1500, 6, 'Z');
+            addNewBlade(new Vector3(2500, 800, -900), 5, -1500, 8, 'Z');
+            addNewBlade(new Vector3(2000, 800, -900), 5, -1500, 10, 'Z');
+
+            addNewBlade(new Vector3(4000, 750, -750), 5, 1500, 10, 'X');
+            addNewBlade(new Vector3(4000, 750, -1700), 5, 1500, 10, 'X');
+
+            addNewBlade(new Vector3(4250, 100, -800), 5, -1600, 20, 'Z');
+            addNewBlade(new Vector3(4250, 300, -800), 5, -1600, 20, 'Z');
+            addNewBlade(new Vector3(4250, 100, -1600), 5, -800, 20, 'Z');
+            addNewBlade(new Vector3(4250, 300, -1600), 5, -800, 20, 'Z');
         }
 
         private void addNewBlade(Vector3 startPosition, float size, float distance, float speed, char direction)
@@ -404,13 +430,33 @@ namespace FilodendronGame
             addNewPlatform(new Vector3(-1200, 1700, 3800), 6, 800, 6, 'X', false);//nad srebrnym boxem do brazowego boxa
             addNewPlatform(new Vector3(2650, 1700, 3800), 6, 1701, 6, 'Y', true);//miedzy brazowym boxem a fioletowym
 
+            //druga strona poczatek
+            addNewPlatform(new Vector3(5000, 2100, -1000), 6, 100, 4, 'Y', false);
+            addNewPlatform(new Vector3(4600, 100, -1000), 6, 800, 5, 'Y', false);
 
-            // most na drugi przeb pod sciana
+            // most na drugi brzeg pod sciana
             addNewPlatform(new Vector3(4700, 30, 2300), 6, 2350, 6, 'Z', true);
             addNewPlatform(new Vector3(4700, 30, 1800), 6, 1850, 6, 'Z', true);
             addNewPlatform(new Vector3(4700, 30, 1300), 6, 1350, 6, 'Z', true);
             addNewPlatform(new Vector3(4700, 30, 800), 6, 850, 6, 'Z', true);
             addNewPlatform(new Vector3(4700, 30, 300), 6, 350, 6, 'Z', true);
+
+            //wejscie na polke za zebatkami
+            addNewPlatform(new Vector3(1000, 800, -1100), 6, 1300, 4, 'Y', false);
+            addNewPlatform(new Vector3(800, 1500, -1600), 6, 1550, 4, 'Y', true);
+
+            //miedzy kartonami
+            addNewPlatform(new Vector3(-700, 1800, -1600), 6, 1850, 4, 'Y', true);
+
+            //mosty miedzy niebieskimi polkami
+            addNewPlatform(new Vector3(-900, 2000, -2800), 6, 2050, 4, 'Y', true);
+            addNewPlatform(new Vector3(-400, 2000, -2800), 6, 2050, 4, 'Y', true);
+            addNewPlatform(new Vector3(100, 2200, -2200), 6, 1350, 4, 'Y', false);
+            addNewPlatform(new Vector3(-900, 1300, -2800), 6, 1350, 4, 'Y', true);
+            addNewPlatform(new Vector3(-400, 1300, -2800), 6, 1350, 4, 'Y', true);
+            addNewPlatform(new Vector3(-1500, 1500, -3700), 6, 650, 4, 'Y', false);
+            addNewPlatform(new Vector3(-900, 600, -2800), 6, 650, 4, 'Y', true);
+            addNewPlatform(new Vector3(-400, 600, -2800), 6, 650, 4, 'Y', true);
 
             foreach (BasicModel item in platforms)
             {

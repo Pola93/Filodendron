@@ -195,6 +195,10 @@ namespace FilodendronGame
             }
             if (keyboardState.IsKeyDown(Keys.D5))
             {
+                avatarPosition = new Vector3(500, 2000, -1600); //blok z niebieskimi polkami
+            }
+            if (keyboardState.IsKeyDown(Keys.D6))
+            {
                 avatarPosition = new Vector3(-5449, 20, -3058);//koniec
             }
         }
