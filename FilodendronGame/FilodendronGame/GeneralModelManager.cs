@@ -127,7 +127,7 @@ namespace FilodendronGame
         public override void Update(GameTime gameTime)
         {
 
-            if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing)
+            if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing || ((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.CameraRoll)
             {
                 avatar.Update(gameTime);
                 avatar.bullet.Update(gameTime);
@@ -286,7 +286,7 @@ namespace FilodendronGame
 
         public override void Draw(GameTime gameTime)
         {
-            if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing)
+            if (((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.Playing || ((Game1)Game).currentGameState == FilodendronGame.Game1.GameState.CameraRoll)
             {
                 if (avatar.isModelVisible)
                 {
