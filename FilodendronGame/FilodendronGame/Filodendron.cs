@@ -143,7 +143,7 @@ namespace FilodendronGame
             moveVector = Vector3.Transform(moveVector, movement);
             this.avatarSpeed = moveVector;
             UpdatePosition(moveVector);
-            if (verticalSpeed<=heightOfDeath)
+            if (verticalSpeed<=heightOfDeath && !hasAvatarJustDied)
             {
                 this.avatarFell = true;
             }
