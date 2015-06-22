@@ -57,7 +57,7 @@ namespace FilodendronGame
         public bool win = false;
         SoundEffect soundBackground;
         SoundEffectInstance soundBackgroundInstance;
-        static private int TimeOutLimit = 20000; // 20 seconds
+        static private int TimeOutLimit = 120000; // 20 seconds
         // Amount of time that has passed.
         private double timeoutCount = 0;
         // Don't like warnings
