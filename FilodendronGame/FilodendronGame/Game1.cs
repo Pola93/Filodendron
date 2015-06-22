@@ -28,6 +28,7 @@ namespace FilodendronGame
             Options,
             Playing,
             Intro,
+            CameraRoll,
         };
         public enum SoundState
         {
@@ -37,7 +38,7 @@ namespace FilodendronGame
         }
         public GameState currentGameState = GameState.MainMenu;
         //Screen adjustment
-        int screenWidth = 1366, screenHeight = 768;
+        static  int screenWidth = 1366, screenHeight = 768;
         public int numberOfLifes = 1;
         public int numberOfCoins = 0;
         private int s = 1;
@@ -65,11 +66,11 @@ namespace FilodendronGame
             Content.RootDirectory = "Content";
 
         }
-
+       
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
             // Initialize model manager
             modelManager = new GeneralModelManager(this);
             Components.Add(modelManager);
@@ -83,7 +84,6 @@ namespace FilodendronGame
 
             base.Initialize();
         }
-
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -159,8 +159,14 @@ namespace FilodendronGame
             old = mouse;
             switch (currentGameState)
             {
+                case GameState.CameraRoll:
+                    if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                    {
+                        currentGameState = GameState.Playing;
+                    }
+                    break;
+                   
                 case GameState.MainMenu:
-                    //  soundBackgroundInstance.IsLooped = true;
                     soundBackgroundInstance.Play();
                     
                     if (cBtnPlay.isClicked == true)
@@ -245,7 +251,7 @@ namespace FilodendronGame
                 case GameState.Intro:
                     if (cBtnskip.isClicked == true)
                     {
-                        currentGameState = GameState.Playing;
+                        currentGameState = GameState.CameraRoll;
                     }
                     cBtnskip.update(mouse);
                     if(cBtnnext.isClicked == true && old.LeftButton == ButtonState.Released)
@@ -253,7 +259,7 @@ namespace FilodendronGame
                         if (s < 5)
                             s++;
                         else if (s == 5)
-                            currentGameState = GameState.Playing;
+                            currentGameState = GameState.CameraRoll;
                     }
                     cBtnnext.update(mouse);
                     if (cBtnprev.isClicked == true && old.LeftButton == ButtonState.Released)
@@ -268,7 +274,7 @@ namespace FilodendronGame
             }
             base.Update(gameTime);
         }
-
+        
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
