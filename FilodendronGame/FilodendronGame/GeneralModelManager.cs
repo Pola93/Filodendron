@@ -385,10 +385,30 @@ namespace FilodendronGame
             collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-2000, 30, 5500)));
             collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-2000, 30, 5000)));
             collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-2000, 750, 4500)));//na bialej skrzyni
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-1000, 750, 4200)));//na bialej skrzyni 2
             collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(1000, 1550, 3600)));//na brazowej skrzyni
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(1800, 1550, 3520)));//na brazowej skrzyni 2
             collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(3500, 2000, 3750)));//na fioletowym podescie 1
             collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(5000, 2130, 3650)));//na fioletowym podescie 2
             collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(5000, 2130, -1550)));//na fioletowym podescie 3
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(5200, 50, -1700)));//pod fioletowym podestem 3
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(4800, 50, -1550)));//pod fioletowym podestem 3
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(5000, 50, 3750)));//opcjonalna strona
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(3600, 50, 2750)));//opcjonalna strona
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(4800, 50, 3200)));//opcjonalna strona
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(3500, 50, 4000)));//opcjonalna strona
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(4600, 50, 3750)));//opcjonalna strona
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(1500, 1320, -1600)));//podest nad walcami
+
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(3800, 50, -800)));//za ostrzami
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(4000, 50, -1000)));//za ostrzami
+
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-1400, 2100, -2800)));//niebieskie polki
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(150, 2100, -2800)));//niebieskie polki
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-1400, 1500, -2800)));//niebieskie polki
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(150, 1500, -2800)));//niebieskie polki
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(150, 800, -2800)));//niebieskie polki
+            collectableItems.Add(new CollectableItem(Game.Content.Load<Model>(@"models\box"), Matrix.CreateTranslation(-1400, 800, -2800)));//niebieskie polki
 
             foreach (CollectableItem item in collectableItems)
             {
