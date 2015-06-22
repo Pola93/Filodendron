@@ -17,13 +17,13 @@ namespace FilodendronGame
 
         public Curve3D()
         {
-            curveX.PostLoop = CurveLoopType.Constant;
-            curveY.PostLoop = CurveLoopType.Constant;
-            curveZ.PostLoop = CurveLoopType.Constant;
+            curveX.PostLoop = CurveLoopType.Oscillate;
+            curveY.PostLoop = CurveLoopType.Oscillate;
+            curveZ.PostLoop = CurveLoopType.Oscillate;
 
-            curveX.PreLoop = CurveLoopType.Constant;
-            curveY.PreLoop = CurveLoopType.Constant;
-            curveZ.PreLoop = CurveLoopType.Constant;
+            curveX.PreLoop = CurveLoopType.Oscillate;
+            curveY.PreLoop = CurveLoopType.Oscillate;
+            curveZ.PreLoop = CurveLoopType.Oscillate;
         }
         public void SetTangents()
         {
