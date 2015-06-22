@@ -45,6 +45,7 @@ namespace FilodendronGame
         private bool gravityPressed = false;
         private bool shootPressed = false;
         public bool stopPosition { get; set; }
+        public bool avatarFell = false;
 
         public bool isModelVisible = true;
         public bool hasAvatarJustDied = false;
@@ -52,6 +53,7 @@ namespace FilodendronGame
         private const int maxBlinksAmount = 5;
         private float blinksDone = 0;
         private int blinkToggleTime = 200;
+        private float heightOfDeath = -18;
 
         //Vector3 viewVector; // for specular light
 
@@ -141,6 +143,10 @@ namespace FilodendronGame
             moveVector = Vector3.Transform(moveVector, movement);
             this.avatarSpeed = moveVector;
             UpdatePosition(moveVector);
+            if (verticalSpeed<=heightOfDeath)
+            {
+                this.avatarFell= true;
+            }
             if (forwardSpeed != 0 || sideSpeed != 0)
             {
                 animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);  
