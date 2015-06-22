@@ -153,7 +153,7 @@ namespace FilodendronGame
         Vector3 UpdateCameraThirdPerson()
         {
             // Counting pitch angle to rotate
-            if (Mouse.GetState().Y != prevMouseState.Y && this.cameraPosition.Y > ((Game1)Game).modelManager.avatar.avatarPosition.Y)
+            if (Mouse.GetState().Y != prevMouseState.Y)
             {
                 cameraPitch -= (Mouse.GetState().Y - prevMouseState.Y) * rotationSpeed;
             }
@@ -165,6 +165,10 @@ namespace FilodendronGame
 
             // Calculate the position the camera is looking from.
             cameraPosition = transformedReference + ((Game1)Game).modelManager.avatar.avatarPosition;
+            if (cameraPosition.Y < ((Game1)Game).modelManager.avatar.avatarPosition.Y)
+            {
+                cameraPosition.Y = ((Game1)Game).modelManager.avatar.avatarPosition.Y;
+            }
             
             // Set up the view matrix and projection matrix.
             view = Matrix.CreateLookAt(cameraPosition, ((Game1)Game).modelManager.avatar.avatarPosition,

@@ -237,12 +237,10 @@ namespace FilodendronGame
                 }
 
                 //dotknij drzwi => wygrana
-                System.Diagnostics.Debug.WriteLine(avatar.avatarPosition);
                 if (avatar.avatarPosition.X > -6138 && avatar.avatarPosition.X < -6135 
                     && avatar.avatarPosition.Y > 15 && avatar.avatarPosition.Y < 50 
                     && avatar.avatarPosition.Z > -3409 && avatar.avatarPosition.Z < -2171)
                 {
-                    System.Diagnostics.Debug.WriteLine("ibdfgukiedbgyueirg" + ((Game1)Game).win);
                     ((Game1)Game).win = true;
                 }
                 // Update explosions
