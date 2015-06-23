@@ -318,7 +318,7 @@ namespace FilodendronGame
                 foreach (BasicModel item in platforms)
                 {
                     float distance = (((Game1)Game).camera.cameraPosition - item.position).Length();
-                    if (distance < 6000)
+                    if (((Game1)Game).currentGameState.Equals(Game1.GameState.CameraRoll) || (distance < 6000 && ((Game1)Game).currentGameState.Equals(Game1.GameState.Playing)))
                     {
                         item.Draw(item.model,
                                   item.World,
@@ -344,7 +344,7 @@ namespace FilodendronGame
                 foreach (BasicModel blade in blades)
                 {
                     float distance = (((Game1)Game).camera.cameraPosition - blade.position).Length();
-                    if (distance < 6000)
+                    if (((Game1)Game).currentGameState.Equals(Game1.GameState.CameraRoll) || (distance < 6000 && ((Game1)Game).currentGameState.Equals(Game1.GameState.Playing)))
                     {
                         blade.Draw(blade.model,
                                   blade.World,
