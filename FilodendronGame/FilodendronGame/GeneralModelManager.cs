@@ -317,12 +317,16 @@ namespace FilodendronGame
 
                 foreach (BasicModel item in platforms)
                 {
-                    item.Draw(item.model,
-                              item.World,
-                              platformTexture, 
-                              ((Game1)Game).camera, 
-                              gameTime, 
-                              ((Game1)Game).graphics);   
+                    float distance = (((Game1)Game).camera.cameraPosition - item.position).Length();
+                    if (distance < 6000)
+                    {
+                        item.Draw(item.model,
+                                  item.World,
+                                  platformTexture, 
+                                  ((Game1)Game).camera, 
+                                  gameTime, 
+                                  ((Game1)Game).graphics);     
+                    }
                 }
 
                 foreach (CollectableItem item in collectableItems)
@@ -339,12 +343,16 @@ namespace FilodendronGame
 
                 foreach (BasicModel blade in blades)
                 {
-                    blade.Draw(blade.model,
-                              blade.World,
-                              platformTexture,
-                              ((Game1)Game).camera,
-                              gameTime,
-                              ((Game1)Game).graphics);
+                    float distance = (((Game1)Game).camera.cameraPosition - blade.position).Length();
+                    if (distance < 6000)
+                    {
+                        blade.Draw(blade.model,
+                                  blade.World,
+                                  platformTexture,
+                                  ((Game1)Game).camera,
+                                  gameTime,
+                                  ((Game1)Game).graphics);    
+                    }
                 }
 
                 base.Draw(gameTime);
