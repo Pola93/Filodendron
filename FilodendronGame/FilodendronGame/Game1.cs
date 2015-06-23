@@ -196,12 +196,18 @@ namespace FilodendronGame
                     break;
 
                 case GameState.Playing:
+
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                     {
                         currentGameState = GameState.MainMenu;
                     }
-                   // if (Keyboard.GetState().IsKeyDown(Keys.Up)&& numberOfLifes <5)
-                    if(numberOfCoins == 5)
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.D7)&& numberOfLifes < 5)
+                    {
+                        numberOfLifes++;
+                    }
+
+                    else if(numberOfCoins == 5)
                     {
                             numberOfLifes++;
                             numberOfCoins = 0;
